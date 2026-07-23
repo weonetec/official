@@ -1,0 +1,871 @@
+/* =========================================================
+   RESPONSIVE.CSS  –  WeOne v2
+   Breakpoints: 1399 | 1199 | 991 | 767 | 575 | 400
+   ========================================================= */
+
+/* ─────────────────────────────────────────────────────────
+   GLOBAL HEADING SCALE — baseline for any h1-h4 that ISN'T
+   covered by a more specific class (.wetitle, .hero-title,
+   .detail-title, etc. all keep their own dedicated overrides
+   elsewhere in this file). main.css's bare h1-h4 rule is
+   rem-based with no responsive step of its own, so anything
+   that falls through to it (e.g. .author-card h4, .work-heading,
+   plain <h3>/<h4> tags with no styling class) stayed desktop-sized
+   on every phone/tablet. This is the floor every heading gets;
+   more specific selectors elsewhere continue to win via cascade.
+───────────────────────────────────────────────────────── */
+@media (max-width: 991px) {
+    h1 { font-size: 38px; }
+    h2 { font-size: 30px; }
+    h3 { font-size: 21px; }
+    h4 { font-size: 18px; }
+}
+@media (max-width: 767px) {
+    h1 { font-size: 34px; }
+    h2 { font-size: 28px; }
+    h3 { font-size: 19px; }
+    h4 { font-size: 17px; }
+}
+@media (max-width: 575px) {
+    h1 { font-size: 32px; }
+    h2 { font-size: 26px; }
+    h3 { font-size: 18px; }
+    h4 { font-size: 16px; }
+}
+
+/* ─────────────────────────────────────────────────────────
+   MOBILE NAV DRAWER — base styles (must come before media queries)
+───────────────────────────────────────────────────────── */
+
+/* Hamburger button – hidden by default, shown at ≤991px */
+.mob-nav-toggle {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    width: 38px;
+    height: 38px;
+    background: transparent;
+    border: 1.5px solid rgba(255,255,255,0.18);
+    border-radius: 10px;
+    cursor: pointer;
+    padding: 4px;
+    z-index: 1001;
+    flex-shrink: 0;
+    transition: border-color 0.2s;
+}
+.mob-nav-toggle:hover { border-color: rgba(255,255,255,0.45); }
+.mob-nav-toggle span {
+    display: block;
+    width: 20px;
+    height: 2px;
+    background: #fff;
+    border-radius: 2px;
+    transition: transform 0.3s ease, opacity 0.2s ease;
+    transform-origin: center;
+}
+.mob-nav-toggle.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.mob-nav-toggle.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+.mob-nav-toggle.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+/* Overlay */
+.mob-nav-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.55);
+    z-index: 998;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    backdrop-filter: blur(2px);
+}
+.mob-nav-overlay.active { opacity: 1; }
+
+/* Drawer panel */
+.mob-nav-drawer {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: min(300px, 88vw);
+    height: 100dvh;
+    background: #0d0d0d;
+    border-left: 1px solid rgba(255,255,255,0.07);
+    z-index: 999;
+    padding: 90px 36px 40px;
+    transform: translateX(105%);
+    transition: transform 0.38s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
+.mob-nav-drawer.open { transform: translateX(0); }
+
+/* Explicit close control — the hamburger button also morphs into an X and
+   still works (it sits above the drawer, z-index 1001 vs 999), but that's
+   easy to miss once the drawer is covering the screen, so the drawer gets
+   its own obvious close button too. */
+.mob-nav-close {
+    position: absolute;
+    top: 24px;
+    right: 24px;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    color: #fff;
+    font-size: 22px;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    padding: 0;
+    transition: background 0.2s, border-color 0.2s, color 0.2s;
+}
+.mob-nav-close:hover {
+    background: rgba(178, 223, 72, 0.12);
+    border-color: #B2DF48;
+    color: #B2DF48;
+}
+
+.mob-nav-drawer ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+}
+.mob-nav-drawer ul li a {
+    display: block;
+    font-size: 26px;
+    font-weight: 800;
+    color: #fff;
+    text-decoration: none;
+    padding: 16px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.07);
+    transition: color 0.2s, padding-left 0.2s;
+    font-family: 'Satoshi-Variable', sans-serif;
+    letter-spacing: -0.02em;
+}
+.mob-nav-drawer ul li a:hover {
+    color: #B2DF48;
+    padding-left: 8px;
+}
+
+.mob-nav-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: auto;
+    background: #B2DF48;
+    color: #000;
+    font-weight: 800;
+    font-size: 15px;
+    padding: 13px 22px;
+    border-radius: 40px;
+    text-decoration: none;
+    width: fit-content;
+    transition: opacity 0.2s;
+    font-family: 'Satoshi-Variable', sans-serif;
+}
+.mob-nav-cta:hover { opacity: 0.88; color: #000; }
+
+
+/* ── Container max-width overrides ── */
+@media (min-width: 1600px) { .container { max-width: 1400px; } }
+@media (min-width: 1800px) { .container { max-width: 1400px; } }
+
+
+/* ─────────────────────────────────────────────────────────
+   ≤ 1600px  –  coming-soon image fit
+───────────────────────────────────────────────────────── */
+@media only screen and (max-width: 1600px) {
+    .coming-soon-line img {
+        position: absolute; top: 0; margin: 0 auto;
+        left: 0; right: 0; bottom: 0;
+        object-fit: cover; height: 100%;
+    }
+}
+
+
+/* ─────────────────────────────────────────────────────────
+   ≤ 1399px  –  Large desktop scaling
+───────────────────────────────────────────────────────── */
+@media (max-width: 1399px) {
+    /* Hero */
+    .hero-eyebrow { font-size: 76px; }
+
+    /* Studio banner badges – nudge inward */
+    .badge--exp    { left: 280px; }
+    .badge--flex   { left: 60px;  }
+    .badge--speed-l { left: 320px; }
+    .badge--omni-l { left: 80px;  }
+    .badge--speed-r { right: 280px; }
+    .badge--omni-r  { right: 60px;  }
+    .badge--brand   { right: 320px; }
+    .badge--result  { right: 80px;  }
+
+    /* Design future */
+    .designFuture .wetitle { font-size: 80px; line-height: 88px; }
+    .by-category { font-size: 76px; }
+    .category-item.ui-ux      { padding-left: 200px; }
+    .category-item.branding   { padding-left: 190px; }
+}
+
+
+/* ─────────────────────────────────────────────────────────
+   ≤ 1199px  –  Small desktop / large tablet
+───────────────────────────────────────────────────────── */
+@media (max-width: 1199px) {
+    /* Header */
+    .nav-list { gap: 60px; }
+
+    /* Header CTA – icon only. Below 1200px, .header-cta sits in a
+       Bootstrap col-lg-2 (~16.667%) column that's too narrow for the full
+       "Get A Call Back" label + icon, so the text wraps to 2-3 lines and
+       blows out the header's height. Same icon-only treatment as the
+       ≤767px rule below — harmless overlap with that rule since both set
+       the same properties. Scoped to .site-header specifically — some
+       pages (coming-soon.html) reuse the bare .header-cta/.cta-btn class
+       names for an unrelated standalone hero CTA that isn't in a cramped
+       nav column and has no hamburger-drawer fallback, so a bare
+       .header-cta selector here would silently break that button. */
+    .site-header .header-cta .cta-btn {
+        font-size: 0;
+        padding: 10px 10px;
+        min-width: unset;
+    }
+    .site-header .header-cta .cta-btn .cta-icon { margin-left: 0; }
+
+    /* CTA button — general scale for every OTHER .cta-btn on the site
+       (footer, about/CTA bands, popup sidebar, hero sections). These keep
+       their label text (unlike the header's icon-only treatment above,
+       which only makes sense for the nav bar) but still need to shrink —
+       previously they stayed at full 12px/22px desktop padding and 16px
+       font on every device down to the smallest phone. */
+    .cta-btn { padding: 11px 20px; font-size: 15px; gap: 14px; }
+
+    /* Hero */
+    .hero-eyebrow { font-size: 60px; }
+    .intro { padding: 100px 24px 120px; }
+
+    /* Studio banner – badges reflow into a 2-col grid instead of being hidden.
+       Uses the section+class selector so its own horizontal padding always
+       beats the generic ".section" rule below at every breakpoint, regardless
+       of source order — this element carries both classes in the markup. */
+    section.studio-banner {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+        min-height: auto;
+        padding: 90px 24px;
+        align-items: stretch;
+        background-position: center;
+    }
+    .studio-banner .badge {
+        display: flex !important;
+        position: static;
+        width: 100%;
+        height: auto;
+        min-height: 150px;
+        top: auto; left: auto; right: auto; bottom: auto;
+    }
+
+    /* Force checkerboard black/white pattern in the 2-col badge grid
+       (badge--light/dark classes were tuned for desktop's scattered
+       layout and don't read as alternating once badges sit in a grid) */
+    .badge--speed-r,
+    .badge--result {
+        background: #E9ECFF;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+    }
+    .badge--speed-r .badge__text,
+    .badge--result .badge__text { color: #111; }
+    .badge--speed-r .badge__icon svg,
+    .badge--result .badge__icon svg { stroke: #111111; }
+
+    .badge--brand,
+    .badge--omni-r {
+        background: #0a0a0a;
+        box-shadow: none;
+    }
+    .badge--brand .badge__text,
+    .badge--omni-r .badge__text { color: #aaff2e; }
+    .badge--brand .badge__icon svg,
+    .badge--omni-r .badge__icon svg { stroke: #aaff2e; }
+
+    .title-block {
+        grid-column: 1 / -1;
+        order: -1;
+        margin-bottom: 10px;
+    }
+    .title-block .txt-intro { font-size: 80px; }
+    .title-block .txt-bold  { font-size: 72px; line-height: 1; }
+    .title-block .txt-outro { font-size: 80px; }
+
+    /* Portfolio stacking text */
+    .stack-text .stacking_text          { font-size: 70px; }
+    .stack-text .stacking_text .neon-green { font-size: 96px; }
+
+    /* Design future */
+    .designFuture .wetitle { font-size: 64px; line-height: 70px; }
+    .by-category           { font-size: 60px; }
+    .category-item         { font-size: 20px; }
+    .category-item.ui-ux      { padding-left: 160px; }
+    .category-item.branding   { padding-left: 150px; }
+
+    /* Section headings */
+    .wetitle { font-size: 80px; line-height: 1; }
+    .wetitle .italicTitle { font-size: 88px; }
+
+    /* Testimonials */
+    .testi-heading   { font-size: 54px; }
+    .testi-heading-large { font-size: 87px; }
+    .testi-trust     { font-size: 52px; }
+    .testi-quote     { font-size: 24px; line-height: 1.55; }
+    .testi-rating-num { font-size: 72px; }
+
+    /* Footer */
+    .footer-inner   { gap: 50px; }
+    .footer-heading { font-size: 34px; }
+    .footer-heading span.italic { font-size: 40px; }
+}
+
+
+/* ─────────────────────────────────────────────────────────
+   ≤ 991px  –  Tablet / Bootstrap lg breakpoint
+───────────────────────────────────────────────────────── */
+@media (max-width: 991px) {
+
+    /* ── Mobile hamburger visible ── */
+    .mob-nav-toggle { display: flex; }
+
+    /* Header CTA fully hidden on mobile — the hamburger drawer has its own
+       "Get A Call Back" CTA (.mob-nav-cta), so the header's copy is
+       redundant once the hamburger takes over as the primary nav. Scoped
+       to .site-header — see the ≤1199px block above for why a bare
+       .header-cta selector is unsafe (coming-soon.html reuses the class
+       name for a standalone hero CTA with no hamburger fallback). */
+    .site-header .header-cta { display: none; }
+
+    /* Smaller logo on mobile */
+    .header-logo img { height: 32px; }
+
+    /* Generic section wrapper — 100px top/bottom (main.css base rule) is
+       excessive once the viewport itself is this narrow; every other
+       section-like class (.testi-section, .stack-section) already gets a
+       mobile-specific reduction, this was the one generic wrapper that
+       didn't. */
+    .section { padding: 70px 0 70px 0; }
+
+    /* Hero */
+    .hero-eyebrow { font-size: 56px; }
+    .hero-title   { font-size: clamp(62px, 11vw, 88px); }
+    /* Pinned box: same pin/scrub mechanism as desktop, but re-proportioned
+       so the top (eyebrow/title/pill) and text stay tight while the value
+       card below gets real room instead of being squeezed thin */
+    /* height set twice on each rule below: plain vh first as a fallback for
+       older browsers, then dvh (dynamic viewport height) which any modern
+       mobile browser will use instead — vh is pinned to the LARGEST
+       possible viewport (address bar hidden), so on a page load with the
+       address bar showing, a 92vh box is taller than the visible area and
+       gets clipped; when the bar then hides/shows on scroll, vh doesn't
+       change, but the actually-visible area does, so content jumps under
+       it. dvh tracks the real visible viewport continuously, so neither
+       happens. Since dvh support is what matters here, no @supports guard
+       is needed — unsupporting browsers simply keep the vh line. */
+    .intro                 { height: 92vh; height: 92dvh; padding: 60px 24px 50px; }
+    /* With the eyebrow now wrapping to 2 lines on narrow phones, the actual
+       content (eyebrow+title+pill) needs ~306px of room regardless of
+       device height. A pure vh split is fragile here — on a short real
+       phone (e.g. 667px-tall iPhone SE) even 40vh isn't enough and the
+       collision comes back. 50vh covers realistic phone heights with
+       margin, and min-height is a hard floor for anything shorter still. */
+    .hero-content-wrapper   { height: 50vh; height: 50dvh; min-height: 364px; align-items: center; }
+    /* .hero-inner has its own independent height + centering (built for
+       desktop's 50vh half) — let it size to content instead so it can
+       actually be centered within the outer wrapper's zone above */
+    .hero-inner             { height: auto; }
+    /* text-strip is position:absolute; bottom:0 — anchored to intro's own
+       bottom edge (ignoring intro's padding, per the CSS containing-block
+       spec), while hero-content-wrapper is normal flow starting AFTER
+       intro's 60px padding-top. So text-strip's height must be
+       (intro height − hero-wrap height) MINUS that fixed 60px, or a gap
+       reappears — hence calc() combining the vh zone with the fixed px
+       offset, which stays correct regardless of viewport height. Updated
+       to match hero-content-wrapper's new 50vh (92 − 50 = 42). */
+    .text-strip             { height: calc(42vh - 60px); height: calc(42dvh - 60px); align-items: center; }
+    .reveal-text            { font-size: 12vw; }
+
+    /* Tool pill – compact */
+    .tool-pill { padding: 6px 8px 6px 22px; gap: 14px; }
+    .tool-pill-icons { gap: 18px; padding: 0 24px 0 50px; }
+
+    /* Value cards — single-card slider (see value-swiper JS), still inside
+       the pinned hero box so it appears the same moment as on desktop.
+       top nudged up from 60vh — the card fit, but the pagination dots sit
+       below it and were getting clipped by .intro's overflow:hidden. */
+    .value-section { top: 57vh; }
+    .value-swiper-pagination { display: flex; margin-top: 14px; padding-bottom: 4px; }
+    .value-swiper .value-card { padding: 24px 26px 28px; }
+    .value-swiper .value-icon { width: 84px; height: 84px; margin-bottom: 18px; }
+    .value-swiper .value-title { font-size: 22px; margin-bottom: 10px; }
+    .value-swiper .value-text { font-size: 15px; line-height: 1.55; }
+
+    /* Studio banner */
+    .studio-banner        { min-height: 50vh; }
+    .title-block .txt-intro { font-size: 64px; }
+    .title-block .txt-bold  { font-size: 58px; line-height: 1; }
+    .title-block .txt-outro { font-size: 64px; }
+    /* Collapse the desktop's one-word-per-line stack (7 lines) into
+       "SEARCH FOR A" / "UI UX DESIGN STUDIO" (2 lines) — the <br> tags
+       marked word-break are hidden, keep-break stays to split those two
+       groups. Text has real spaces around each <br>, so hiding one just
+       merges words with normal spacing instead of running them together. */
+    .title-block .txt-bold br.word-break { display: none; }
+
+    /* Portfolio stacking */
+    .stack-text .stacking_text             { font-size: 56px; }
+    .stack-text .stacking_text .neon-green { font-size: 76px; }
+
+    /* Service cards (.what_we_do) — the sticky peek-stack effect stays on
+       tab/phone, but the card content (side-by-side on desktop) stacks
+       into one tall column here, so it's shrunk/tightened to keep the
+       peek-stack rhythm (.sc top offsets) proportionate and readable. */
+    .service-card            { min-height: auto; padding: 24px; border-radius: 22px; }
+    .content-wrap            { max-width: 100%; }
+    .service-title           { font-size: 24px; margin-bottom: 10px; }
+    .service-desc            { font-size: 15px; line-height: 1.6; margin-bottom: 16px; max-width: 100%; }
+    .feature-row              { margin-bottom: 10px; }
+    .feature-item             { font-size: 14px; gap: 10px; margin-bottom: 14px; }
+    .service-btn              { padding: 9px 14px 9px 18px; font-size: 14px; }
+    .gradient-box            { margin-top: 20px; }
+    .gradient-box img        { width: 100%; height: auto; max-height: 200px; object-fit: contain; }
+    .sc                      { margin-bottom: 60px; }
+    .sc:nth-child(1) { top: 60px;  }
+    .sc:nth-child(2) { top: 110px; }
+    .sc:nth-child(3) { top: 160px; }
+    .sc:nth-child(4) { top: 210px; }
+
+    /* Design future — vertical stack instead of the 5×300px horizontal fan
+       (which totals 1300px+ wide and was overflowing on tablet/phone even
+       after being visually shrunk with transform:scale(), since scale()
+       doesn't change the element's actual layout size). Cards start hidden
+       and reveal one at a time, alternating left/right entrance, via
+       .is-visible (toggled in main.js, IntersectionObserver-driven). */
+    .designFuture .wetitle { font-size: 52px; line-height: 58px; }
+    .cards-wrapper {
+        flex-direction: column;
+        align-items: center;
+        gap: 20px;
+        padding: 20px 20px 40px;
+    }
+    .card {
+        width: 100%;
+        max-width: 280px;
+        height: auto;
+        min-height: 190px;
+        padding: 22px 20px 20px;
+        opacity: 0;
+        transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .card-icon { width: 100px; height: 100px; }
+    .card:not(:first-child) { margin-left: 0; }
+    .card:nth-child(odd)  { transform: translateX(-60px) rotate(-4deg); }
+    .card:nth-child(even) { transform: translateX(60px) rotate(4deg); }
+    .card.is-visible { opacity: 1; }
+
+    /* Settled angle matches desktop's fan tilt per card (same rotation
+       values as the [-8, 8, 0, 18, -11] array in main.js's desktop
+       animation), instead of straightening upright. Once settled, each
+       swings gently around that angle like a pendulum — tablet/phone
+       only, desktop keeps its own separate hover-only interaction. */
+    .card:nth-child(1).is-visible { transform: translateX(0) rotate(-8deg);  animation: card-pendulum-1 3.2s ease-in-out 0.65s infinite; }
+    .card:nth-child(2).is-visible { transform: translateX(0) rotate(8deg);   animation: card-pendulum-2 3s ease-in-out 0.8s infinite; }
+    .card:nth-child(3).is-visible { transform: translateX(0) rotate(0deg);   animation: card-pendulum-3 3.4s ease-in-out 0.95s infinite; }
+    .card:nth-child(4).is-visible { transform: translateX(0) rotate(18deg);  animation: card-pendulum-4 3.1s ease-in-out 1.1s infinite; }
+    .card:nth-child(5).is-visible { transform: translateX(0) rotate(-11deg); animation: card-pendulum-5 3.3s ease-in-out 1.25s infinite; }
+
+    @keyframes card-pendulum-1 { 0%, 100% { transform: translateX(0) rotate(-8deg); }  50% { transform: translateX(0) rotate(-2deg); } }
+    @keyframes card-pendulum-2 { 0%, 100% { transform: translateX(0) rotate(8deg); }   50% { transform: translateX(0) rotate(2deg); } }
+    @keyframes card-pendulum-3 { 0%, 100% { transform: translateX(0) rotate(0deg); }   50% { transform: translateX(0) rotate(6deg); } }
+    @keyframes card-pendulum-4 { 0%, 100% { transform: translateX(0) rotate(18deg); }  50% { transform: translateX(0) rotate(12deg); } }
+    @keyframes card-pendulum-5 { 0%, 100% { transform: translateX(0) rotate(-11deg); } 50% { transform: translateX(0) rotate(-17deg); } }
+    .by-category   { font-size: 48px; }
+    .category-item { font-size: 18px; }
+    .category-item.ui-ux      { padding-left: 100px; }
+    .category-item.branding   { padding-left: 90px;  }
+    .banner-card  { padding: 36px 28px; margin-top: 60px; min-height: 320px; display: flex; flex-direction: column; justify-content: center; }
+
+    /* Section headings */
+    .wetitle              { font-size: 62px; line-height: 1; }
+    .wetitle .italicTitle { font-size: 70px; }
+
+    /* Testimonials */
+    .testi-heading    { font-size: 45px; }
+    .testi-heading-large { font-size: 72px; }
+    .testi-trust      { font-size: 44px; }
+    .testi-quote      { font-size: 20px; line-height: 1.55; max-width: 100%; }
+    .testi-rating-num { font-size: 64px; }
+    .testi-rating-card { width: 260px; }
+    .testi-section    { padding: 70px 0 60px; }
+
+    /* Blog */
+    .card-title-text { font-size: 20px; }
+
+    /* Coming section */
+    .top-line           { font-size: 58px; line-height: 1.05; }
+    .main-title         { font-size: 58px; }
+    .highlight          { line-height: 1.05; }
+    .highlight-strong   { line-height: 1.1;  }
+    .coming-wrapper     { padding: 60px 30px; }
+
+    /* FAQ — titles had no responsive override anywhere and stayed at their
+       desktop 22-24px all the way down to phones */
+    .FaqWrapper { padding: 100px 0 60px; }
+    .custom-accord h2 button { font-size: 18px; }
+    .custom-accord .accordion-button:not(.collapsed) { font-size: 19px; }
+
+    /* Footer – stack vertically */
+    .footer-inner           { flex-direction: column; gap: 40px; }
+    /* Move the illustration to the very end of the stacked footer (after
+       footer-right's nav/socials/contact) — display:contents "unwraps"
+       footer-left so its children become direct flex items of
+       footer-inner, letting `order` place the illustration after
+       footer-right too, not just after the rest of footer-left's own
+       content. Doesn't touch the HTML or desktop's layout (desktop never
+       hits this media query). */
+    .footer-left            { display: contents; }
+    .footer-heading         { order: 0; }
+    .footer-desc            { order: 1; }
+    #openProjectPopup       { order: 2; }
+    .footer-address         { order: 3; }
+    .footer-right           { order: 4; }
+    .footer-illus           { order: 5; margin-top: 0; }
+    .footer-heading         { font-size: 28px; }
+    .footer-heading span.italic { font-size: 34px; }
+    .footer-desc            { max-width: 100%; }
+    .footer-address-label   { font-size: 18px; }
+    .footer-address p       { font-size: 16px; }
+    .footer-nav-link        { font-size: 20px; padding: 32px 0; }
+
+    /* Existing rules */
+    .coming-soon-line img { position: absolute; top: 0; margin: 0 auto; left: 0; right: 0; bottom: 0; object-fit: cover; height: 100%; }
+    .small-text { font-size: 70px; }
+    .big-text   { font-size: 70px; }
+
+    /* coming-soon.html's hero — had no mobile override at all, so it kept
+       a plain 100vh (main.css). vh is pinned to the viewport with the
+       mobile browser's address bar hidden, so with the bar showing (e.g.
+       right after page load) the hero is taller than what's actually
+       visible, and then jumps as the bar hides/shows on scroll. dvh
+       tracks the real visible viewport instead; vh stays first as a
+       fallback for browsers that don't support dvh. */
+    .hero-coming-soonn { height: 100vh; height: 100dvh; }
+}
+
+
+/* ─────────────────────────────────────────────────────────
+   ≤ 767px  –  Mobile landscape / small tablet
+───────────────────────────────────────────────────────── */
+@media (max-width: 767px) {
+
+    /* Generic section wrapper */
+    .section { padding: 56px 0 56px 0; }
+
+    /* Header CTA – icon only on mobile (scoped to .site-header, see the
+       ≤1199px block for why) */
+    .site-header .header-cta .cta-btn {
+        font-size: 0;
+        padding: 10px 10px;
+        min-width: unset;
+    }
+    .site-header .header-cta .cta-btn .cta-icon { margin-left: 0; }
+
+    /* CTA button — general scale (see ≤1199px block for why this is
+       unscoped, unlike the header's icon-only rule above) */
+    .cta-btn { padding: 10px 18px; font-size: 14px; gap: 12px; }
+
+    /* Hero */
+    .hero-eyebrow { font-size: 48px; }
+    .hero-title   { font-size: clamp(49px, 12vw, 71px); }
+    .reveal-text  { font-size: 13vw; }
+    .intro        { padding: 60px 16px 50px; }
+
+    /* Value card slide — phones have a shorter viewport than tablets, so the
+       card needs to be a bit smaller than the tablet sizing above to still
+       fit without clipping */
+    .value-swiper .value-card  { padding: 20px 22px 24px; }
+    .value-swiper .value-icon  { width: 68px; height: 68px; margin-bottom: 14px; }
+    /* .value-lottie is a fixed 66px (set in main.css) — that only leaves 1px
+       clearance inside this 68px icon box, so give it explicit breathing
+       room here instead of relying on the fixed size barely fitting. */
+    .value-swiper .value-icon .value-lottie { width: 56px; height: 56px; }
+    .value-swiper .value-title { font-size: 20px; margin-bottom: 8px; }
+    .value-swiper .value-text  { font-size: 14px; line-height: 1.5; }
+
+    /* Tool pill */
+    .tool-pill { gap: 8px; padding: 5px 7px 5px 16px; }
+    .tool-pill-label { font-size: 12px; }
+    .tool-pill-icons { gap: 12px; padding: 0 16px 0 30px; }
+    .tool-icon svg,
+    .tool-icon.ps svg,
+    .tool-icon.ai svg,
+    .tool-icon.video svg,
+    .tool-icon.js svg { width: 20px; height: 20px; }
+    .tool-pill-cta { padding: 7px 12px; font-size: 13px; gap: 8px; }
+    .tool-pill-cta .fist { font-size: 20px; }
+
+    /* Studio banner */
+    .title-block .txt-intro { font-size: 48px; }
+    .title-block .txt-bold  { font-size: 42px; line-height: 1; }
+    .title-block .txt-outro { font-size: 48px; }
+
+    /* Portfolio stacking */
+    .stack-text .stacking_text             { font-size: 42px; }
+    .stack-text .stacking_text .neon-green { font-size: 56px; }
+
+    /* Service cards (.what_we_do) — phones are narrower than tablets, so
+       the feature list (1-per-row by default below Bootstrap's md
+       breakpoint) is forced back to 2 columns to keep the card shorter,
+       plus a further size/spacing trim so the peek-stack still reads
+       cleanly at this height. */
+    .service-card             { padding: 20px; border-radius: 20px; }
+    .service-title            { font-size: 20px; margin-bottom: 8px; }
+    .service-desc             { font-size: 13.5px; line-height: 1.55; margin-bottom: 14px; }
+    .feature-row               { display: flex; flex-wrap: wrap; margin-bottom: 6px; }
+    .feature-row .feature-item { flex: 0 0 50%; max-width: 50%; font-size: 12.5px; gap: 8px; margin-bottom: 12px; padding-right: 6px; }
+    .service-btn               { padding: 8px 12px 8px 16px; font-size: 13px; }
+    .service-btn .service-btn-icon img { width: 18px; }
+    .gradient-box             { margin-top: 18px; }
+    .gradient-box img         { width: 100%; max-height: 100%; }
+    .sc                       { margin-bottom: 36px; }
+    .sc:nth-child(1) { top: 36px; }
+    .sc:nth-child(2) { top: 90px; }
+    .sc:nth-child(3) { top: 142px; }
+    .sc:nth-child(4) { top: 195px; }
+
+    /* stack-section's own left/right padding compounds with the
+       .container/.row/.col-lg-10 gutters above it, squeezing the card
+       down to a fraction of the viewport width on phones */
+    .stack-section { padding: 0; }
+
+    /* Design future */
+    .designFuture .wetitle { font-size: 36px; line-height: 42px; }
+    .card                   { max-width: 250px; min-height: 170px; padding: 20px 18px 18px; }
+    .card-icon              { width: 84px; height: 84px; }
+    .by-category           { font-size: 34px; }
+    .browse-italic         { font-size: clamp(32px, 8vw, 52px); }
+    .category-item         { font-size: 16px; }
+    .category-item.ui-ux      { padding-left: 0; text-align: center; }
+    .category-item.web-dev    { padding-left: 0; text-align: center; }
+    .category-item.branding   { padding-left: 0; text-align: center; }
+    .category-list            { align-items: center; }
+    .banner-card              { padding: 32px 20px; margin-top: 36px; min-height: 280px; display: flex; flex-direction: column; justify-content: center; }
+
+    /* Section headings */
+    .wetitle              { font-size: 49px; line-height: 1; }
+    .wetitle .italicTitle { font-size: 58px; }
+
+    /* Testimonials — desktop is a right-aligned heading + a horizontal
+       "rating card | swiper" row that bleeds past the container to the
+       browser's right edge. None of that survives narrow phones as-is:
+       the row never collapses to a column (rating card and testimonial
+       text just kept squeezing side by side into ever-smaller slivers),
+       the heading/nav floated flush right with a big dead void to their
+       left once the two-column header row stacks, and the edge-to-edge
+       bleed left zero right-side breathing room. */
+    .testi-heading    { font-size: 36px; }
+    .testi-heading-large { font-size: 56px; }
+    .testi-trust      { font-size: 36px; }
+    .testi-quote      { font-size: 18px; max-width: 100%; }
+    .testi-rating-num { font-size: 52px; }
+    .testi-header     { text-align: center; }
+    .testi-nav-btns   { justify-content: center; margin: 16px auto 0; }
+    .testi-slider-outer { padding-left: 16px; padding-right: 16px; }
+    .testi-main-card  { min-height: auto; flex-direction: column; border-radius: 20px; border-right: 1.5px solid #e8e8e8; }
+    .main-rating-card { width: 100%; }
+    .testi-rating-card { width: 100%; min-height: 220px; }
+    .testi-swiper     { width: 100%; flex: none; }
+    .testi-card       { min-height: auto; padding: 28px 16px; border-left: none; border-top: 1.5px solid #e8e8e8; }
+    .testi-section    { padding: 60px 0 50px; }
+
+    /* Blog */
+    .card-title-text  { font-size: 18px; }
+    .card-meta .badge-tag,
+    .card-meta .divider,
+    .card-meta .read-time { font-size: 13px; letter-spacing: 1px; }
+
+    /* FAQ */
+    .FaqWrapper { padding: 80px 0 40px; }
+    .custom-accord h2 button { font-size: 16px; }
+    .custom-accord .accordion-button:not(.collapsed) { font-size: 17px; }
+
+    /* Coming section */
+    .top-line       { font-size: 44px; line-height: 1.05; }
+    .main-title     { font-size: 44px; }
+    .coming-wrapper { padding: 40px 16px; border-radius: 20px; }
+
+    /* Footer */
+    .footer-inner   { gap: 32px; }
+    .footer-heading { font-size: 24px; }
+    .footer-heading span.italic { font-size: 28px; }
+    .footer-desc    { font-size: 15px; }
+    .footer-nav-link { font-size: 18px; padding: 26px 0; }
+    .footer-socials-pill    { height: 54px; }
+    .footer-socials-label   { font-size: 15px; padding: 0 20px 0 16px; }
+    .footer-socials-icons   { gap: 14px; padding: 0 28px 0 14px; }
+    .footer-socials-icons a { font-size: 18px; }
+    .footer-address-label   { font-size: 16px; }
+
+    /* Fluid instead of a fixed step — coming-soon.html's <br> assumes
+       "COMING VERY" / "SOON & STRONG." fit on one line each. A frozen
+       60px was already wide enough to word-break "VERY" into "VER"/"Y"
+       well before 400px, and since nothing below 767px steps this down
+       further (see the removed ≤500/≤400 blocks), that break was live at
+       every narrower width too. A vw-based clamp shrinks continuously
+       with the viewport instead of holding one fixed size, so it never
+       outgrows its container margin the way a static px value can (and
+       is exactly the analogous smooth pattern .hero-title already uses,
+       just extended so this pair no longer needs their own extra steps). */
+    .small-text { font-size: clamp(26px, 6vw, 50px); }
+    .big-text   { font-size: clamp(30px, 7vw, 60px); }
+}
+
+
+/* ─────────────────────────────────────────────────────────
+   ≤ 575px  –  Mobile portrait (most phones)
+───────────────────────────────────────────────────────── */
+@media (max-width: 575px) {
+
+    /* Generic section wrapper */
+    .section { padding: 48px 0 48px 0; }
+
+    /* CTA button — general scale, further step for phones */
+    .cta-btn { padding: 9px 16px; font-size: 13px; gap: 10px; }
+
+    /* Drawer CTA (.mob-nav-cta) and the popup form's submit button
+       (.pp-submit) had no responsive treatment at all before this —
+       staying at their full padding/font-size even on the smallest
+       phones, unlike every other button on the site. */
+    .mob-nav-cta { padding: 11px 18px; font-size: 14px; }
+    .pp-submit   { padding: 13px 28px; font-size: 14px; }
+
+    /* Hero */
+    .hero-eyebrow { font-size: 38px; }
+    .hero-title   { font-size: clamp(40px, 14vw, 55px); }
+    .reveal-text  { font-size: 14vw; }
+    .intro        { padding: 60px 16px 50px; }
+
+    /* Value cards — same horizontal swipe carousel as tablet/desktop, just
+       at phone-appropriate slidesPerView/spacing (set in the Swiper JS
+       init's base config). Touch is enabled there too, so this breakpoint
+       needs no direction/layout override at all — it just inherits the
+       .value-card padding/icon-size steps from the wider breakpoints above. */
+
+    /* Tool pill – compact enough to always fit the viewport.
+       Padding/gaps stretched a bit wider than a pure content-fit would
+       give it, so the pill reads a touch bigger without changing the
+       icon scale or the pill's height. */
+    /* main.css's max-width: min(max-content, calc(100vw - 32px)) stops
+       resolving correctly below ~370px viewports — the pill's fixed-px
+       content width (~328px) wins over the calc() term instead of being
+       clamped by it, so on very narrow phones the pill (and the "Hit Us"
+       button inside it) overflows past .intro's own overflow:hidden edge
+       and gets silently clipped. A plain calc(), not wrapped in min(), is
+       what actually clamps reliably here. */
+    .tool-pill { font-size: 11px; gap: 7px; padding: 4px 9px 4px 18px; max-width: calc(100vw - 32px); }
+    .tool-pill-label { font-size: 10px; flex-shrink: 0; }
+    /* min-width:0 lets this flex item actually shrink below its icons'
+       combined content width once .tool-pill's own max-width kicks in on
+       very narrow phones — without it, flexbox's default auto min-width
+       floors it at its content size and the row spills past the pill
+       (and past .intro's overflow:hidden) instead of compressing. */
+    .tool-pill-icons { gap: 10px; padding: 0 13px 0 17px; min-width: 0; overflow: hidden; }
+    .tool-icon svg,
+    .tool-icon.ps svg,
+    .tool-icon.ai svg,
+    .tool-icon.video svg,
+    .tool-icon.js svg { width: 15px; height: 15px; }
+    .tool-pill-cta { padding: 5px 12px; font-size: 11px; gap: 5px; }
+    .tool-pill-cta .fist { font-size: 15px; }
+
+    /* Studio banner – single column on phones */
+    section.studio-banner { grid-template-columns: 1fr; padding: 60px 16px; gap: 14px; }
+    .studio-banner .badge { min-height: 130px; padding: 18px 20px; }
+    .badge__text { font-size: 20px !important; }
+
+    /* Re-flip to a strict top-to-bottom alternation — the 2-col
+       checkerboard pattern above doesn't read correctly once badges
+       stack into a single column */
+    .badge--speed-l,
+    .badge--omni-r {
+        background: #E9ECFF;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+    }
+    .badge--speed-l .badge__text,
+    .badge--omni-r .badge__text { color: #111; }
+    .badge--speed-l .badge__icon svg,
+    .badge--omni-r .badge__icon svg { stroke: #111111; }
+
+    .badge--omni-l,
+    .badge--result {
+        background: #0a0a0a;
+        box-shadow: none;
+    }
+    .badge--omni-l .badge__text,
+    .badge--result .badge__text { color: #aaff2e; }
+    .badge--omni-l .badge__icon svg,
+    .badge--result .badge__icon svg { stroke: #aaff2e; }
+    .title-block .txt-intro { font-size: 38px; }
+    .title-block .txt-bold  { font-size: 34px; line-height: 1; }
+    .title-block .txt-outro { font-size: 38px; }
+
+    /* Portfolio stacking */
+    .stack-text .stacking_text             { font-size: 34px; }
+    .stack-text .stacking_text .neon-green { font-size: 46px; }
+
+    /* Design future */
+    .designFuture .wetitle { font-size: 28px; line-height: 34px; }
+    .card                   { max-width: 230px; min-height: 155px; }
+    .card-icon              { width: 72px; height: 72px; }
+    .by-category           { font-size: 26px; }
+    .browse-italic         { font-size: clamp(26px, 7vw, 42px); }
+    .banner-card           { padding: 28px 16px; margin-top: 28px; min-height: 240px; display: flex; flex-direction: column; justify-content: center; }
+    .category-item         { font-size: 14px; }
+
+    /* Section headings */
+    .wetitle              { font-size: 40px; }
+    .wetitle .italicTitle { font-size: 47px; }
+
+    /* Testimonials */
+    .testi-heading    { font-size: 29px; }
+    .testi-heading-large { font-size: 43px; }
+    .testi-trust      { font-size: 28px; }
+    .testi-rating-num { font-size: 44px; }
+    .testi-quote      { font-size: 16px; }
+
+    /* Coming */
+    .top-line   { font-size: 34px; }
+    .main-title { font-size: 34px; }
+
+    /* Footer */
+    .footer-heading { font-size: 20px; }
+    .footer-heading span.italic { font-size: 24px; }
+    .footer-cta-btn   { font-size: 14px; padding: 8px 10px 8px 20px; }
+    .footer-cta-arrow { width: 34px; height: 34px; }
+    .footer-contact-label { font-size: 15px; }
+    .footer-contact-value { font-size: 14px; }
+}
+
+/* No ≤500px / ≤400px steps below this — every device narrower than
+   575px (which includes the 509px viewport this scale was locked to)
+   renders identically down to the smallest phone. Two further shrink
+   steps here were what made the mobile scale feel inconsistent: text
+   kept getting smaller well past the point where the ≤575px block
+   already reads correctly on a real phone, so a 320px phone looked
+   noticeably different from a 500-575px one for no layout reason. */
+
+

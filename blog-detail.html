@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Top 10 SaaS Website Design Agencies to Watch in 2025 — WeOne Blog</title>
+
+    <link rel="stylesheet" href="assets/Satoshi/WEB/css/satoshi.css">
+    <link rel="stylesheet" href="assets/morganite/stylesheet.css">
+    <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/css/new.css">
+    <link rel="stylesheet" href="assets/css/main.css?v=29">
+    <link rel="stylesheet" href="assets/css/responsive.css?v=16">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css">
+
+    <style>
+        .detail-page { background:#000; }
+        .detail-hero { padding:140px 0 60px; }
+        .detail-breadcrumb { font-size:13px; color:rgba(255,255,255,0.4); margin-bottom:16px; }
+        .detail-breadcrumb a { color:rgba(255,255,255,0.4); text-decoration:none; }
+        .detail-breadcrumb a:hover { color:#B2DF48; }
+        .detail-breadcrumb span { color:#B2DF48; }
+        .detail-cat-tag { display:inline-block; padding:6px 16px; border:1px solid #B2DF48; color:#B2DF48; border-radius:100px; font-size:13px; letter-spacing:1px; text-transform:uppercase; margin-bottom:20px; }
+        .detail-title { font-family:'Satoshi-Variable'; font-weight:900; font-size:56px; color:#fff; line-height:1.1; margin-bottom:28px; }
+        .detail-meta { display:flex; align-items:center; gap:20px; flex-wrap:wrap; margin-bottom:40px; }
+        .detail-meta .author-avatar { width:40px; height:40px; border-radius:50%; background:#B2DF48; flex-shrink:0; }
+        .detail-meta .meta-author { color:#fff; font-size:14px; }
+        .detail-meta .meta-date, .detail-meta .meta-read { color:rgba(255,255,255,0.4); font-size:13px; }
+        .detail-featured-img { width:100%; max-height:500px; object-fit:cover; border-radius:20px; margin-bottom:60px; }
+        .article-body { background:#fff; border-radius:20px; padding:48px; }
+        .article-body h2 { font-family:'Satoshi-Variable'; font-weight:800; font-size:30px; color:#111; margin:36px 0 16px; }
+        .article-body h3 { font-family:'Satoshi-Variable'; font-weight:700; font-size:22px; color:#111; margin:28px 0 12px; }
+        .article-body p { font-size:17px; color:#333; line-height:1.75; margin-bottom:20px; }
+        .article-body ul { padding-left:24px; margin-bottom:20px; }
+        .article-body ul li { font-size:17px; color:#333; line-height:1.75; margin-bottom:8px; }
+        .article-body blockquote { border-left:4px solid #B2DF48; padding:16px 24px; margin:32px 0; background:#f8f8f8; border-radius:0 12px 12px 0; }
+        .article-body blockquote p { color:#444; font-style:italic; margin:0; }
+        .sidebar { position:sticky; top:100px; }
+        .toc-card { background:#111; border-radius:16px; padding:28px; margin-bottom:24px; }
+        .toc-card h4 { color:#fff; font-size:14px; letter-spacing:2px; text-transform:uppercase; margin-bottom:20px; }
+        .toc-card ul { list-style:none; padding:0; margin:0; }
+        .toc-card ul li { margin-bottom:12px; }
+        .toc-card ul li a { color:rgba(255,255,255,0.5); font-size:14px; text-decoration:none; transition:color 0.2s; }
+        .toc-card ul li a:hover { color:#B2DF48; }
+        .sidebar-cta-card { background:#0a0a0a; border-radius:16px; padding:28px; position:relative; overflow:hidden; margin-bottom:24px; }
+        .sidebar-cta-card::before { content:''; position:absolute; inset:0; border-radius:16px; padding:1px; background:linear-gradient(226deg,#b3ff004f 0%,#171812 100%); -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0); -webkit-mask-composite:xor; mask-composite:exclude; pointer-events:none; }
+        .sidebar-cta-card h4 { color:#fff; font-size:20px; font-weight:700; margin-bottom:12px; }
+        .sidebar-cta-card p { color:rgba(255,255,255,0.5); font-size:14px; margin-bottom:20px; }
+        .author-card { background:#111; border-radius:16px; padding:28px; }
+        .author-card .author-avatar-lg { width:60px; height:60px; border-radius:50%; background:#B2DF48; margin-bottom:16px; }
+        .author-card h4 { color:#fff; font-weight:700; margin-bottom:6px; }
+        .author-card p { color:rgba(255,255,255,0.5); font-size:14px; margin:0; }
+        .related-section { padding:80px 0; background:#000; }
+        .related-section .wetitle { color:#fff; }
+        .related-section .blog-card { background:transparent; }
+        .related-section .card-title-text { color:#fff; }
+        .related-section .badge-tag { color:rgba(255,255,255,0.5); }
+        .related-section .read-time { color:rgba(255,255,255,0.5); }
+        .related-section .divider { color:rgba(255,255,255,0.2); }
+        .related-section .author-label { color:rgba(255,255,255,0.5); }
+        .related-section .post-date { color:rgba(255,255,255,0.4); }
+        .related-section .blog-padding { --bs-gutter-x:2rem; }
+        @media (max-width: 991px) {
+            /* Sidebar's sticky positioning only makes sense next to the
+               article body — once the column stacks below it (Bootstrap's
+               col-lg-4 -> 100% width), sticky just holds it awkwardly in
+               place against content it's no longer beside. */
+            .sidebar { position: static; top: auto; }
+            .detail-title { font-size: 44px; }
+            .article-body h2 { font-size: 26px; }
+            .article-body h3 { font-size: 20px; }
+        }
+        @media (max-width: 767px) {
+            .detail-title { font-size:36px; }
+            .article-body { padding:28px 20px; }
+            .article-body h2 { font-size: 25px; }
+            .article-body h3 { font-size: 19.5px; }
+        }
+        @media (max-width: 575px) {
+            .article-body h2 { font-size: 24px; margin: 28px 0 12px; }
+            .article-body h3 { font-size: 19px; }
+            .article-body p,
+            .article-body ul li { font-size: 15px; }
+        }
+    </style>
+</head>
+
+<body class="detail-page">
+
+    <!-- ========================= Site Header Start ========================= -->
+    <header class="site-header">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-2 col-md-3 col-6">
+                    <div class="header-logo">
+                        <a href="index.html">
+                            <img src="assets/images/logo/weone-logo.svg" alt="Brand Logo">
+                        </a>
+                    </div>
+                </div>
+                <div class="col-lg-8 d-none d-lg-flex justify-content-center">
+                    <nav class="header-nav">
+                        <ul class="nav-list">
+                            <li><a href="index.html">Home</a><span class="nav-underline"></span></li>
+                            <li><a href="work.html">Our Work</a><span class="nav-underline"></span></li>
+                            <li><a href="about.html">About Us</a><span class="nav-underline"></span></li>
+                            <li><a href="blog.html" class="active">Blog</a><span class="nav-underline"></span></li>
+                        </ul>
+                    </nav>
+                </div>
+                <div class="col-lg-2 col-md-9 col-6 d-flex justify-content-end align-items-center gap-3">
+                    <div class="header-cta">
+                        <a href="#" class="cta-btn">
+                            Get A Call Back
+                            <span class="cta-icon"><svg width="20" height="20" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg"><g clip-path="url(#clip0_hdr)"><path d="M6.99999 13.4178C7.52032 13.4178 8.03482 13.4085 8.54232 13.391C11.172 13.2982 13.2977 11.1726 13.3904 8.54292C13.4085 8.03542 13.4172 7.52092 13.4172 7.00058C13.4172 6.48025 13.4079 5.96575 13.3904 5.45825C13.2977 2.82858 11.172 0.702914 8.54232 0.610165C8.03482 0.592081 7.52032 0.583331 6.99999 0.583331C6.47965 0.583331 5.96515 0.592665 5.45765 0.610165C2.8274 0.702914 0.701737 2.82858 0.608987 5.45883C0.590903 5.96633 0.582153 6.48083 0.582153 7.00116C0.582153 7.5215 0.591487 8.036 0.608987 8.5435C0.701737 11.1726 2.8274 13.2982 5.45765 13.3904C5.96515 13.4085 6.47965 13.4178 6.99999 13.4178ZM4.30499 9.49725C4.07515 9.24933 4.08974 8.86142 4.33824 8.63217L7.87557 5.35442L5.76099 5.138C5.60699 5.12225 5.47165 5.0505 5.37424 4.94491C5.25874 4.82067 5.19515 4.64858 5.2144 4.466C5.24882 4.13 5.54924 3.885 5.88582 3.92L9.15132 4.256C9.36015 4.26242 9.55324 4.34991 9.69499 4.50333C9.83615 4.65558 9.90907 4.8545 9.90032 5.02075L9.98607 8.34575C9.9954 8.68408 9.72765 8.96525 9.39049 8.974C9.20674 8.97866 9.04049 8.90225 8.92499 8.778C8.82757 8.673 8.76632 8.533 8.76224 8.37783L8.70857 6.25275L5.17065 9.5305C4.92274 9.76033 4.53482 9.74517 4.30499 9.49725Z" fill="#B2DF48"/></g><defs><clipPath id="clip0_hdr"><rect width="14" height="14" fill="white" transform="translate(0 14) rotate(-90)"/></clipPath></defs></svg></span>
+                            <span class="btn-glow-layer"></span>
+                            <div class="btn-inner-shadow mini"></div>
+                        </a>
+                    </div>
+                    <button class="mob-nav-toggle d-lg-none" aria-label="Open navigation"><span></span><span></span><span></span></button>
+                </div>
+            </div>
+        </div>
+    </header>
+    <div class="mob-nav-overlay"></div>
+    <div class="mob-nav-drawer">
+        <button class="mob-nav-close" aria-label="Close navigation">&times;</button>
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="work.html">Our Work</a></li>
+            <li><a href="about.html">About Us</a></li>
+            <li><a href="blog.html">Blog</a></li>
+        </ul>
+        <a href="#" class="mob-nav-cta">Get A Call Back</a>
+    </div>
+    <!-- ========================= Site Header End ========================= -->
+
+    <!-- ========================= Detail Hero ========================= -->
+    <section class="detail-hero">
+        <div class="container">
+
+            <!-- Breadcrumb -->
+            <p class="detail-breadcrumb"><a href="blog.html">Blog</a> / <span>UI/UX</span></p>
+
+            <!-- Category tag -->
+            <span class="detail-cat-tag">UI/UX</span>
+
+            <!-- Title -->
+            <h1 class="detail-title">Top 10 SaaS Website Design Agencies to Watch in 2025</h1>
+
+            <!-- Meta row -->
+            <div class="detail-meta">
+                <div class="author-avatar"></div>
+                <span class="meta-author">by <strong style="color:#fff;">WeOne Intercom</strong></span>
+                <span class="meta-date">3 July, 2025</span>
+                <span class="meta-read">17 min read</span>
+            </div>
+
+            <!-- Featured image -->
+            <img src="assets/images/blog-1.jpg" alt="Top 10 SaaS Website Design Agencies" class="detail-featured-img">
+
+            <!-- 2-column layout: content + sidebar -->
+            <div class="row g-5">
+
+                <!-- Article Body -->
+                <div class="col-lg-8">
+                    <div class="article-body">
+
+                        <h2 id="section-intro">Why SaaS Website Design Matters More Than Ever</h2>
+                        <p>In the hyper-competitive SaaS landscape, your website is not just a digital brochure — it is your first sales rep, your conversion engine, and the single most powerful trust signal you have. Visitors decide within seconds whether they belong on your platform or not. A poorly designed site sends them elsewhere; a beautifully crafted one turns curiosity into qualified leads.</p>
+                        <p>Over the past two years, a new breed of design agencies has emerged — ones that understand the unique demands of SaaS products: communicating complex value in simple language, reducing cognitive load during onboarding flows, and building design systems that scale as the product evolves. Below, we have ranked the top ten agencies that are raising the bar in 2025.</p>
+
+                        <blockquote>
+                            <p>"Design is not just what it looks like and feels like. Design is how it works — and for SaaS, how it converts." — inspired by the best studios in the field.</p>
+                        </blockquote>
+
+                        <h2 id="section-criteria">How We Evaluated These Agencies</h2>
+                        <p>We looked at more than 60 studios and narrowed the list based on five key criteria:</p>
+                        <ul>
+                            <li>Portfolio depth in SaaS and B2B digital products</li>
+                            <li>Measurable impact on client conversion rates and ARR growth</li>
+                            <li>Ability to build and maintain scalable design systems</li>
+                            <li>Turnaround time and flexibility of engagement models</li>
+                            <li>Client testimonials and long-term relationship quality</li>
+                        </ul>
+                        <p>Agencies that scored consistently across all five dimensions made the final list. Some names will be familiar; others are rising studios you should bookmark today.</p>
+
+                        <h2 id="section-top5">The Top Five Agencies</h2>
+
+                        <h3>1. WeOne Studio</h3>
+                        <p>WeOne takes the top spot in 2025 for its relentless focus on conversion-first design without compromising on visual craft. Their SaaS portfolio spans fintech dashboards, AI tool landing pages, and enterprise product sites. What sets them apart is their integrated approach — strategy, design, and front-end development under one roof — meaning clients ship faster with fewer handoffs. Notable clients include KiteWorks, Meebits, and Delphora.</p>
+
+                        <h3>2. Ramotion</h3>
+                        <p>San Francisco-based Ramotion has built a reputation for precision branding and world-class UI. Their SaaS clients consistently report a 30–40% uplift in demo request conversions within the first 90 days post-launch. Their secret weapon is a brand-first approach — they believe visual identity and product design must sing the same tune.</p>
+
+                        <h3>3. Clay Agency</h3>
+                        <p>Clay are the go-to studio for Series A and Series B SaaS companies that need a complete redesign before their next fundraise. Their process is rigorously research-led, and their motion design work is some of the most sophisticated in the industry. Pricing reflects their premium positioning, but the ROI is consistently documented.</p>
+
+                        <h2 id="section-rising">Rising Studios to Watch</h2>
+                        <p>Beyond the established names, 2025 has seen an exciting crop of smaller, more nimble studios gaining serious traction in the SaaS design space. These are the agencies punching above their weight:</p>
+                        <ul>
+                            <li><strong>Unfold Studio</strong> — specialising in interactive product storytelling and scroll-driven animations</li>
+                            <li><strong>Codeware Design</strong> — a dev-design hybrid building design systems in Figma and React simultaneously</li>
+                            <li><strong>Narrative Bureau</strong> — copy-led design agency that writes and designs the site as a unified creative act</li>
+                            <li><strong>Gridline Creative</strong> — specialists in pricing page optimisation and conversion rate engineering</li>
+                            <li><strong>Sequence Studio</strong> — known for their onboarding flow redesigns that cut time-to-value for SaaS users</li>
+                        </ul>
+
+                        <h2 id="section-choose">How to Choose the Right Agency for Your SaaS</h2>
+                        <p>Selecting a design agency is one of the most consequential decisions a SaaS founder or CMO can make. The wrong choice means months lost, budget wasted, and a site that looks beautiful in a Dribbble shot but fails to convert. Here is a practical framework for evaluating your shortlist:</p>
+                        <p>First, ask to see case studies that include metrics — not just screenshots. Any agency worth their retainer will be able to show you before-and-after data on conversion rates, bounce rates, and demo bookings. Second, have a conversation about their process: do they start with positioning strategy, or do they jump straight to Figma? The best SaaS design agencies insist on understanding your ICP before opening a canvas.</p>
+                        <p>Finally, consider the engagement model. Some agencies work best on fixed-scope projects; others shine on monthly retainers where they become a genuine extension of your team. For early-stage SaaS, a retainer model often delivers more value — you get ongoing iteration rather than a single big-bang launch.</p>
+
+                    </div>
+                </div>
+
+                <!-- Sidebar -->
+                <div class="col-lg-4">
+                    <div class="sidebar">
+
+                        <!-- TOC -->
+                        <div class="toc-card">
+                            <h4>In This Article</h4>
+                            <ul>
+                                <li><a href="#section-intro">Why SaaS Design Matters</a></li>
+                                <li><a href="#section-criteria">How We Evaluated Agencies</a></li>
+                                <li><a href="#section-top5">The Top Five Agencies</a></li>
+                                <li><a href="#section-rising">Rising Studios to Watch</a></li>
+                                <li><a href="#section-choose">How to Choose the Right Agency</a></li>
+                            </ul>
+                        </div>
+
+                        <!-- CTA Card -->
+                        <div class="sidebar-cta-card">
+                            <h4>Got A Project?</h4>
+                            <p>Tell us about your SaaS product and we'll craft a design strategy that converts visitors into customers.</p>
+                            <a href="#" class="cta-btn">
+                                Let's Talk
+                                <span class="cta-icon"><svg width="20" height="20" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg"><g clip-path="url(#clip0_sb)"><path d="M6.99999 13.4178C7.52032 13.4178 8.03482 13.4085 8.54232 13.391C11.172 13.2982 13.2977 11.1726 13.3904 8.54292C13.4085 8.03542 13.4172 7.52092 13.4172 7.00058C13.4172 6.48025 13.4079 5.96575 13.3904 5.45825C13.2977 2.82858 11.172 0.702914 8.54232 0.610165C8.03482 0.592081 7.52032 0.583331 6.99999 0.583331C6.47965 0.583331 5.96515 0.592665 5.45765 0.610165C2.8274 0.702914 0.701737 2.82858 0.608987 5.45883C0.590903 5.96633 0.582153 6.48083 0.582153 7.00116C0.582153 7.5215 0.591487 8.036 0.608987 8.5435C0.701737 11.1726 2.8274 13.2982 5.45765 13.3904C5.96515 13.4085 6.47965 13.4178 6.99999 13.4178ZM4.30499 9.49725C4.07515 9.24933 4.08974 8.86142 4.33824 8.63217L7.87557 5.35442L5.76099 5.138C5.60699 5.12225 5.47165 5.0505 5.37424 4.94491C5.25874 4.82067 5.19515 4.64858 5.2144 4.466C5.24882 4.13 5.54924 3.885 5.88582 3.92L9.15132 4.256C9.36015 4.26242 9.55324 4.34991 9.69499 4.50333C9.83615 4.65558 9.90907 4.8545 9.90032 5.02075L9.98607 8.34575C9.9954 8.68408 9.72765 8.96525 9.39049 8.974C9.20674 8.97866 9.04049 8.90225 8.92499 8.778C8.82757 8.673 8.76632 8.533 8.76224 8.37783L8.70857 6.25275L5.17065 9.5305C4.92274 9.76033 4.53482 9.74517 4.30499 9.49725Z" fill="#B2DF48"/></g><defs><clipPath id="clip0_sb"><rect width="14" height="14" fill="white" transform="translate(0 14) rotate(-90)"/></clipPath></defs></svg></span>
+                                <span class="btn-glow-layer"></span>
+                                <div class="btn-inner-shadow mini"></div>
+                            </a>
+                        </div>
+
+                        <!-- Author Card -->
+                        <div class="author-card">
+                            <div class="author-avatar-lg"></div>
+                            <h4>WeOne Intercom</h4>
+                            <p>Senior Design Strategist at WeOne. Writes about SaaS design, branding, and the intersection of aesthetics and business outcomes. 8+ years helping startups ship products that convert.</p>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+    <!-- ========================= Detail Hero End ========================= -->
+
+    <!-- ========================= Related Posts ========================= -->
+    <section class="related-section">
+        <div class="container">
+            <div class="row text-center">
+                <div class="col-lg-12">
+                    <h2 class="wetitle blog-heading">More <span class="italicTitle text-white">Knowledge.</span></h2>
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <div class="row blog-padding">
+
+                <!-- Related Card 1 -->
+                <div class="col-lg-4 col-md-6 col-12">
+                    <a href="blog-detail.html" style="text-decoration:none;">
+                        <div class="blog-card">
+                            <div class="thumb-wrap thumb-2">
+                                <img src="assets/images/blog-2.jpg" alt="UI/UX Trends 2025">
+                            </div>
+                            <div class="card-meta">
+                                <span class="badge-tag">UI/UX</span>
+                                <span class="divider">|</span>
+                                <span class="read-time">12 Minutes</span>
+                            </div>
+                            <h2 class="card-title-text">The Biggest UI/UX Design Trends Shaping Products in 2025</h2>
+                            <div class="author-row">
+                                <div class="author-info">
+                                    <div class="author-avatar"></div>
+                                    <span class="author-label">by <strong>WeOne Intercom</strong></span>
+                                </div>
+                                <span class="post-date">18 June, 2025</span>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+
+                <!-- Related Card 2 -->
+                <div class="col-lg-4 col-md-6 col-12">
+                    <a href="blog-detail.html" style="text-decoration:none;">
+                        <div class="blog-card">
+                            <div class="thumb-wrap thumb-3">
+                                <img src="assets/images/blog-3.jpg" alt="Brand Identity Guide">
+                            </div>
+                            <div class="card-meta">
+                                <span class="badge-tag">Branding</span>
+                                <span class="divider">|</span>
+                                <span class="read-time">9 Minutes</span>
+                            </div>
+                            <h2 class="card-title-text">How to Build a Brand Identity That Actually Sticks</h2>
+                            <div class="author-row">
+                                <div class="author-info">
+                                    <div class="author-avatar"></div>
+                                    <span class="author-label">by <strong>WeOne Intercom</strong></span>
+                                </div>
+                                <span class="post-date">10 June, 2025</span>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+
+                <!-- Related Card 3 -->
+                <div class="col-lg-4 col-md-6 col-12">
+                    <a href="blog-detail.html" style="text-decoration:none;">
+                        <div class="blog-card">
+                            <div class="thumb-wrap thumb-1">
+                                <img src="assets/images/blog-1.jpg" alt="Design-Led Growth">
+                            </div>
+                            <div class="card-meta">
+                                <span class="badge-tag">Strategy</span>
+                                <span class="divider">|</span>
+                                <span class="read-time">11 Minutes</span>
+                            </div>
+                            <h2 class="card-title-text">Design-Led Growth: Why Aesthetics Are Now a Business Strategy</h2>
+                            <div class="author-row">
+                                <div class="author-info">
+                                    <div class="author-avatar"></div>
+                                    <span class="author-label">by <strong>WeOne Intercom</strong></span>
+                                </div>
+                                <span class="post-date">2 May, 2025</span>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+
+            </div>
+        </div>
+    </section>
+    <!-- ========================= Related Posts End ========================= -->
+
+    <!-- ========================= Site Footer Start ========================= -->
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-inner">
+                <div class="footer-left">
+                    <h2 class="footer-heading"><span class="italic">ART.</span> COMES FIRST</h2>
+                    <p class="footer-desc">We shape distinctive success stories with breakthrough ideas and creative mastery, elevating you ahead of the competition.</p>
+                    <a href="#" class="cta-btn">
+                        Got A Project? Let's talk
+                        <span class="cta-icon"><svg width="20" height="20" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg"><g clip-path="url(#clip0_ftr)"><path d="M6.99999 13.4178C7.52032 13.4178 8.03482 13.4085 8.54232 13.391C11.172 13.2982 13.2977 11.1726 13.3904 8.54292C13.4085 8.03542 13.4172 7.52092 13.4172 7.00058C13.4172 6.48025 13.4079 5.96575 13.3904 5.45825C13.2977 2.82858 11.172 0.702914 8.54232 0.610165C8.03482 0.592081 7.52032 0.583331 6.99999 0.583331C6.47965 0.583331 5.96515 0.592665 5.45765 0.610165C2.8274 0.702914 0.701737 2.82858 0.608987 5.45883C0.590903 5.96633 0.582153 6.48083 0.582153 7.00116C0.582153 7.5215 0.591487 8.036 0.608987 8.5435C0.701737 11.1726 2.8274 13.2982 5.45765 13.3904C5.96515 13.4085 6.47965 13.4178 6.99999 13.4178ZM4.30499 9.49725C4.07515 9.24933 4.08974 8.86142 4.33824 8.63217L7.87557 5.35442L5.76099 5.138C5.60699 5.12225 5.47165 5.0505 5.37424 4.94491C5.25874 4.82067 5.19515 4.64858 5.2144 4.466C5.24882 4.13 5.54924 3.885 5.88582 3.92L9.15132 4.256C9.36015 4.26242 9.55324 4.34991 9.69499 4.50333C9.83615 4.65558 9.90907 4.8545 9.90032 5.02075L9.98607 8.34575C9.9954 8.68408 9.72765 8.96525 9.39049 8.974C9.20674 8.97866 9.04049 8.90225 8.92499 8.778C8.82757 8.673 8.76632 8.533 8.76224 8.37783L8.70857 6.25275L5.17065 9.5305C4.92274 9.76033 4.53482 9.74517 4.30499 9.49725Z" fill="#B2DF48"/></g><defs><clipPath id="clip0_ftr"><rect width="14" height="14" fill="white" transform="translate(0 14) rotate(-90)"/></clipPath></defs></svg></span>
+                        <span class="btn-glow-layer"></span>
+                        <div class="btn-inner-shadow mini"></div>
+                    </a>
+                    <div class="footer-address">
+                        <span class="footer-address-label">Address</span>
+                        <p>24 Tue Tinh Street, Cua Nam Ward, Hanoi.</p>
+                        <p>9 Doan Van Bo, Xom Chieu Ward, Ho Chi Minh City.</p>
+                    </div>
+                    <div class="footer-illus"><img src="assets/images/footer-element.svg" alt=""></div>
+                </div>
+                <div class="footer-right">
+                    <nav class="footer-nav">
+                        <a href="index.html" class="footer-nav-link">Home</a>
+                        <a href="work.html" class="footer-nav-link">Our Work</a>
+                        <a href="about.html" class="footer-nav-link">About Us</a>
+                        <a href="blog.html" class="footer-nav-link footer-nav-link--active">Blog</a>
+                    </nav>
+                    <div class="footer-socials-pill">
+                        <span class="footer-socials-label">SOCIALS</span>
+                        <div class="footer-socials-icons">
+                            <a href="#" aria-label="Facebook"><i class="ri-facebook-fill"></i></a>
+                            <a href="#" aria-label="Instagram"><i class="ri-instagram-line"></i></a>
+                            <a href="#" aria-label="LinkedIn"><i class="ri-linkedin-fill"></i></a>
+                            <a href="#" aria-label="X / Twitter"><i class="ri-twitter-x-line"></i></a>
+                        </div>
+                    </div>
+                    <div class="footer-bottom">
+                        <div class="footer-contact-item">
+                            <span class="footer-contact-label">Contact us</span>
+                            <a href="mailto:info@weone.tech" class="footer-contact-value">info@weone.tech</a>
+                        </div>
+                        <div class="footer-contact-item">
+                            <span class="footer-contact-label">Phone Number</span>
+                            <span class="footer-contact-value">(+8 4) 84 848 8686</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <!-- ========================= Site Footer End ========================= -->
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/js/main.js?v=3"></script>
+
+</body>
+</html>
