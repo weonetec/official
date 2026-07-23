@@ -405,9 +405,14 @@
 
     /* Value cards — single-card slider (see value-swiper JS), still inside
        the pinned hero box so it appears the same moment as on desktop.
-       top nudged up from 60vh — the card fit, but the pagination dots sit
-       below it and were getting clipped by .intro's overflow:hidden. */
-    .value-section { top: 57vh; }
+       A fixed top:Xvh guessed a spot that fit on some viewport heights but
+       not others — on shorter phones/tablets the card (or the pagination
+       dots below it) ran past .intro's bottom edge and got clipped by its
+       overflow:hidden. Anchoring from the bottom instead guarantees a
+       constant gap above .intro's edge no matter the viewport height,
+       since the section's own height is content-sized (auto) upward from
+       that bottom edge rather than guessed from the top. */
+    .value-section { top: auto; bottom: 50px; }
     .value-swiper-pagination { display: flex; margin-top: 14px; padding-bottom: 4px; }
     .value-swiper .value-card { padding: 24px 26px 28px; }
     .value-swiper .value-icon { width: 84px; height: 84px; margin-bottom: 18px; }
