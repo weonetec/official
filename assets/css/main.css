@@ -186,6 +186,16 @@ li {
     width: auto;
 }
 
+/* Animated logo (bouncing-ball W reveal + idle blink/glance loop, driven by
+   assets/js/logo-animation.js). overflow:visible matters here — the ball
+   briefly scales past the glyph's own box mid-bounce. */
+.header-logo .wl-logo {
+    height: 40px;
+    width: auto;
+    overflow: visible;
+    display: block;
+}
+
 .nav-underline {
     position: absolute;
     left: 0;
