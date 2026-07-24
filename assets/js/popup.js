@@ -15,7 +15,7 @@
 (function () {
     var POPUP_HTML = '' +
         '<div id="projectPopupOverlay" class="pp-overlay">' +
-        '  <div class="pp-modal">' +
+        '  <div class="pp-modal" data-lenis-prevent>' +
         '    <button type="button" class="pp-close" id="closeProjectPopup" aria-label="Close">&times;</button>' +
         '    <div class="pp-header">' +
         '      <span class="pp-tag">LET\'S WORK TOGETHER</span>' +
@@ -112,16 +112,34 @@
         var submitLabel = submitBtn.querySelector('.pp-submit-label');
         var serviceGrid = form.querySelector('.pp-service-grid');
 
+        // On pages that run Lenis (index.html), it drives scrolling itself
+        // via intercepted wheel/touch events, so body.style.overflow alone
+        // doesn't stop the page behind the popup from scrolling — it has to
+        // be paused directly. `typeof lenis` (not `window.lenis`) is the
+        // correct check here since Lenis is declared with `const` further
+        // down index.html's own inline script, which never becomes a
+        // window property; on every other page `lenis` was never declared
+        // at all, and `typeof` on an undeclared name is safely 'undefined'
+        // rather than throwing.
+        function pauseLenis() {
+            if (typeof lenis !== 'undefined' && lenis) lenis.stop();
+        }
+        function resumeLenis() {
+            if (typeof lenis !== 'undefined' && lenis) lenis.start();
+        }
+
         function openPopup() {
             form.style.display = '';
             success.style.display = 'none';
             overlay.classList.add('pp-open');
             document.body.style.overflow = 'hidden';
+            pauseLenis();
         }
 
         function closePopup() {
             overlay.classList.remove('pp-open');
             document.body.style.overflow = '';
+            resumeLenis();
         }
 
         function resetForm() {
