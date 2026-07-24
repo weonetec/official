@@ -1883,30 +1883,33 @@
                 });
             }
 
-            // ── Hero sequence state machine ──────────────────────────────
-            // Exactly two states: TEXT showing, or CARDS showing. One
-            // number (the pin's raw scroll progress, 0–1) decides which —
-            // nothing else reads or writes floatStarted, so there's only
-            // ever one source of truth for which state it's in.
-            let floatStarted = false;
+            // ── Hero sequence — cards handoff ────────────────────────────
+            // Two states, TEXT or CARDS, decided by a single scroll depth
+            // (CARD_POINT below) — not by polling a continuous value against
+            // thresholds every scroll tick (that approach, even switched to
+            // raw un-eased progress, still visibly glitched — see the
+            // reference notes in _reference/ for what was tried before this).
+            // ScrollTrigger.create()'s onEnter/onLeaveBack are GSAP's own
+            // purpose-built primitive for exactly "past this point → do X;
+            // back above it → undo X": edge-triggered, fired once per actual
+            // crossing, with GSAP tracking the entered/not-entered state
+            // internally — there's no continuous value here to re-check on
+            // every frame and no window where a small back-and-forth can
+            // straddle two separate thresholds and re-fire both.
             const valueSwiperPagination = document.querySelector(".value-swiper-pagination");
             const heroTextStrip = document.querySelector(".text-strip");
 
             // The reveal is entirely CSS (.value-card.is-visible, staggered
-            // via transition-delay — see main.css) — the class toggle here
-            // is immediate and synchronous, so it can never fall out of
-            // sync with floatStarted the way a queued setTimeout could.
+            // via transition-delay on enter, uniform on exit — see
+            // main.css) — the class toggle here is immediate and
+            // synchronous, nothing async that can fall out of sync with it.
             function startFloating() {
-                if (floatStarted) return;
-                floatStarted = true;
                 valueCards.forEach(card => card.classList.add("is-visible"));
                 if (valueSwiperPagination) valueSwiperPagination.classList.add("is-visible");
                 if (heroTextStrip) heroTextStrip.classList.add("is-hidden");
             }
 
             function hideFloating() {
-                if (!floatStarted) return;
-                floatStarted = false;
                 valueCards.forEach(card => card.classList.remove("is-visible"));
                 if (valueSwiperPagination) valueSwiperPagination.classList.remove("is-visible");
                 if (heroTextStrip) heroTextStrip.classList.remove("is-hidden");
@@ -1919,37 +1922,48 @@
 
             gsap.set(container, { x: startX });
 
+            const PIN_LENGTH = 1500;              // total scroll distance the pinned hero consumes
+            const SHOW_POINT = PIN_LENGTH * 0.85;  // scrolling down past here -> cards appear
+            const HIDE_POINT = PIN_LENGTH * 0.70;  // scrolling back up past here -> cards disappear
+            // A real scroll position can wobble by a handful of pixels on
+            // its own — momentum settling, rubber-banding at rest — even
+            // with no ease/lag layered on top of it. Two separate points
+            // (not one) means that wobble has to travel the whole 225px gap
+            // between them before anything can re-trigger, not just cross
+            // one exact pixel line.
+
             let horizontalAnim = gsap.to(container, {
                 x: -(container.scrollWidth + startX),
                 ease: "none",
                 scrollTrigger: {
                     trigger: ".intro",
                     start: "top top",
-                    end: "+=1500",
+                    end: "+=" + PIN_LENGTH,
                     scrub: 1,   // keeps the text's own on-screen motion smooth
                     pin: true,
-                    anticipatePin: 1,
-                    // scrollTrigger's own onUpdate (self.progress) — NOT the
-                    // tween's onUpdate (this.progress()). The tween's progress
-                    // is the SCRUBBED value: scrub:1 keeps it easing toward
-                    // wherever raw scroll currently is for up to ~1s, so it
-                    // can still be drifting on its own well after the user's
-                    // actual scroll position has stopped moving. self.progress
-                    // is a direct, un-eased function of the real scroll
-                    // position — it only changes when a real scroll happens,
-                    // so there's nothing left to wobble back and forth near a
-                    // threshold on its own. That eased drift crossing back and
-                    // forth over the old narrow 0.83–0.88 band, re-triggering
-                    // the cards' enter/exit transition each time, was the
-                    // reported flicker.
-                    onUpdate: function (self) {
-                        if (self.progress >= 0.85 && !floatStarted) {
-                            startFloating();
-                        } else if (self.progress < 0.70 && floatStarted) {
-                            hideFloating();
-                        }
-                    }
+                    anticipatePin: 1
                 }
+            });
+
+            // No "trigger" element on either of these, on purpose — .intro is
+            // itself being pinned (above), which wraps it in a pin-spacer
+            // that changes how GSAP resolves ITS OWN "top" position for any
+            // second ScrollTrigger that also references it by element.
+            // Confirmed this directly: trigger:".intro" with
+            // start:"top+=1275 top" resolved to an actual scroll position
+            // of ~2775 (1500 too far — exactly the pin's own length), not
+            // 1275. A bare numeric start/end is scroll position in pixels
+            // straight from the scroller (window), unaffected by any of
+            // that pin-spacer math.
+            ScrollTrigger.create({
+                start: SHOW_POINT,
+                end: SHOW_POINT + 1,
+                onEnter: startFloating
+            });
+            ScrollTrigger.create({
+                start: HIDE_POINT,
+                end: HIDE_POINT + 1,
+                onLeaveBack: hideFloating
             });
 
             document.querySelectorAll(".word").forEach(word => {
