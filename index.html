@@ -1574,6 +1574,13 @@
 
         var TEXT_GAP = 28;  // breathing room between a badge and the text
         var BADGE_GAP = 16; // breathing room between two badges
+        var EDGE_GAP = 24;  // breathing room between a badge and the banner's
+                             // own edge — without this the bounds clamp below
+                             // let a badge land flush at x=0, touching the
+                             // screen edge with no margin at all (only ever
+                             // showed up on whichever side actually needed
+                             // clamping, which is why the other side looked
+                             // fine and this one didn't)
         var PASSES = 6;     // separation is iterative — resolving one pair
                              // can reopen another, so this repeats until it
                              // settles rather than assuming one pass is enough
@@ -1662,10 +1669,18 @@
                 }
             }
 
-            // Never let any of this push a badge outside the banner itself.
+            // Never let any of this push a badge outside the banner itself,
+            // and never flush against its edge either — keep EDGE_GAP clear
+            // on every side, same as this section's own edges already give
+            // everything else. If EDGE_GAP itself doesn't fit (an
+            // exceptionally narrow/short banner), fall back to the banner's
+            // true center so a badge is squeezed evenly rather than forced
+            // past its own opposite edge.
             items.forEach(function (it) {
-                it.x = Math.max(0, Math.min(it.x, bannerRect.width - it.w));
-                it.y = Math.max(0, Math.min(it.y, bannerRect.height - it.h));
+                var minX = Math.min(EDGE_GAP, (bannerRect.width - it.w) / 2);
+                var minY = Math.min(EDGE_GAP, (bannerRect.height - it.h) / 2);
+                it.x = Math.max(minX, Math.min(it.x, bannerRect.width - it.w - minX));
+                it.y = Math.max(minY, Math.min(it.y, bannerRect.height - it.h - minY));
             });
 
             items.forEach(function (it) {
