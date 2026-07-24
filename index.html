@@ -1544,23 +1544,27 @@
         });
     </script>
 
-    <!-- Studio banner: push floating badges aside if they'd overlap the
-         center title text. Below 1200px .studio-banner switches to a CSS
-         grid (badges become normal-flow, so they can never overlap
-         anything — see responsive.css) — this only matters at ≥1200px,
-         where badges are still position:absolute at fixed coordinates.
-         Those coordinates were hand-tuned against one reference screen;
-         real devices vary in font rendering, OS display scaling, and
-         browser zoom enough that the same numbers can land differently on
-         different machines. Rather than chase more fixed pixel values,
-         this measures the ACTUAL rendered text box and each badge at
-         runtime and only nudges a badge sideways (away from center) when
-         they truly collide, on whatever screen it's actually running on.
-         Nudges by adjusting left/right (not transform) — a separate GSAP
-         scroll animation already drives each badge's own inline transform
-         for its fly-in effect, and an inline style always wins over a
-         stylesheet rule, so a transform set here would just get silently
-         overwritten the moment that animation touches the element. -->
+    <!-- Studio banner: keep every floating badge clear of the center title
+         text AND of every other badge, entirely at runtime. Below 1200px
+         .studio-banner switches to a CSS grid (badges become normal-flow,
+         so they can never overlap anything — see responsive.css) — this
+         only matters at ≥1200px, where badges are still position:absolute
+         at fixed coordinates. Those coordinates were hand-tuned against one
+         reference screen; real devices vary in font rendering, OS display
+         scaling, and browser zoom enough that the same numbers land
+         differently on different machines — including, it turns out,
+         pushing one badge into a neighboring one once it's been nudged
+         clear of the text. Rather than chase more fixed pixel values, this
+         treats the text box and all 8 badges as a small set of rectangles
+         and iteratively separates any pair that's actually touching,
+         measuring the real rendered layout on whatever screen it's running
+         on, then clamps every badge to stay fully inside the banner so
+         nothing gets pushed off-screen in the process.
+         Positions via left/top (not transform) — a separate GSAP scroll
+         animation already drives each badge's own inline transform for its
+         fly-in effect, and an inline style always wins over a stylesheet
+         rule, so a transform set here would just get silently overwritten
+         the moment that animation touches the element. -->
     <script>
     (function () {
         var banner = document.querySelector('.studio-banner');
@@ -1568,8 +1572,11 @@
         var badges = banner ? Array.prototype.slice.call(banner.querySelectorAll('.badge')) : [];
         if (!banner || !titleBlock || !badges.length) return;
 
-        var GAP = 28; // minimum breathing room to keep between a badge and the text
-        var LEFT_SIDE = ['badge--exp', 'badge--flex', 'badge--speed-l', 'badge--omni-l'];
+        var TEXT_GAP = 28;  // breathing room between a badge and the text
+        var BADGE_GAP = 16; // breathing room between two badges
+        var PASSES = 6;     // separation is iterative — resolving one pair
+                             // can reopen another, so this repeats until it
+                             // settles rather than assuming one pass is enough
 
         function resolveBadgeOverlaps() {
             // Below 1200px badges are position:static grid items (see
@@ -1579,6 +1586,7 @@
                 badges.forEach(function (b) {
                     b.style.removeProperty('left');
                     b.style.removeProperty('right');
+                    b.style.removeProperty('top');
                 });
                 return;
             }
@@ -1589,35 +1597,81 @@
             badges.forEach(function (badge) {
                 badge.style.removeProperty('left');
                 badge.style.removeProperty('right');
+                badge.style.removeProperty('top');
             });
 
             var bannerRect = banner.getBoundingClientRect();
-            var bannerCenterX = bannerRect.left + bannerRect.width / 2;
-            var textRect = titleBlock.getBoundingClientRect();
-            var zoneLeft = textRect.left - GAP;
-            var zoneRight = textRect.right + GAP;
-            var zoneTop = textRect.top - GAP;
-            var zoneBottom = textRect.bottom + GAP;
 
-            badges.forEach(function (badge) {
+            // Work in coordinates relative to the banner's own top-left
+            // corner from here on — simpler than juggling left vs right
+            // per badge, and left/top is all that gets written back out.
+            var items = badges.map(function (badge) {
                 var r = badge.getBoundingClientRect();
-                var overlapsX = r.right > zoneLeft && r.left < zoneRight;
-                var overlapsY = r.bottom > zoneTop && r.top < zoneBottom;
-                if (!overlapsX || !overlapsY) return;
+                return {
+                    el: badge,
+                    x: r.left - bannerRect.left,
+                    y: r.top - bannerRect.top,
+                    w: r.width,
+                    h: r.height
+                };
+            });
 
-                var onRight = (r.left + r.width / 2) > bannerCenterX;
-                var push = onRight ? (zoneRight - r.left) : (r.right - zoneLeft);
-                if (push <= 0) return;
+            var textRect = titleBlock.getBoundingClientRect();
+            var tx0 = textRect.left - bannerRect.left - TEXT_GAP;
+            var tx1 = textRect.right - bannerRect.left + TEXT_GAP;
+            var ty0 = textRect.top - bannerRect.top - TEXT_GAP;
+            var ty1 = textRect.bottom - bannerRect.top + TEXT_GAP;
+            var bannerCenterX = bannerRect.width / 2;
 
-                var isLeftSide = LEFT_SIDE.some(function (c) { return badge.classList.contains(c); });
-                var side = isLeftSide ? 'left' : 'right';
-                var baseVal = parseFloat(getComputedStyle(badge)[side]) || 0;
-                // Moving a badge further from center means DECREASING
-                // whichever offset anchors it, on both sides: a left-side
-                // badge's `left` shrinking moves it further left, and a
-                // right-side badge's `right` shrinking moves it further
-                // right (right:0 = flush with the container's right edge).
-                badge.style[side] = Math.max(0, baseVal - push) + 'px';
+            for (var pass = 0; pass < PASSES; pass++) {
+                // 1) Text vs each badge — always resolved horizontally (push
+                // further from center), matching the original left/right
+                // "wings" layout instead of letting a badge drift vertically
+                // away from its intended row.
+                items.forEach(function (it) {
+                    var overlapsX = (it.x + it.w) > tx0 && it.x < tx1;
+                    var overlapsY = (it.y + it.h) > ty0 && it.y < ty1;
+                    if (overlapsX && overlapsY) {
+                        var onRight = (it.x + it.w / 2) > bannerCenterX;
+                        it.x = onRight ? tx1 : (tx0 - it.w);
+                    }
+                });
+
+                // 2) Every badge pair — resolved along whichever axis needs
+                // the smaller nudge to actually clear (minimum-translation
+                // separation), split evenly between the two badges involved.
+                for (var i = 0; i < items.length; i++) {
+                    for (var j = i + 1; j < items.length; j++) {
+                        var a = items[i], b = items[j];
+                        var overlapX = Math.min(a.x + a.w, b.x + b.w) - Math.max(a.x, b.x);
+                        var overlapY = Math.min(a.y + a.h, b.y + b.h) - Math.max(a.y, b.y);
+                        var needX = overlapX + BADGE_GAP;
+                        var needY = overlapY + BADGE_GAP;
+                        if (needX <= 0 || needY <= 0) continue; // already clear on some axis
+
+                        if (needX < needY) {
+                            var dirX = (a.x + a.w / 2) <= (b.x + b.w / 2) ? -1 : 1;
+                            a.x += dirX * (needX / 2);
+                            b.x -= dirX * (needX / 2);
+                        } else {
+                            var dirY = (a.y + a.h / 2) <= (b.y + b.h / 2) ? -1 : 1;
+                            a.y += dirY * (needY / 2);
+                            b.y -= dirY * (needY / 2);
+                        }
+                    }
+                }
+            }
+
+            // Never let any of this push a badge outside the banner itself.
+            items.forEach(function (it) {
+                it.x = Math.max(0, Math.min(it.x, bannerRect.width - it.w));
+                it.y = Math.max(0, Math.min(it.y, bannerRect.height - it.h));
+            });
+
+            items.forEach(function (it) {
+                it.el.style.left = it.x + 'px';
+                it.el.style.right = 'auto';
+                it.el.style.top = it.y + 'px';
             });
         }
 
