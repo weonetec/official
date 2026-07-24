@@ -2099,17 +2099,51 @@
                 });
             };
 
-            Promise.all(
-                lottieMap.map(([id, src, isDark]) => {
-                    const el = document.getElementById(id);
-                    return el ? loadLottieIcon(el, src, isDark) : Promise.resolve(null);
-                })
-            ).then(anims => {
-                lottieAnims.push(...anims.filter(Boolean));
-                // Covers the case where the section was already scrolled
-                // into view before these finished loading.
-                window.playStudioBannerIcons();
-            });
+            // Deferred until studio-banner is actually getting close, not
+            // fetched immediately here. These 8 JSON fetches + parses +
+            // lottie SVG builds used to fire in the same burst as the
+            // letter-scatter setup and the 3 value-card icons, right on
+            // page load — real main-thread work competing with whatever
+            // the user does first, which is almost always scrolling
+            // through the hero (the very first section). That's very
+            // likely why the hero felt laggy specifically on a page's
+            // first scroll and smoothed out afterward once that burst had
+            // finished and everything was cached. studio-banner is well
+            // down the page, so there's no need for these to be ready
+            // until the user is meaningfully closer to it — starting the
+            // fetch a full viewport-height early gives them plenty of
+            // idle time to finish in the background before they're
+            // actually needed, without competing with the hero at all.
+            var studioIconsLoading = false;
+            function loadStudioBannerIcons() {
+                if (studioIconsLoading) return;
+                studioIconsLoading = true;
+                Promise.all(
+                    lottieMap.map(([id, src, isDark]) => {
+                        const el = document.getElementById(id);
+                        return el ? loadLottieIcon(el, src, isDark) : Promise.resolve(null);
+                    })
+                ).then(anims => {
+                    lottieAnims.push(...anims.filter(Boolean));
+                    // Covers the case where the section was already scrolled
+                    // into view before these finished loading.
+                    window.playStudioBannerIcons();
+                });
+            }
+            var studioBannerEl = document.querySelector('.studio-banner');
+            if (studioBannerEl) {
+                var loadIconsObserver = new IntersectionObserver(function (entries) {
+                    entries.forEach(function (entry) {
+                        if (entry.isIntersecting) {
+                            loadStudioBannerIcons();
+                            loadIconsObserver.disconnect();
+                        }
+                    });
+                }, { rootMargin: '100% 0px 100% 0px' });
+                loadIconsObserver.observe(studioBannerEl);
+            } else {
+                loadStudioBannerIcons();
+            }
 
             // ── Rating counter ──────────────────────────────────────────
             (function () {
