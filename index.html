@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="assets/morganite/stylesheet.css">
     <link rel="stylesheet" href="assets/css/bootstrap.min.css">
     <link rel="stylesheet" href="assets/css/new.css?v=12">
-    <link rel="stylesheet" href="assets/css/main.css?v=30">
+    <link rel="stylesheet" href="assets/css/main.css?v=32">
     <link rel="stylesheet" href="assets/css/responsive.css?v=23">
     <!-- Swiper -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
@@ -1504,7 +1504,7 @@
     <script src="assets/js/SplitText.min.js"></script>
     <!-- Swiper -->
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
-    <script src="assets/js/main.js?v=7"></script>
+    <script src="assets/js/main.js?v=8"></script>
 
 
     <!-- <script>
@@ -1544,7 +1544,111 @@
         });
     </script>
 
+    <!-- Studio banner: push floating badges aside if they'd overlap the
+         center title text. Below 1200px .studio-banner switches to a CSS
+         grid (badges become normal-flow, so they can never overlap
+         anything — see responsive.css) — this only matters at ≥1200px,
+         where badges are still position:absolute at fixed coordinates.
+         Those coordinates were hand-tuned against one reference screen;
+         real devices vary in font rendering, OS display scaling, and
+         browser zoom enough that the same numbers can land differently on
+         different machines. Rather than chase more fixed pixel values,
+         this measures the ACTUAL rendered text box and each badge at
+         runtime and only nudges a badge sideways (away from center) when
+         they truly collide, on whatever screen it's actually running on.
+         Nudges by adjusting left/right (not transform) — a separate GSAP
+         scroll animation already drives each badge's own inline transform
+         for its fly-in effect, and an inline style always wins over a
+         stylesheet rule, so a transform set here would just get silently
+         overwritten the moment that animation touches the element. -->
+    <script>
+    (function () {
+        var banner = document.querySelector('.studio-banner');
+        var titleBlock = document.querySelector('.title-block');
+        var badges = banner ? Array.prototype.slice.call(banner.querySelectorAll('.badge')) : [];
+        if (!banner || !titleBlock || !badges.length) return;
 
+        var GAP = 28; // minimum breathing room to keep between a badge and the text
+        var LEFT_SIDE = ['badge--exp', 'badge--flex', 'badge--speed-l', 'badge--omni-l'];
+
+        function resolveBadgeOverlaps() {
+            // Below 1200px badges are position:static grid items (see
+            // responsive.css) — nothing to resolve, and clear any leftover
+            // shift from a previous wider layout.
+            if (getComputedStyle(badges[0]).position !== 'absolute') {
+                badges.forEach(function (b) {
+                    b.style.removeProperty('left');
+                    b.style.removeProperty('right');
+                });
+                return;
+            }
+
+            // Clear any previous shift first so every measurement below is
+            // against the CSS-declared baseline for whatever breakpoint is
+            // active right now, not a stale shift from a different width.
+            badges.forEach(function (badge) {
+                badge.style.removeProperty('left');
+                badge.style.removeProperty('right');
+            });
+
+            var bannerRect = banner.getBoundingClientRect();
+            var bannerCenterX = bannerRect.left + bannerRect.width / 2;
+            var textRect = titleBlock.getBoundingClientRect();
+            var zoneLeft = textRect.left - GAP;
+            var zoneRight = textRect.right + GAP;
+            var zoneTop = textRect.top - GAP;
+            var zoneBottom = textRect.bottom + GAP;
+
+            badges.forEach(function (badge) {
+                var r = badge.getBoundingClientRect();
+                var overlapsX = r.right > zoneLeft && r.left < zoneRight;
+                var overlapsY = r.bottom > zoneTop && r.top < zoneBottom;
+                if (!overlapsX || !overlapsY) return;
+
+                var onRight = (r.left + r.width / 2) > bannerCenterX;
+                var push = onRight ? (zoneRight - r.left) : (r.right - zoneLeft);
+                if (push <= 0) return;
+
+                var isLeftSide = LEFT_SIDE.some(function (c) { return badge.classList.contains(c); });
+                var side = isLeftSide ? 'left' : 'right';
+                var baseVal = parseFloat(getComputedStyle(badge)[side]) || 0;
+                // Moving a badge further from center means DECREASING
+                // whichever offset anchors it, on both sides: a left-side
+                // badge's `left` shrinking moves it further left, and a
+                // right-side badge's `right` shrinking moves it further
+                // right (right:0 = flush with the container's right edge).
+                badge.style[side] = Math.max(0, baseVal - push) + 'px';
+            });
+        }
+
+        function scheduleResolve() {
+            // Double rAF: wait for the browser to actually commit the
+            // layout pass (fonts/reflow) before measuring it.
+            requestAnimationFrame(function () {
+                requestAnimationFrame(resolveBadgeOverlaps);
+            });
+        }
+
+        if (document.fonts && document.fonts.ready) {
+            document.fonts.ready.then(scheduleResolve);
+        }
+        window.addEventListener('load', scheduleResolve);
+
+        var resizeTimer;
+        window.addEventListener('resize', function () {
+            clearTimeout(resizeTimer);
+            resizeTimer = setTimeout(scheduleResolve, 150);
+        });
+
+        // Badges start hidden (opacity:0, shifted off to the side) and only
+        // reach their real, on-screen position once main.js's scroll-in
+        // timeline for this section finishes — load/resize above almost
+        // always run before that happens, so they're checking an empty/
+        // off-screen position with nothing to actually resolve yet. main.js
+        // calls this once that fly-in animation completes.
+        window.resolveStudioBadgeOverlaps = scheduleResolve;
+    })();
+    </script>
 
     <script>gsap.utils.toArray(".header-nav .nav-list a").forEach(link => {
             const underline = link.querySelector(".nav-underline");

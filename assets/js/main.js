@@ -51,7 +51,15 @@ gsap.registerPlugin(ScrollTrigger);
     // ── Build the fly-in timeline (paused) ────────────────────────────────────
     var tl = gsap.timeline({
         paused: true,
-        onComplete: startFloat,
+        onComplete: function () {
+            startFloat();
+            // Badges only have their real, on-screen position once this
+            // finishes — the index.html script that nudges a badge aside if
+            // it overlaps the center title text needs to check AFTER this,
+            // not on page load (which almost always runs before the user
+            // has even scrolled this section into view).
+            if (window.resolveStudioBadgeOverlaps) window.resolveStudioBadgeOverlaps();
+        },
         onReverseComplete: stopFloat
     });
 
