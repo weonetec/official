@@ -1609,38 +1609,61 @@
 
             var bannerRect = banner.getBoundingClientRect();
 
+            var bannerCenterX = bannerRect.width / 2;
+
             // Work in coordinates relative to the banner's own top-left
             // corner from here on — simpler than juggling left vs right
             // per badge, and left/top is all that gets written back out.
+            // side is fixed at the badge's ORIGINAL (CSS-declared) position,
+            // not re-derived after shifting — needed by the group shift
+            // below, and settling near dead-center could otherwise flip
+            // which group a badge counts as mid-resolution.
             var items = badges.map(function (badge) {
                 var r = badge.getBoundingClientRect();
+                var x = r.left - bannerRect.left;
+                var w = r.width;
                 return {
                     el: badge,
-                    x: r.left - bannerRect.left,
+                    x: x,
                     y: r.top - bannerRect.top,
-                    w: r.width,
-                    h: r.height
+                    w: w,
+                    h: r.height,
+                    onRight: (x + w / 2) > bannerCenterX
                 };
             });
+            var leftItems = items.filter(function (it) { return !it.onRight; });
+            var rightItems = items.filter(function (it) { return it.onRight; });
 
             var textRect = titleBlock.getBoundingClientRect();
             var tx0 = textRect.left - bannerRect.left - TEXT_GAP;
             var tx1 = textRect.right - bannerRect.left + TEXT_GAP;
             var ty0 = textRect.top - bannerRect.top - TEXT_GAP;
             var ty1 = textRect.bottom - bannerRect.top + TEXT_GAP;
-            var bannerCenterX = bannerRect.width / 2;
 
             for (var pass = 0; pass < PASSES; pass++) {
-                // 1) Text vs each badge — always resolved horizontally (push
-                // further from center), matching the original left/right
-                // "wings" layout instead of letting a badge drift vertically
-                // away from its intended row.
-                items.forEach(function (it) {
-                    var overlapsX = (it.x + it.w) > tx0 && it.x < tx1;
-                    var overlapsY = (it.y + it.h) > ty0 && it.y < ty1;
-                    if (overlapsX && overlapsY) {
-                        var onRight = (it.x + it.w / 2) > bannerCenterX;
-                        it.x = onRight ? tx1 : (tx0 - it.w);
+                // 1) Text vs each side's badges — resolved as a rigid GROUP,
+                // not badge-by-badge. Pushing each overlapping badge to just
+                // barely clear the text is, unavoidably, pushing all of them
+                // to the exact same line (that's what "just clearing a fixed
+                // boundary" means) — which flattened the left side's
+                // original zigzag stagger into one flat column while the
+                // right side (where nothing happened to overlap) kept its
+                // shape. Instead: find the single worst-case overlap on a
+                // side, shift every badge on THAT side by that same amount,
+                // and their original relative spacing survives intact.
+                [leftItems, rightItems].forEach(function (group) {
+                    var shift = 0;
+                    group.forEach(function (it) {
+                        var overlapsX = (it.x + it.w) > tx0 && it.x < tx1;
+                        var overlapsY = (it.y + it.h) > ty0 && it.y < ty1;
+                        if (!overlapsX || !overlapsY) return;
+                        var poke = it.onRight ? (tx1 - it.x) : ((it.x + it.w) - tx0);
+                        shift = Math.max(shift, poke);
+                    });
+                    if (shift > 0) {
+                        group.forEach(function (it) {
+                            it.x += it.onRight ? shift : -shift;
+                        });
                     }
                 });
 
@@ -1672,14 +1695,27 @@
             // Never let any of this push a badge outside the banner itself,
             // and never flush against its edge either — keep EDGE_GAP clear
             // on every side, same as this section's own edges already give
-            // everything else. If EDGE_GAP itself doesn't fit (an
-            // exceptionally narrow/short banner), fall back to the banner's
-            // true center so a badge is squeezed evenly rather than forced
-            // past its own opposite edge.
+            // everything else. Horizontally this is done per SIDE GROUP
+            // (shift every member by whatever the single worst violator
+            // needs), for the same reason the text-avoidance step above is
+            // group-based: clamping each badge to EDGE_GAP independently
+            // pulls in only whichever ones happen to cross it, which by
+            // definition yanks them out of their original relative spacing
+            // from the ones that didn't.
+            [leftItems, rightItems].forEach(function (group) {
+                var correction = 0;
+                group.forEach(function (it) {
+                    var minX = Math.min(EDGE_GAP, (bannerRect.width - it.w) / 2);
+                    var need = it.onRight ? (it.x + it.w + minX) - bannerRect.width : minX - it.x;
+                    correction = Math.max(correction, need);
+                });
+                if (correction > 0) {
+                    group.forEach(function (it) { it.x += it.onRight ? -correction : correction; });
+                }
+            });
+
             items.forEach(function (it) {
-                var minX = Math.min(EDGE_GAP, (bannerRect.width - it.w) / 2);
                 var minY = Math.min(EDGE_GAP, (bannerRect.height - it.h) / 2);
-                it.x = Math.max(minX, Math.min(it.x, bannerRect.width - it.w - minX));
                 it.y = Math.max(minY, Math.min(it.y, bannerRect.height - it.h - minY));
             });
 
@@ -1910,9 +1946,24 @@
                     // hero's own height/scroll footprint stays the same; only
                     // how that scroll budget is split between "text settling"
                     // and "cards visible" moved.
+                    //
+                    // Show/hide used a single narrow band (0.88 / 0.83, only
+                    // 0.05 apart — ~75px of the 1500px pin). scrub:1 means
+                    // this value keeps easing toward wherever raw scroll
+                    // currently is, so any small back-and-forth in the raw
+                    // scroll near that band — normal touch-momentum
+                    // deceleration/rubber-banding on phones, or even just an
+                    // unsteady trackpad/mouse-wheel hand — can cross BOTH
+                    // thresholds repeatedly, re-triggering the cards'
+                    // enter/exit transition over and over: the "glitch."
+                    // Widening the gap to 0.88 / 0.45 (a ~640px dead zone) so
+                    // a normal jitter can no longer straddle both sides fixes
+                    // it while still letting a real, deliberate scroll back
+                    // up past the halfway point hide the cards again, same
+                    // as before.
                     if (visualProgress >= 0.88 && !floatStarted) {
                         startFloating();
-                    } else if (visualProgress < 0.83 && floatStarted) {
+                    } else if (visualProgress < 0.45 && floatStarted) {
                         hideFloating();
                     }
                 },
