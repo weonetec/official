@@ -1825,13 +1825,29 @@ li {
     font-size: 26px;
 }
 
-/* === LEFT BADGES — zigzag stagger === */
+/* === LEFT BADGES — zigzag stagger ===
+   Vertical position is anchored from the CENTER (top: calc(50% + Xpx)),
+   not from .studio-banner's top/bottom edges. .studio-banner is
+   min-height:100vh while .title-block is vertically centered inside it
+   (flex, align-items:center) — on a viewport that's wider than it is
+   tall in one aspect ratio but taller in another (e.g. a 1920×1080 vs a
+   1920×1200 laptop panel — same width, different height), the banner's
+   own height changes with it, which shifts the centered text up/down,
+   while edge-anchored badges stayed exactly where they were. On some
+   heights that drift was enough for the text to slide behind a badge.
+   Anchoring every badge from the same center point the text uses means
+   both move together by construction — the offsets below are each
+   badge's old fixed top/bottom value converted to "how far its center
+   sits from the banner's own center", so at a 1080-tall viewport (the
+   size this was originally built against) every badge lands in exactly
+   its original spot; anything taller or shorter just carries the whole
+   arrangement with it instead of the two drifting apart. */
 
 /* Industry-wide Experience: right of left zone, top */
 .badge--exp {
     width: 261px;
     height: 205px;
-    top: 105px;
+    top: calc(50% - 435px);
     left: 400px;
 }
 
@@ -1839,7 +1855,7 @@ li {
 .badge--flex {
     width: 261px;
     height: 205px;
-    top: 325px;
+    top: calc(50% - 215px);
     left: 108px;
 }
 
@@ -1847,7 +1863,7 @@ li {
 .badge--speed-l {
     width: 261px;
     height: 205px;
-    top: 458px;
+    top: calc(50% - 82px);
     left: 448px;
 }
 
@@ -1855,7 +1871,7 @@ li {
 .badge--omni-l {
     width: 261px;
     height: 205px;
-    bottom: 98px;
+    top: calc(50% + 237px);
     left: 155px;
 }
 
@@ -1869,7 +1885,7 @@ li {
 .badge--speed-r {
     width: 261px;
     height: 205px;
-    top: 105px;
+    top: calc(50% - 435px);
     right: 400px;
 }
 
@@ -1877,7 +1893,7 @@ li {
 .badge--omni-r {
     width: 261px;
     height: 205px;
-    top: 325px;
+    top: calc(50% - 215px);
     right: 108px;
 }
 
@@ -1889,7 +1905,7 @@ li {
 .badge--brand {
     width: 221px;
     height: 205px;
-    top: 458px;
+    top: calc(50% - 82px);
     right: 448px;
 }
 
@@ -1901,7 +1917,7 @@ li {
 .badge--result {
     width: 261px;
     height: 205px;
-    bottom: 98px;
+    top: calc(50% + 237px);
     right: 155px;
 }
 
