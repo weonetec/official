@@ -1,0 +1,261 @@
+<!--
+  REFERENCE SNAPSHOT — NOT LOADED BY ANY PAGE, NOT PART OF THE SITE.
+
+  This is the hero section's markup + scroll-reveal JS exactly as it stood
+  before the 2026-07-24 rebuild, kept only so the old approach can be
+  compared against or recovered from if needed. It is not linked from any
+  page and has no effect on the live site.
+
+  What changed in the rebuild (see index.html / assets/js/main.js /
+  assets/css/main.css for the current version):
+   - The value-card show/hide decision moved from the scrubbed tween's own
+     eased progress (this.progress(), which keeps easing toward the raw
+     scroll position for up to ~1s after the user's actual scroll stops —
+     the reveal thresholds below in the .value-card scroll trigger were the
+     recorded flicker Also the source of the flicker reported on real
+     devices) to the ScrollTrigger's own raw self.progress in its onUpdate,
+     which is a direct, immediate function of actual scroll position with
+     no lag to oscillate near a boundary.
+   - The per-card reveal stagger moved from JS setTimeout(...,  i*180) calls
+     (which, if the user scrolled back before a queued timeout fired, could
+     fire LATER and re-add "is-visible" to a card that had just been told
+     to hide — the "card doesn't go back" bug) to CSS transition-delay,
+     which has no async callback that can outlive a state change.
+
+  Relevant CSS for this markup lives in:
+   - assets/css/main.css: .intro, .hero-content-wrapper, .hero-inner,
+     .text-strip, .reveal-text, .value-section, .value-card,
+     .value-swiper*, .badge* (studio banner, unrelated to this section)
+   - assets/css/responsive.css: the same selectors' breakpoint overrides
+  Neither stylesheet needed to change for this rebuild — only the JS logic
+  driving the class toggles did — so they are not duplicated here.
+-->
+
+<!-- ══════════════════════════════════════════════════════════════════
+     MARKUP (index.html, was lines 121–373)
+     ══════════════════════════════════════════════════════════════════ -->
+
+<section class="hero-banner section">
+    <div class="intro"><!-- pin-wrap: only this inner box gets pinned during the scroll-scrubbed text reveal -->
+    <div class="hero-content-wrapper">
+        <div class="container">
+            <div class="bg-line">
+                <img src="assets/images/banner-lines.svg" alt="">
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <!-- ===== Hero Content Wrapper ===== -->
+                    <div class="hero-inner">
+
+                        <!-- ===== Top Strapline ===== -->
+                        <div class="hero-eyebrow">
+                            <span class="text-white">DESIGNING</span>
+                            <span class="text-green italic">IDEAS.</span>
+                            <span class="text-white">DEVELOPING</span>
+                            <span class="text-green italic">IMPACT.</span>
+                        </div>
+
+                        <!-- ===== Main Headline ===== -->
+                        <h1 class="hero-title">
+                            FOR EVERYONE<span class="dot-green">
+                                <svg width="19" height="18" viewBox="0 0 19 18" fill="none" xmlns="http://www.w3.org/2000/svg"><!-- green dot icon, unchanged --></svg>
+                            </span>
+                        </h1>
+
+                        <!-- ========================= Tool Icon Pill Start ========================= -->
+                        <div class="tool-pill">
+                            <div class="tool-pill-label">USING</div>
+                            <div class="tool-pill-icons">
+                                <!-- figma / ps / ai / video / html / js icons, unchanged -->
+                            </div>
+                            <div class="tool-pill-cta">
+                                <span class="fist"><!-- fist icon, unchanged --></span>
+                                Hit Us
+                            </div>
+                        </div>
+                        <!-- ========================= Tool Icon Pill End ========================= -->
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Text reveal strip: sits at bottom of pinned section -->
+    <div class="text-strip">
+        <h1 class="reveal-text" id="text"></h1>
+    </div>
+
+    <!-- Value cards: back inside the pin-wrap so they stay anchored to the
+         fixed hero while pinned (desktop: 3-up row; tablet/phone: a
+         single-card slider — see value-swiper JS init) -->
+    <div class="value-section">
+        <div class="container">
+            <div class="swiper value-swiper" data-lenis-prevent>
+                <div class="swiper-wrapper">
+
+                    <div class="swiper-slide">
+                        <a href="#" class="value-card js-value-card">
+                            <div class="value-icon">
+                                <div class="value-lottie" id="lottie-value-expert"></div>
+                            </div>
+                            <h3 class="value-title">Expert-level design</h3>
+                            <p class="value-text">
+                                We craft everything from brand systems to fully custom builds —
+                                one senior team, zero handoffs.
+                            </p>
+                        </a>
+                    </div>
+
+                    <div class="swiper-slide">
+                        <a href="#" class="value-card js-value-card">
+                            <div class="value-icon">
+                                <div class="value-lottie" id="lottie-value-speed"></div>
+                            </div>
+                            <h3 class="value-title">Lightning-fast delivery</h3>
+                            <p class="value-text">
+                                Deep experience means fewer conversations and faster execution. Precision work, delivered at
+                                speed.
+                            </p>
+                        </a>
+                    </div>
+
+                    <div class="swiper-slide">
+                        <a href="#" class="value-card js-value-card">
+                            <div class="value-icon">
+                                <div class="value-lottie" id="lottie-value-lead"></div>
+                            </div>
+                            <h3 class="value-title">Creative leadership</h3>
+                            <p class="value-text">
+                                We integrate quietly, operate independently, and take full ownership — leading without
+                                supervision.
+                            </p>
+                        </a>
+                    </div>
+
+                </div><!-- /swiper-wrapper -->
+            </div><!-- /swiper -->
+            <div class="value-swiper-pagination"></div>
+        </div>
+    </div>
+    </div><!-- /.intro pin-wrap -->
+</section>
+
+<!-- ══════════════════════════════════════════════════════════════════
+     JS (index.html inline <script>, was ~lines 1791–2004)
+     ══════════════════════════════════════════════════════════════════ -->
+
+<script>
+gsap.registerPlugin(ScrollTrigger);
+
+window.addEventListener("load", () => {
+setTimeout(() => {
+    const sentence = "We've spent 6 years sharpening our skills to deliver your next masterpiece.";
+    const container = document.getElementById("text");
+    const words = sentence.split(" ");
+    const highlightWords = ["6", "years"];
+
+    words.forEach(word => {
+        const wordSpan = document.createElement("span");
+        wordSpan.classList.add("word");
+        if (highlightWords.includes(word)) wordSpan.classList.add("highlight-word");
+        word.split("").forEach(letter => {
+            const letterSpan = document.createElement("span");
+            letterSpan.classList.add("letter");
+            letterSpan.innerText = letter;
+            wordSpan.appendChild(letterSpan);
+        });
+        container.appendChild(wordSpan);
+    });
+
+    const valueCards = document.querySelectorAll(".value-card");
+
+    // ... lottie icon loading + Swiper init (unchanged in rebuild, omitted here) ...
+
+    let floatStarted = false;
+    const valueSwiperPagination = document.querySelector(".value-swiper-pagination");
+    const heroTextStrip = document.querySelector(".text-strip");
+
+    function startFloating() {
+        if (floatStarted) return;
+        floatStarted = true;
+        // BUG: if the user scrolled back before these fired, hideFloating()
+        // would already have removed "is-visible" — but these queued
+        // timeouts still ran afterward and re-added it, popping a card back
+        // in after it was told to hide.
+        valueCards.forEach((card, i) => {
+            setTimeout(() => card.classList.add("is-visible"), i * 180);
+        });
+        if (valueSwiperPagination) valueSwiperPagination.classList.add("is-visible");
+        if (heroTextStrip) heroTextStrip.classList.add("is-hidden");
+    }
+
+    function hideFloating() {
+        if (!floatStarted) return;
+        floatStarted = false;
+        valueCards.forEach(card => card.classList.remove("is-visible"));
+        if (valueSwiperPagination) valueSwiperPagination.classList.remove("is-visible");
+        if (heroTextStrip) heroTextStrip.classList.remove("is-hidden");
+    }
+
+    const firstWord = container.querySelector(".word");
+    const startX = window.innerWidth / 2 - firstWord.offsetWidth / 2;
+    gsap.set(container, { x: startX });
+
+    let horizontalAnim = gsap.to(container, {
+        x: -(container.scrollWidth + startX),
+        ease: "none",
+        // BUG: this.progress() is the TWEEN's own eased/scrubbed value
+        // (scrub:1 adds ~1s of lag/spring behind the real scroll position),
+        // not the raw scroll position — it can keep drifting on its own
+        // for up to a second after the user's actual scroll has stopped,
+        // which is what let it oscillate back and forth across a narrow
+        // 0.83–0.88 threshold band and repeatedly re-trigger the cards'
+        // enter/exit transition (the reported flicker).
+        onUpdate: function () {
+            const visualProgress = this.progress();
+            if (visualProgress >= 0.88 && !floatStarted) {
+                startFloating();
+            } else if (visualProgress < 0.83 && floatStarted) {
+                hideFloating();
+            }
+        },
+        scrollTrigger: {
+            trigger: ".intro",
+            start: "top top",
+            end: "+=1500",
+            scrub: 1,
+            pin: true,
+            anticipatePin: 1
+        }
+    });
+
+    document.querySelectorAll(".word").forEach(word => {
+        const letters = word.querySelectorAll(".letter");
+        letters.forEach(letter => {
+            gsap.set(letter, {
+                x: gsap.utils.random(200, 350),
+                y: gsap.utils.random(-250, 250),
+                rotation: gsap.utils.random(-70, 70),
+                scale: gsap.utils.random(0.7, 1.3),
+                opacity: 0.5
+            });
+        });
+        gsap.to(letters, {
+            x: 0, y: 0, rotation: 0, scale: 1, opacity: 1,
+            ease: "power1.out",
+            scrollTrigger: {
+                trigger: word,
+                containerAnimation: horizontalAnim,
+                start: "left 80%",
+                end: "left 50%",
+                scrub: 0
+            }
+        });
+    });
+
+    // ... lottie badge icon loading (unchanged in rebuild, omitted here) ...
+
+}, 0);
+});
+</script>

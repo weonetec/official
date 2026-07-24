@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="assets/morganite/stylesheet.css">
     <link rel="stylesheet" href="assets/css/bootstrap.min.css">
     <link rel="stylesheet" href="assets/css/new.css?v=12">
-    <link rel="stylesheet" href="assets/css/main.css?v=32">
+    <link rel="stylesheet" href="assets/css/main.css?v=33">
     <link rel="stylesheet" href="assets/css/responsive.css?v=23">
     <!-- Swiper -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
@@ -1883,24 +1883,24 @@
                 });
             }
 
+            // ── Hero sequence state machine ──────────────────────────────
+            // Exactly two states: TEXT showing, or CARDS showing. One
+            // number (the pin's raw scroll progress, 0–1) decides which —
+            // nothing else reads or writes floatStarted, so there's only
+            // ever one source of truth for which state it's in.
             let floatStarted = false;
-
-            // Reveal via CSS transition/animation (.value-card.is-visible in
-            // main.css) instead of a GSAP tween — this is driven by the
-            // browser's own compositor, not GSAP's ticker, so it can't get
-            // stuck the way the tween-based version sometimes did.
             const valueSwiperPagination = document.querySelector(".value-swiper-pagination");
             const heroTextStrip = document.querySelector(".text-strip");
 
+            // The reveal is entirely CSS (.value-card.is-visible, staggered
+            // via transition-delay — see main.css) — the class toggle here
+            // is immediate and synchronous, so it can never fall out of
+            // sync with floatStarted the way a queued setTimeout could.
             function startFloating() {
                 if (floatStarted) return;
                 floatStarted = true;
-                valueCards.forEach((card, i) => {
-                    setTimeout(() => card.classList.add("is-visible"), i * 180);
-                });
+                valueCards.forEach(card => card.classList.add("is-visible"));
                 if (valueSwiperPagination) valueSwiperPagination.classList.add("is-visible");
-                // Hide the (fully scrolled-off but still opacity:1) reveal text
-                // so it can't peek through the gaps around the value cards.
                 if (heroTextStrip) heroTextStrip.classList.add("is-hidden");
             }
 
@@ -1922,58 +1922,33 @@
             let horizontalAnim = gsap.to(container, {
                 x: -(container.scrollWidth + startX),
                 ease: "none",
-                // Tween's own onUpdate (fires every tick the tween's value
-                // is actually changing) — not scrollTrigger's onUpdate,
-                // which reports raw scroll position. scrub:1 adds ~1s of
-                // easing between raw scroll and what this tween (and thus
-                // the text) actually looks like, so raw scroll progress can
-                // read very differently from the real visual state during
-                // a reverse. this.progress() is the real, on-screen value.
-                //
-                // Threshold is ~100% (not an earlier "text looks basically
-                // settled" point) — the box should only appear once the
-                // *entire* horizontal scroll sequence has completed, not
-                // when any individual word finishes its own settling
-                // animation partway through (that happens well before the
-                // full sequence ends, since the container keeps scrolling
-                // past the last word before the pin itself releases).
-                onUpdate: function () {
-                    const visualProgress = this.progress();
-                    // Cards now start floating in earlier in the pin (was 0.98)
-                    // so there's real dwell time — pinned, cards fully visible —
-                    // before the pin releases and scroll hands off to the next
-                    // section. Total pin length ("+=1500") is unchanged, so the
-                    // hero's own height/scroll footprint stays the same; only
-                    // how that scroll budget is split between "text settling"
-                    // and "cards visible" moved.
-                    //
-                    // Show/hide used a single narrow band (0.88 / 0.83, only
-                    // 0.05 apart — ~75px of the 1500px pin). scrub:1 means
-                    // this value keeps easing toward wherever raw scroll
-                    // currently is, so any small back-and-forth in the raw
-                    // scroll near that band — normal touch-momentum
-                    // deceleration/rubber-banding on phones, or even just an
-                    // unsteady trackpad/mouse-wheel hand — can cross BOTH
-                    // thresholds repeatedly, re-triggering the cards'
-                    // enter/exit transition over and over: the "glitch."
-                    // Widening the gap to 0.88 / 0.45 (a ~640px dead zone) so
-                    // a normal jitter can no longer straddle both sides fixes
-                    // it while still letting a real, deliberate scroll back
-                    // up past the halfway point hide the cards again, same
-                    // as before.
-                    if (visualProgress >= 0.88 && !floatStarted) {
-                        startFloating();
-                    } else if (visualProgress < 0.45 && floatStarted) {
-                        hideFloating();
-                    }
-                },
                 scrollTrigger: {
                     trigger: ".intro",
                     start: "top top",
                     end: "+=1500",
-                    scrub: 1,
+                    scrub: 1,   // keeps the text's own on-screen motion smooth
                     pin: true,
-                    anticipatePin: 1
+                    anticipatePin: 1,
+                    // scrollTrigger's own onUpdate (self.progress) — NOT the
+                    // tween's onUpdate (this.progress()). The tween's progress
+                    // is the SCRUBBED value: scrub:1 keeps it easing toward
+                    // wherever raw scroll currently is for up to ~1s, so it
+                    // can still be drifting on its own well after the user's
+                    // actual scroll position has stopped moving. self.progress
+                    // is a direct, un-eased function of the real scroll
+                    // position — it only changes when a real scroll happens,
+                    // so there's nothing left to wobble back and forth near a
+                    // threshold on its own. That eased drift crossing back and
+                    // forth over the old narrow 0.83–0.88 band, re-triggering
+                    // the cards' enter/exit transition each time, was the
+                    // reported flicker.
+                    onUpdate: function (self) {
+                        if (self.progress >= 0.85 && !floatStarted) {
+                            startFloating();
+                        } else if (self.progress < 0.70 && floatStarted) {
+                            hideFloating();
+                        }
+                    }
                 }
             });
 

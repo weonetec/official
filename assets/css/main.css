@@ -764,6 +764,21 @@ li {
     height: 100%;
 }
 
+/* Per-card reveal stagger — declarative (CSS transition-delay) instead of
+   JS setTimeout. A setTimeout queued to add "is-visible" 180/360ms later
+   can still fire AFTER the user has scrolled back and JS has already told
+   the card to hide, re-adding the class and popping the card back onto
+   screen after it was supposed to be gone. transition-delay has no async
+   callback to outlive a state change — the class toggle itself is always
+   immediate and correct; only the visual easing is delayed. */
+/* Order matches .value-card's own transition list exactly (transform,
+   box-shadow, border-color, opacity) — only transform/opacity (the reveal
+   itself) get staggered; box-shadow/border-color (the hover effect) stay
+   at 0s so hovering a card never feels delayed. */
+.value-swiper .swiper-slide:nth-child(1) .value-card { transition-delay: 0s,     0s, 0s, 0s; }
+.value-swiper .swiper-slide:nth-child(2) .value-card { transition-delay: 0.18s,  0s, 0s, 0.18s; }
+.value-swiper .swiper-slide:nth-child(3) .value-card { transition-delay: 0.36s,  0s, 0s, 0.36s; }
+
 /* Pagination dots — hidden on desktop (all 3 cards already visible).
    On tablet/phone, fades in together with the card (same .is-visible
    toggle as .value-card) instead of being visible for the whole pin. */
