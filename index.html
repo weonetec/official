@@ -1941,7 +1941,26 @@
                     end: "+=" + PIN_LENGTH,
                     scrub: 1,   // keeps the text's own on-screen motion smooth
                     pin: true,
-                    anticipatePin: 1
+                    anticipatePin: 1,
+                    // Default pinning uses the browser's native
+                    // position:fixed, which the browser's own compositor
+                    // updates on its own schedule — separate from the JS
+                    // requestAnimationFrame loop Lenis and GSAP share for
+                    // everything else on the page. Those two update
+                    // schedules can land a frame apart right as the pin
+                    // engages/releases, producing exactly the one-frame
+                    // double-exposure-looking flash confirmed in the
+                    // screen recording at that boundary (a normal frame,
+                    // one glitched frame, then a normal-but-different
+                    // frame — not a gradual blur, a genuine skipped sync).
+                    // pinType:"transform" makes GSAP hold .intro with
+                    // position:absolute and move it via a JS-driven
+                    // transform on the SAME ticker as everything else
+                    // instead, removing the native-compositor-vs-JS-loop
+                    // gap entirely. This is GSAP's own documented fix for
+                    // pin glitches specifically when a JS smooth-scroll
+                    // library (Lenis, here) is involved.
+                    pinType: "transform"
                 }
             });
 
