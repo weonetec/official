@@ -381,8 +381,28 @@ li {
 .hero-banner {
     color: #fff;
     width: 100%;
-    overflow: hidden;
+    /* NOT overflow:hidden — .intro (position:sticky, see below) needs every
+       ancestor up to the viewport to have overflow:visible, or the sticky
+       behavior silently stops working (confirmed directly: with this
+       hidden, .intro's rendered top scrolled normally instead of sticking;
+       switched to visible, it stuck at exactly top:0 as intended). Nothing
+       actually needs clipping here — .intro already has its own
+       overflow:hidden for the one thing that needs it (the horizontally
+       scrolling reveal text), which clips regardless of this element's
+       own overflow value. */
+    overflow: visible;
     position: relative;
+}
+
+/* Tall spacer .intro (position:sticky) travels through — see the comment
+   there for why this replaced GSAP's JS-driven pin. Height is .intro's own
+   height (the "stuck" box itself) PLUS the extra scroll distance the
+   scroll-scrubbed text reveal needs (1500px, matching the old pin's
+   "end: +=1500") — mirrors .intro's own height at each breakpoint below,
+   see responsive.css for the mobile/tablet version of this same pairing. */
+.hero-scroll-space {
+    position: relative;
+    height: calc(100vh + 1500px);
 }
 
 /* Beats the generic .section padding (declared later in this file, same
@@ -933,7 +953,22 @@ li {
 .intro {
     height: 100vh;
     background-color: #000;
-    position: relative;
+    /* position:sticky (not relative) — this is what actually keeps the
+       hero fixed on screen during the scroll-scrubbed text reveal now,
+       replacing GSAP's JS-driven pin (see the JS setup in index.html for
+       why: that mechanism produced a real, confirmed one-frame rendering
+       glitch right at pin engage/release, caused by the browser's native
+       position:fixed compositor updating on a different schedule than the
+       JS requestAnimationFrame loop Lenis/GSAP use for everything else).
+       Native sticky is handled entirely by the browser's own layout
+       engine in the same paint pass as everything else — there's no
+       separate JS-driven positioning step left to fall out of sync.
+       .hero-scroll-space (this element's parent) is what gives it the
+       extra 1500px of room to stay stuck in; GSAP's ScrollTrigger is now
+       only used in scrub mode (no pin) to drive the text animation's
+       progress off the same scroll range. */
+    position: sticky;
+    top: 0;
     overflow: hidden;
     /* clips the text entering from the right */
     padding: 120px 24px 140px;

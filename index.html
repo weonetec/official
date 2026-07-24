@@ -10,8 +10,8 @@
     <link rel="stylesheet" href="assets/morganite/stylesheet.css">
     <link rel="stylesheet" href="assets/css/bootstrap.min.css">
     <link rel="stylesheet" href="assets/css/new.css?v=12">
-    <link rel="stylesheet" href="assets/css/main.css?v=34">
-    <link rel="stylesheet" href="assets/css/responsive.css?v=23">
+    <link rel="stylesheet" href="assets/css/main.css?v=35">
+    <link rel="stylesheet" href="assets/css/responsive.css?v=24">
     <!-- Swiper -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
     <!-- RemixIcon -->
@@ -119,6 +119,7 @@
      Hero Banner Section Start
 ========================= -->
     <section class="hero-banner section">
+        <div class="hero-scroll-space"><!-- tall spacer so .intro (position:sticky) has room to stay stuck for the scroll-scrubbed text reveal, instead of GSAP's JS-driven pin -->
         <div class="intro"><!-- pin-wrap: only this inner box gets pinned during the scroll-scrubbed text reveal -->
         <div class="hero-content-wrapper">
             <div class="container">
@@ -370,6 +371,7 @@
             </div>
         </div>
         </div><!-- /.intro pin-wrap -->
+        </div><!-- /.hero-scroll-space -->
     </section>
     <!-- =========================
      Hero Banner Section End
@@ -1932,6 +1934,22 @@
             // between them before anything can re-trigger, not just cross
             // one exact pixel line.
 
+            // No pin:true here anymore — .intro stays on screen via native
+            // CSS position:sticky now (see main.css), not GSAP's JS-driven
+            // pin. Tried two GSAP-side fixes for the pin glitch confirmed
+            // in the screen recording (pinType:"transform", among others)
+            // and the user still saw it happen — the recording showed a
+            // genuine one-frame rendering desync right at pin
+            // engage/release, and ANY JS-driven positioning scheme shares
+            // the same fundamental risk: it's a separate update step that
+            // can land a frame apart from the browser's own paint cycle.
+            // Native sticky has no such step — the browser's layout engine
+            // keeps it in place in the very same pass it paints everything
+            // else, so there's nothing left that can desync.
+            // ScrollTrigger below no longer needs to pin anything — it's
+            // used purely in scrub mode to drive the text animation's
+            // progress off the same scroll range .hero-scroll-space (the
+            // sticky element's tall parent) provides.
             let horizontalAnim = gsap.to(container, {
                 x: -(container.scrollWidth + startX),
                 ease: "none",
@@ -1939,28 +1957,7 @@
                     trigger: ".intro",
                     start: "top top",
                     end: "+=" + PIN_LENGTH,
-                    scrub: 1,   // keeps the text's own on-screen motion smooth
-                    pin: true,
-                    anticipatePin: 1,
-                    // Default pinning uses the browser's native
-                    // position:fixed, which the browser's own compositor
-                    // updates on its own schedule — separate from the JS
-                    // requestAnimationFrame loop Lenis and GSAP share for
-                    // everything else on the page. Those two update
-                    // schedules can land a frame apart right as the pin
-                    // engages/releases, producing exactly the one-frame
-                    // double-exposure-looking flash confirmed in the
-                    // screen recording at that boundary (a normal frame,
-                    // one glitched frame, then a normal-but-different
-                    // frame — not a gradual blur, a genuine skipped sync).
-                    // pinType:"transform" makes GSAP hold .intro with
-                    // position:absolute and move it via a JS-driven
-                    // transform on the SAME ticker as everything else
-                    // instead, removing the native-compositor-vs-JS-loop
-                    // gap entirely. This is GSAP's own documented fix for
-                    // pin glitches specifically when a JS smooth-scroll
-                    // library (Lenis, here) is involved.
-                    pinType: "transform"
+                    scrub: 1   // keeps the text's own on-screen motion smooth
                 }
             });
 
