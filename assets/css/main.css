@@ -639,7 +639,17 @@ li {
     text-decoration: none;
     backdrop-filter: blur(12px);
     /* overflow: hidden; */
-    transition: transform 1s ease, box-shadow 0.4s ease, border-color 0.4s ease, opacity 1s ease;
+    /* This (not .is-visible below) is what actually governs the EXIT
+       transition — CSS uses whichever rule matches the state being
+       transitioned INTO, so removing .is-visible transitions back to
+       THESE durations/delays. Quick (0.5s) and with no per-card delay on
+       purpose: scrolling back should clear all 3 cards together, in sync
+       with .text-strip fading back in over the same 0.5s (see below) —
+       the old shared 1s duration plus the entrance stagger (below) applying
+       to the exit too meant the last card could stay lingering at near-
+       full opacity for over a second while the text had already faded
+       most of the way in, an ugly, staggered overlap. */
+    transition: transform 0.5s ease, box-shadow 0.4s ease, border-color 0.4s ease, opacity 0.5s ease;
     /* Hidden until scrolled into place (see .is-visible below) — pure CSS,
        so the reveal doesn't depend on GSAP's ticker still being alive. */
     opacity: 0;
@@ -649,6 +659,11 @@ li {
 .value-card.is-visible {
     opacity: 1;
     transform: translateY(0);
+    /* Entrance only — a bit slower and unstaggered here at the base level;
+       the per-card stagger delay lives on .swiper-slide:nth-child(N)
+       .value-card.is-visible below, so it likewise only ever applies while
+       entering, never while exiting. */
+    transition: transform 1s ease, box-shadow 0.4s ease, border-color 0.4s ease, opacity 1s ease;
 }
 
 .value-card:before {
@@ -770,14 +785,20 @@ li {
    the card to hide, re-adding the class and popping the card back onto
    screen after it was supposed to be gone. transition-delay has no async
    callback to outlive a state change — the class toggle itself is always
-   immediate and correct; only the visual easing is delayed. */
-/* Order matches .value-card's own transition list exactly (transform,
+   immediate and correct; only the visual easing is delayed.
+   Order matches .value-card.is-visible's own transition list (transform,
    box-shadow, border-color, opacity) — only transform/opacity (the reveal
    itself) get staggered; box-shadow/border-color (the hover effect) stay
-   at 0s so hovering a card never feels delayed. */
-.value-swiper .swiper-slide:nth-child(1) .value-card { transition-delay: 0s,     0s, 0s, 0s; }
-.value-swiper .swiper-slide:nth-child(2) .value-card { transition-delay: 0.18s,  0s, 0s, 0.18s; }
-.value-swiper .swiper-slide:nth-child(3) .value-card { transition-delay: 0.36s,  0s, 0s, 0.36s; }
+   at 0s so hovering a card never feels delayed.
+   Scoped to .is-visible specifically (entering), NOT the bare .value-card
+   base rule — CSS transitions use whichever rule matches the state being
+   transitioned INTO, so leaving this off the base rule means removing
+   .is-visible (scrolling back, hiding) always uses the base rule's 0s
+   delay for every card regardless of position, clearing all three
+   together instead of the last one lingering ~0.36s+1s after the others
+   were already gone. */
+.value-swiper .swiper-slide:nth-child(2) .value-card.is-visible { transition-delay: 0.18s, 0s, 0s, 0.18s; }
+.value-swiper .swiper-slide:nth-child(3) .value-card.is-visible { transition-delay: 0.36s, 0s, 0s, 0.36s; }
 
 /* Pagination dots — hidden on desktop (all 3 cards already visible).
    On tablet/phone, fades in together with the card (same .is-visible
@@ -937,7 +958,11 @@ li {
     align-items: center;
     background-color: transparent;
     opacity: 1;
-    transition: opacity 0.4s ease;
+    /* Matches .value-card's exit duration (0.5s) so scrolling back is one
+       clean, synchronized crossfade — text fading in exactly as the cards
+       fade out — instead of the text (previously 0.4s) finishing well
+       before a slower, staggered card fade-out had actually cleared. */
+    transition: opacity 0.5s ease;
 }
 
 /* Hidden once the value cards float in — the scrolled-off reveal text
