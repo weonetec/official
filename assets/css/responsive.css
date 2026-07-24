@@ -594,7 +594,7 @@
     .footer-left            { display: contents; }
     .footer-heading         { order: 0; }
     .footer-desc            { order: 1; }
-    #openProjectPopup       { order: 2; }
+    .footer-left .cta-btn   { order: 2; }
     .footer-address         { order: 3; }
     .footer-right           { order: 4; }
     .footer-illus           { order: 5; margin-top: 0; }
