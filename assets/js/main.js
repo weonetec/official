@@ -210,8 +210,9 @@ window.addEventListener('scroll', function () {
 // so it works correctly despite GSAP's hero-banner
 // pin shifting ScrollTrigger positions by 1500px.
 //
-// On tablet/phone the 5×300px horizontal fan this drives doesn't fit any
-// real screen width, so below 992px this whole animation is skipped in
+// The idle state alone (see stackX below) spreads cards up to ±540px from
+// center via inline transform — a ~1380px total footprint that doesn't fit
+// below ~1400px, so under that width this whole animation is skipped in
 // favor of a separate vertical-stack reveal (see next block) — plain CSS
 // transitions + IntersectionObserver, not GSAP, so it can't get stuck on
 // a frozen ticker the way this rAF loop can.
@@ -223,7 +224,7 @@ window.addEventListener('scroll', function () {
     var cards     = Array.from(section.querySelectorAll('.cards-wrapper .card'));
     var rotations = [-8, 8, 0, 18, -11];
     var stackX    = [540, 270, 0, -270, -540];
-    var mq        = window.matchMedia('(min-width: 992px)');
+    var mq        = window.matchMedia('(min-width: 1400px)');
 
     // 'collapsed' | 'spreading' | 'spread' | 'collapsing'
     var state  = 'collapsed';
@@ -273,12 +274,12 @@ window.addEventListener('scroll', function () {
     }
 
     // matchMedia was previously checked once at load, so on a page that
-    // *starts* ≥992px, gsap.set() below pins each card at its fanned-out
+    // *starts* ≥1400px, gsap.set() below pins each card at its fanned-out
     // stackX (up to ±540px) via an inline transform. If the viewport is
     // then resized/rotated narrower without a full reload — a phone or
     // tablet rotating, or just a dev testing "mobile view" by shrinking
     // the window — nothing ever cleared that inline transform, and inline
-    // styles beat the ≤991px CSS column-stack rule, leaving cards pinned
+    // styles beat the ≤1399px CSS column-stack rule, leaving cards pinned
     // hundreds of px off-canvas and the page horizontally scrollable.
     // Reacting to the same matchMedia's change event (not just its
     // initial value) keeps this in sync with whatever width the page
@@ -297,7 +298,7 @@ window.addEventListener('scroll', function () {
         if (!active) return;
         active = false;
         gsap.killTweensOf(cards);
-        // Hand full control back to the ≤991px CSS (column-stack + the
+        // Hand full control back to the ≤1399px CSS (column-stack + the
         // separate reveal IIFE below) by clearing every inline style
         // property GSAP touched here.
         cards.forEach(function (card) { gsap.set(card, { clearProps: 'all' }); });
@@ -323,7 +324,7 @@ window.addEventListener('scroll', function () {
 (function () {
     var section = document.querySelector('.designFuture');
     if (!section) return;
-    if (window.matchMedia('(min-width: 992px)').matches) return;
+    if (window.matchMedia('(min-width: 1400px)').matches) return;
 
     var cards = Array.from(section.querySelectorAll('.cards-wrapper .card'));
     var revealed = false;

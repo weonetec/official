@@ -18,6 +18,16 @@ body {
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
     padding-bottom: 1px;
+    /* NOT overflow-x:hidden here (or on html) — tried it as a global
+       safety net while chasing a horizontal-overflow bug at tablet-landscape
+       widths, and confirmed directly it breaks .intro's position:sticky the
+       exact same way .hero-banner's overflow:hidden did earlier (top went
+       to -750px instead of staying at 0 while scrolling) — ANY non-visible
+       overflow on ANY ancestor up the chain kills sticky, even overflow-x
+       alone, even though sticky here only sticks vertically. The actual
+       overflow source turned out to be the .designFuture card fan running
+       its wide desktop layout below the width it needs (see responsive.css's
+       ≤1399px block) — fixed there instead. */
 }
 
 /* GSAP ScrollTrigger wraps the pinned hero (.intro) in a spacer div.
