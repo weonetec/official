@@ -1957,7 +1957,19 @@
                     trigger: ".intro",
                     start: "top top",
                     end: "+=" + PIN_LENGTH,
-                    scrub: 1   // keeps the text's own on-screen motion smooth
+                    // scrub:1 (not true/0) added up to a full second of ITS
+                    // OWN easing/lag on top of Lenis's already-smoothed
+                    // scroll position — a second, independent layer of
+                    // "catching up" specifically for this tween. Scroll
+                    // fast enough and the text is still easing toward its
+                    // target the moment .hero-scroll-space's end is
+                    // reached and .intro un-sticks — precisely the
+                    // "glitch right as the section releases, both
+                    // directions" symptom reported. scrub:true ties this
+                    // directly to the (already-smooth, via Lenis) scroll
+                    // position with no further lag of its own, so there's
+                    // nothing left mid-catch-up when that boundary hits.
+                    scrub: true
                 }
             });
 
