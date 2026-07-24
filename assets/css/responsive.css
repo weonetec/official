@@ -376,14 +376,26 @@
        it. dvh tracks the real visible viewport continuously, so neither
        happens. Since dvh support is what matters here, no @supports guard
        is needed — unsupporting browsers simply keep the vh line. */
-    .intro                 { height: 92vh; height: 92dvh; padding: 60px 24px 50px; }
-    /* With the eyebrow now wrapping to 2 lines on narrow phones, the actual
-       content (eyebrow+title+pill) needs ~306px of room regardless of
-       device height. A pure vh split is fragile here — on a short real
-       phone (e.g. 667px-tall iPhone SE) even 40vh isn't enough and the
-       collision comes back. 50vh covers realistic phone heights with
-       margin, and min-height is a hard floor for anything shorter still. */
-    .hero-content-wrapper   { height: 50vh; height: 50dvh; min-height: 364px; align-items: center; }
+    /* display:flex (column) makes .hero-content-wrapper and .value-section
+       stack in normal document flow instead of the old approach of
+       independently guessing each one's vertical position with vh/top/
+       bottom offsets — see the .value-section rule below for the full
+       story of why that kept breaking on real devices. */
+    .intro                 { height: 92vh; height: 92dvh; padding: 60px 24px 50px; display: flex; flex-direction: column; }
+    /* The old 50vh/50dvh explicit height existed to carve out a fixed "half
+       the pinned box" zone to center the hero text within, back when
+       .value-section was absolutely positioned against vh guesses and
+       needed that zone as a reference point. It's actively harmful now:
+       on a TALL phone (e.g. 390×844, a very common iPhone size) 50dvh is
+       422px, more than 1.5x what the content (measured 232–273px across
+       real widths) actually needs — every extra pixel there is stolen
+       directly from the value card's share of the same fixed 92dvh
+       budget. Dropping the explicit height lets this size to its own
+       content instead (flexbox default), so it only ever takes the room
+       it needs; min-height:290px is just a floor for unusually short
+       content (e.g. a title that fits on one line). flex-shrink:0 stops
+       it being squeezed by .value-section competing for space below it. */
+    .hero-content-wrapper   { height: auto; min-height: 290px; align-items: center; flex-shrink: 0; }
     /* .hero-inner has its own independent height + centering (built for
        desktop's 50vh half) — let it size to content instead so it can
        actually be centered within the outer wrapper's zone above */
@@ -405,14 +417,28 @@
 
     /* Value cards — single-card slider (see value-swiper JS), still inside
        the pinned hero box so it appears the same moment as on desktop.
-       A fixed top:Xvh guessed a spot that fit on some viewport heights but
-       not others — on shorter phones/tablets the card (or the pagination
-       dots below it) ran past .intro's bottom edge and got clipped by its
-       overflow:hidden. Anchoring from the bottom instead guarantees a
-       constant gap above .intro's edge no matter the viewport height,
-       since the section's own height is content-sized (auto) upward from
-       that bottom edge rather than guessed from the top. */
-    .value-section { top: auto; bottom: 50px; }
+       Two earlier approaches both broke on real devices:
+       1) top:Xvh guessed a fixed spot — fit on some viewport heights, but
+          on shorter phones the card (or its pagination dots) ran past
+          .intro's bottom edge and got clipped by its overflow:hidden.
+       2) position:absolute + bottom:50px stopped the bottom clipping, but
+          let the section float upward independently of the hero content
+          above it — confirmed fine in headless testing, but real phones
+          (real font metrics, real dvh handling) pushed the two into each
+          other on multiple actual devices, since two independently
+          absolutely-positioned elements have no awareness of each other's
+          size no matter how each one alone measures.
+       Taking it out of absolute positioning and letting it flow normally
+       after .hero-content-wrapper in .intro's flex column (see above)
+       removes the guesswork entirely: normal-flow siblings are laid out
+       one after the other by the browser itself, so they physically
+       cannot overlap, on any device, regardless of how tall the hero
+       content or any custom font actually renders. margin-top:auto pushes
+       it down to sit flush with .intro's own bottom padding (its built-in
+       gap) when there's room, and simply follows directly after the hero
+       content with no dead gap on the shortest viewports instead of
+       overlapping or clipping. */
+    .value-section { position: static; margin-top: auto; }
     .value-swiper-pagination { display: flex; margin-top: 14px; padding-bottom: 4px; }
     .value-swiper .value-card { padding: 24px 26px 28px; }
     .value-swiper .value-icon { width: 84px; height: 84px; margin-bottom: 18px; }
@@ -872,5 +898,31 @@
    kept getting smaller well past the point where the ≤575px block
    already reads correctly on a real phone, so a 320px phone looked
    noticeably different from a 500-575px one for no layout reason. */
+
+/* ─────────────────────────────────────────────────────────
+   Short-viewport safety net (pinned hero only)
+   All the breakpoints above key off viewport WIDTH. .intro's value card
+   sits in a flex column with the hero title/pill (see the ≤991px block),
+   which stacks them safely in normal flow — but "safely" only means no
+   overlap; the pinned box is still capped at 92dvh (it has to be: it's
+   position:fixed while pinned, so anything past its own height would be
+   permanently off-screen for the whole pin, not just scrolled-past). On
+   phones that are narrow AND short at the same time (real device chrome
+   — address bar, gesture bar — eats more of the screen than the devtools
+   viewport number suggests), the hero title/pill plus the card can still
+   add up to more than 92dvh has room for. This step keys off HEIGHT
+   instead, and only shrinks the value card further (never the hero text,
+   which is the primary content and shouldn't visibly shrink just because
+   a toolbar is showing) — a smaller card frees the room the card itself
+   needs without touching anything already handled by the width steps. */
+@media (max-height: 720px) and (max-width: 991px) {
+    .value-swiper .swiper-slide      { padding-top: 8px; }
+    .value-swiper .value-card        { padding: 14px 16px 16px; }
+    .value-swiper .value-icon        { width: 44px; height: 44px; margin-bottom: 8px; border-radius: 12px; }
+    .value-swiper .value-icon .value-lottie { width: 34px; height: 34px; }
+    .value-swiper .value-title       { font-size: 16px; margin-bottom: 5px; }
+    .value-swiper .value-text        { font-size: 12.5px; line-height: 1.35; }
+    .value-swiper-pagination         { margin-top: 6px; padding-bottom: 2px; }
+}
 
 
