@@ -1917,6 +1917,20 @@
                         valueSwiperEl.removeAttribute("data-lenis-prevent");
                     }
                 }
+                // data-lenis-prevent + nested:true (above) tell Lenis and
+                // Swiper to stay out of each other's way, but both act by
+                // ignoring/stopping propagation of touch events wholesale
+                // for anything that starts on the cards — reported directly
+                // as the page's scroll freezing/stuttering while a finger is
+                // down over them, even when the drag is mostly vertical
+                // (trying to scroll the page, not switch cards). Explicitly
+                // pausing Lenis only for the duration of a CONFIRMED
+                // horizontal slide (sliderFirstMove — fires once Swiper has
+                // already resolved the gesture's direction, respecting its
+                // own touchAngle) and resuming it the instant the touch
+                // lifts (touchEnd) gives Lenis a clean, direct signal
+                // instead of leaving it to infer state from events that may
+                // never reach it.
                 new Swiper(".value-swiper", {
                     slidesPerView: 1.12,
                     spaceBetween: 16,
@@ -1943,7 +1957,9 @@
                     },
                     on: {
                         init: syncValueSwiperLenisPrevent,
-                        breakpoint: syncValueSwiperLenisPrevent
+                        breakpoint: syncValueSwiperLenisPrevent,
+                        sliderFirstMove: function () { lenis.stop(); },
+                        touchEnd: function () { lenis.start(); }
                     }
                 });
             }
