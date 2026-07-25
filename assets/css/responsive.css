@@ -835,7 +835,23 @@
     .footer-desc            { order: 1; }
     .footer-left .cta-btn   { order: 2; }
     .footer-address         { order: 3; }
-    .footer-right           { order: 4; }
+    /* width:100% (not align-items:stretch on .footer-inner) on purpose —
+       .footer-inner's align-items:flex-start (main.css, unchanged here)
+       means every stacked child shrinks to its own content width by
+       default. footer-desc's own paragraph text happens to wrap wide
+       enough to look full-width already, but .footer-right's content
+       (nav links, the socials pill, contact info) doesn't need nearly
+       as much space, so it — and the pill inside it — fell short of
+       the container's edge. Switching align-items to stretch instead
+       would've fixed this but also stretched the footer-left .cta-btn
+       (order:2 above) into a full-width bar instead of its pill shape. */
+    .footer-right           { order: 4; width: 100%; }
+    /* The pill still wouldn't stretch even with footer-right now at 100%
+       width — it carries its own width:max-content in main.css's base
+       (desktop) rule, sizing it to its own content regardless of the
+       parent. Overridden here so it actually reaches the container's
+       edges on mobile/tablet instead of stopping short. */
+    .footer-socials-pill    { width: 100%; }
     .footer-illus           { order: 5; margin-top: 0; }
     .footer-heading         { font-size: 32px; margin-bottom: 8px; }
     .footer-heading span.italic { font-size: 38px; }
