@@ -85,35 +85,39 @@
 }
 
 /* ─────────────────────────────────────────────────────────
-   MOBILE NAV DRAWER — base styles (must come before media queries)
-   Modern frosted-glass drawer: translucent blurred/saturated panel,
-   a gradient edge glow that sweeps once on open, auto-numbered links
-   via a CSS counter, and a slide-in arrow on hover/tap.
+   MOBILE NAV POPUP — base styles (must come before media queries)
+   Centered frosted-glass modal (not a side drawer): fades + scales in
+   over a dimmed/blurred backdrop, with a gradient edge glow, auto-
+   numbered links via a CSS counter, and a slide-in arrow on hover/tap.
 ───────────────────────────────────────────────────────── */
 
-/* Hamburger button – hidden by default, shown at ≤991px */
+/* Hamburger button – hidden by default, shown at ≤991px. Same pill
+   shape/green-outline treatment as the header's .cta-btn instead of a
+   plain squarish icon box, so it reads as part of the same button
+   family. */
 .mob-nav-toggle {
     display: none;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     gap: 5px;
-    width: 38px;
-    height: 38px;
-    background: rgba(255, 255, 255, 0.03);
-    border: 1.5px solid rgba(255,255,255,0.18);
-    border-radius: 10px;
+    width: 44px;
+    height: 44px;
+    background: transparent;
+    border: 1px solid #B2DF48;
+    border-radius: 50em;
     cursor: pointer;
     padding: 4px;
     z-index: 1001;
     flex-shrink: 0;
-    transition: border-color 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
+    transition: border-color 0.25s ease, box-shadow 0.25s ease, background 0.25s ease, transform 0.3s ease;
 }
-.mob-nav-toggle:hover { border-color: rgba(255,255,255,0.45); }
+.mob-nav-toggle:hover { border-color: #C8F25C; transform: translateY(-1px); }
 .mob-nav-toggle.open {
-    border-color: rgba(178, 223, 72, 0.55);
+    border-color: #B2DF48;
     background: rgba(178, 223, 72, 0.08);
     box-shadow: 0 0 0 4px rgba(178, 223, 72, 0.08), 0 0 18px rgba(178, 223, 72, 0.25);
+    transform: none;
 }
 .mob-nav-toggle span {
     display: block;
@@ -129,58 +133,59 @@
 .mob-nav-toggle.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
 .mob-nav-toggle.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
 
-/* Overlay — a faint green cast from the top-right (where the drawer
-   docks) so the dimmed page reads as part of the same glass
-   composition rather than a flat scrim. */
+/* Overlay — a centered green cast (the popup now opens in the middle
+   of the screen, not docked to a corner) so the dimmed/blurred page
+   reads as part of the same glass composition rather than a flat
+   scrim. */
 .mob-nav-overlay {
     display: none;
     position: fixed;
     inset: 0;
-    background: radial-gradient(120% 100% at 100% 0%, rgba(178, 223, 72, 0.05), rgba(0, 0, 0, 0.6) 55%);
+    background: radial-gradient(120% 100% at 50% 45%, rgba(178, 223, 72, 0.06), rgba(0, 0, 0, 0.65) 60%);
     z-index: 998;
     opacity: 0;
     transition: opacity 0.35s ease;
-    backdrop-filter: blur(4px);
-    -webkit-backdrop-filter: blur(4px);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
 }
 .mob-nav-overlay.active { opacity: 1; }
 
-/* Drawer panel — frosted glass card, rounded on its left edge only
-   (right edge is flush with the viewport edge). */
+/* Popup panel — frosted glass card, centered in the viewport, rounded
+   on all four corners. Closed state fades out AND shrinks slightly
+   (scale 0.92) rather than sliding off-screen, so pointer-events is
+   turned off explicitly instead of relying on being off-canvas. */
 .mob-nav-drawer {
     position: fixed;
-    top: 0;
-    right: 0;
-    width: min(300px, 88vw);
-    height: 100dvh;
+    top: 50%;
+    left: 50%;
+    width: min(380px, 90vw);
+    max-height: min(620px, 82dvh);
     background:
         linear-gradient(155deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0) 40%),
         linear-gradient(175deg, rgba(20, 20, 20, 0.72) 0%, rgba(8, 8, 8, 0.88) 100%);
-    border-left: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: 20px 0 0 20px;
+    border-radius: 28px;
     z-index: 999;
-    padding: 90px 36px 40px;
-    /* translateX(105%) only cleared its own box by 5% of its width (15px
-       at the full 300px) — confirmed directly this wasn't enough at
-       1024px viewport width specifically: the drawer's closed resting
-       position still landed with its left edge exactly at the viewport
-       edge, adding ~300px of page-level horizontal scroll
-       (document.documentElement.scrollWidth). A fixed px buffer on top
-       of 100% guarantees real clearance regardless of the drawer's own
-       width (which itself varies, min(300px, 88vw)) or any rounding. */
-    transform: translateX(calc(100% + 40px));
-    transition: transform 0.45s cubic-bezier(0.4, 0, 0.2, 1);
+    padding: 60px 32px 32px;
+    transform: translate(-50%, -50%) scale(0.92);
+    opacity: 0;
+    pointer-events: none;
+    transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.3s ease;
     display: flex;
     flex-direction: column;
     gap: 0;
-    backdrop-filter: blur(22px) saturate(150%);
-    -webkit-backdrop-filter: blur(22px) saturate(150%);
+    overflow-y: auto;
+    backdrop-filter: blur(24px) saturate(160%);
+    -webkit-backdrop-filter: blur(24px) saturate(160%);
     box-shadow:
-        -60px 0 90px -30px rgba(178, 223, 72, 0.22),
-        -12px 0 40px -10px rgba(124, 255, 0, 0.14),
+        0 30px 80px -20px rgba(0, 0, 0, 0.55),
+        0 0 70px -15px rgba(178, 223, 72, 0.25),
         inset 0 1px 0 rgba(255, 255, 255, 0.08);
 }
-.mob-nav-drawer.open { transform: translateX(0); }
+.mob-nav-drawer.open {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+    pointer-events: auto;
+}
 
 /* Fallback for browsers without backdrop-filter support: keep the
    panel legible with a plain solid gradient instead of glass. */
@@ -316,7 +321,10 @@
     display: inline-flex;
     align-items: center;
     gap: 10px;
-    margin-top: auto;
+    /* margin-top:auto only made sense pinning this to the bottom of a
+       full-height drawer — the popup's height is now content-sized, so
+       auto would resolve to 0 and leave no gap above the button. */
+    margin-top: 28px;
     background: #B2DF48;
     color: #000;
     font-weight: 800;
