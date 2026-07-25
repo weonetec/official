@@ -468,7 +468,7 @@
 
     /* Section headings */
     .wetitle { font-size: 80px; line-height: 1; }
-    .wetitle .italicTitle { font-size: 88px; }
+    .wetitle .italicTitle { font-size: 88px; line-height: 70px; }
 
     /* Testimonials */
     .testi-heading   { font-size: 54px; }
@@ -623,7 +623,7 @@
        here moved to the ≤1399px block above (see comment there for why),
        since it now needs to apply well above this 991px tier too. Only the
        progressive font-size tuning for this narrower tier stays. */
-    .designFuture .wetitle { font-size: 52px; line-height: 1.05; }
+    .designFuture .wetitle { font-size: 52px; line-height: 54.6px; }
     .by-category   { font-size: 48px; }
     .category-item { font-size: 18px; }
     .category-item.ui-ux      { padding-left: 100px; }
@@ -632,7 +632,7 @@
 
     /* Section headings */
     .wetitle              { font-size: 62px; line-height: 1; }
-    .wetitle .italicTitle { font-size: 70px; }
+    .wetitle .italicTitle { font-size: 70px; line-height: 54.6px; }
 
     /* Testimonials */
     .testi-heading    { font-size: 45px; }
@@ -759,7 +759,7 @@
     .stack-section { padding: 0; }
 
     /* Design future */
-    .designFuture .wetitle { font-size: 36px; line-height: 1.05; }
+    .designFuture .wetitle { font-size: 36px; line-height: 37.8px; }
     .card                   { max-width: 250px; min-height: 170px; padding: 20px 18px 18px; }
     .card-icon              { width: 84px; height: 84px; }
     .by-category           { font-size: 34px; }
@@ -773,7 +773,7 @@
 
     /* Section headings */
     .wetitle              { font-size: 49px; line-height: 1; }
-    .wetitle .italicTitle { font-size: 58px; }
+    .wetitle .italicTitle { font-size: 58px; line-height: 37.8px; }
 
     /* Testimonials — desktop is a right-aligned heading + a horizontal
        "rating card | swiper" row that bleeds past the container to the
@@ -1014,7 +1014,7 @@
     .stack-text .stacking_text .neon-green { font-size: 46px; }
 
     /* Design future */
-    .designFuture .wetitle { font-size: 28px; line-height: 1.05; }
+    .designFuture .wetitle { font-size: 28px; line-height: 29.4px; }
     .card                   { max-width: 230px; min-height: 155px; }
     .card-icon              { width: 72px; height: 72px; }
     .by-category           { font-size: 26px; }
@@ -1024,7 +1024,7 @@
 
     /* Section headings */
     .wetitle              { font-size: 40px; }
-    .wetitle .italicTitle { font-size: 47px; }
+    .wetitle .italicTitle { font-size: 47px; line-height: 29.4px; }
 
     /* Testimonials */
     .testi-heading    { font-size: 29px; }
