@@ -333,7 +333,10 @@
 
     /* Force checkerboard black/white pattern in the 2-col badge grid
        (badge--light/dark classes were tuned for desktop's scattered
-       layout and don't read as alternating once badges sit in a grid) */
+       layout and don't read as alternating once badges sit in a grid).
+       This 2-col grid (and thus this override) stays in effect all the
+       way down to the <=767px breakpoint below, which is the first one
+       that switches to a single column. */
     .badge--speed-r,
     .badge--result {
         background: #E9ECFF;
@@ -341,8 +344,30 @@
     }
     .badge--speed-r .badge__text,
     .badge--result .badge__text { color: #111; }
+    /* Both the ancestor svg (for shapes with no color of their own) AND
+       every shape directly (for the ones that bake their own inline
+       stroke="..." attribute, which only a same-element CSS rule beats
+       — see the matching fill:none rule in main.css this mirrors).
+       Without the direct targeting, a badge whose background flips
+       here can leave some of its icon's paths stuck in the near-black/
+       near-white color they were tinted at page load for the opposite
+       background, unreadable against this one. */
     .badge--speed-r .badge__icon svg,
-    .badge--result .badge__icon svg { stroke: #111111; }
+    .badge--result .badge__icon svg,
+    .badge--speed-r .badge__icon svg path,
+    .badge--speed-r .badge__icon svg circle,
+    .badge--speed-r .badge__icon svg ellipse,
+    .badge--speed-r .badge__icon svg line,
+    .badge--speed-r .badge__icon svg polyline,
+    .badge--speed-r .badge__icon svg rect,
+    .badge--speed-r .badge__icon svg polygon,
+    .badge--result .badge__icon svg path,
+    .badge--result .badge__icon svg circle,
+    .badge--result .badge__icon svg ellipse,
+    .badge--result .badge__icon svg line,
+    .badge--result .badge__icon svg polyline,
+    .badge--result .badge__icon svg rect,
+    .badge--result .badge__icon svg polygon { stroke: #111111; }
 
     .badge--brand,
     .badge--omni-r {
@@ -352,7 +377,21 @@
     .badge--brand .badge__text,
     .badge--omni-r .badge__text { color: #aaff2e; }
     .badge--brand .badge__icon svg,
-    .badge--omni-r .badge__icon svg { stroke: #aaff2e; }
+    .badge--omni-r .badge__icon svg,
+    .badge--brand .badge__icon svg path,
+    .badge--brand .badge__icon svg circle,
+    .badge--brand .badge__icon svg ellipse,
+    .badge--brand .badge__icon svg line,
+    .badge--brand .badge__icon svg polyline,
+    .badge--brand .badge__icon svg rect,
+    .badge--brand .badge__icon svg polygon,
+    .badge--omni-r .badge__icon svg path,
+    .badge--omni-r .badge__icon svg circle,
+    .badge--omni-r .badge__icon svg ellipse,
+    .badge--omni-r .badge__icon svg line,
+    .badge--omni-r .badge__icon svg polyline,
+    .badge--omni-r .badge__icon svg rect,
+    .badge--omni-r .badge__icon svg polygon { stroke: #aaff2e; }
 
     .title-block {
         grid-column: 1 / -1;
