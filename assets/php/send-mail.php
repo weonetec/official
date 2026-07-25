@@ -18,13 +18,13 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     exit;
 }
 
-$configPath = __DIR__ . '/mail-config.php';
-if (!file_exists($configPath)) {
+require __DIR__ . '/config-loader.php';
+$config = pp_load_mail_config();
+if (!$config) {
     http_response_code(500);
     echo json_encode(['success' => false, 'error' => 'Mail is not configured yet on the server.']);
     exit;
 }
-$config = require $configPath;
 
 // Honeypot — a hidden field real visitors never fill in. Any value here
 // means a bot filled every field it could find; pretend success so it
