@@ -1991,8 +1991,18 @@
             gsap.set(container, { x: startX });
 
             const PIN_LENGTH = 1500;              // total scroll distance the pinned hero consumes
-            const SHOW_POINT = PIN_LENGTH * 0.85;  // scrolling down past here -> cards appear
-            const HIDE_POINT = PIN_LENGTH * 0.70;  // scrolling back up past here -> cards disappear
+            // Cards are meant to appear only once the reveal text has fully
+            // cleared the viewport, not mid-slide. Measured directly (via
+            // #text's getBoundingClientRect().right crossing 0) across
+            // viewport widths, since startX/scrollWidth — and so the point
+            // where the text tween actually clears the screen — scale with
+            // viewport width: text was still fully on screen at the old
+            // 0.85 mark, and didn't fully clear until ~0.895 on desktop
+            // (~1070px) and ~0.94-0.945 on phone widths (320-375px). 0.96
+            // clears with margin on every measured width, still leaving a
+            // beat before the pin releases at 1.0 for the cards to reveal.
+            const SHOW_POINT = PIN_LENGTH * 0.96;  // scrolling down past here -> cards appear
+            const HIDE_POINT = PIN_LENGTH * 0.81;  // scrolling back up past here -> cards disappear
             // A real scroll position can wobble by a handful of pixels on
             // its own — momentum settling, rubber-banding at rest — even
             // with no ease/lag layered on top of it. Two separate points
