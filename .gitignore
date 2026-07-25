@@ -2,3 +2,7 @@ node_modules/
 .claude/settings.local.json
 .DS_Store
 Thumbs.db
+
+# Real SMTP credentials — copy assets/php/mail-config.sample.php to
+# mail-config.php on the server directly, never commit the real one.
+assets/php/mail-config.php

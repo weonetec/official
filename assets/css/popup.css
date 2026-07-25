@@ -162,6 +162,27 @@
     padding: 10px;
 }
 
+/* Honeypot — invisible to real visitors, present for bots that fill in
+   every field they can find. Off-screen rather than display:none/
+   visibility:hidden, since some bots skip fields hidden that way. */
+.pp-honeypot {
+    position: absolute;
+    left: -9999px;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.pp-submit-error {
+    display: block;
+    color: #FF6B6B;
+    font-size: 13px;
+    font-family: 'Satoshi-Variable', sans-serif;
+    min-height: 0;
+}
+.pp-submit-error:empty { display: none; }
+
 /* ── Submit ── */
 .pp-submit {
     margin-top: 8px;
