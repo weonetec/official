@@ -49,21 +49,20 @@
     display: none;
     justify-content: center;
     position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
+    left: 50%;
+    bottom: calc(14px + env(safe-area-inset-bottom));
+    transform: translateX(-50%);
     z-index: 900;
-    padding: 14px 20px calc(14px + env(safe-area-inset-bottom));
-    background: transparent;
+    padding: 8px;
+    background: #000;
+    border-radius: 50em;
+    width: fit-content;
 }
 
 /* Button keeps its natural pill size (same as the header's version)
-   instead of stretching edge to edge across the bar. A black shadow
-   sits behind the pill itself (not a full-width bar) so it stays
-   legible over whatever page content scrolls underneath it. */
+   instead of stretching edge to edge across the bar. */
 .mobile-sticky-cta .cta-btn {
     width: auto;
-    box-shadow: 0 8px 28px rgba(0, 0, 0, 0.6);
 }
 
 /* ─────────────────────────────────────────────────────────
