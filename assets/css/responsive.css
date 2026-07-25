@@ -646,7 +646,7 @@
     .hero-eyebrow { font-size: 48px; }
     .hero-title   { font-size: clamp(49px, 12vw, 71px); }
     .reveal-text  { font-size: 13vw; }
-    .intro        { padding: 60px 16px 50px; }
+    .intro        { padding: 120px 16px 50px; }
 
     /* Value card slide — phones have a shorter viewport than tablets, so the
        card needs to be a bit smaller than the tablet sizing above to still
@@ -811,7 +811,7 @@
     .hero-eyebrow { font-size: 38px; }
     .hero-title   { font-size: clamp(40px, 14vw, 55px); }
     .reveal-text  { font-size: 14vw; }
-    .intro        { padding: 60px 16px 50px; }
+    .intro        { padding: 120px 16px 50px; }
 
     /* Value cards — same horizontal swipe carousel as tablet/desktop, just
        at phone-appropriate slidesPerView/spacing (set in the Swiper JS
