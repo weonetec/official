@@ -2622,27 +2622,6 @@ li {
     font-weight: 700;
 }
 
-.testi-emoji {
-    flex-shrink: 0;
-    width: 56px;
-    height: 56px;
-    object-fit: contain;
-    opacity: 1;
-    transform: translateY(0) scale(1);
-    pointer-events: none;
-    display: inline-block;
-    animation: testi-emoji-bounce 0.9s ease-in-out infinite;
-    perspective: 300px;
-    filter: drop-shadow(0 6px 8px rgba(0,0,0,0.22));
-}
-
-@keyframes testi-emoji-bounce {
-    0%, 100% { transform: translateY(0) rotateX(0deg) rotateY(0deg) rotate(0deg) scale(1); }
-    25%      { transform: translateY(-8px) rotateX(12deg) rotateY(-14deg) rotate(-8deg) scale(1.08); }
-    50%      { transform: translateY(0) rotateX(0deg) rotateY(0deg) rotate(0deg) scale(1); }
-    75%      { transform: translateY(-4px) rotateX(-10deg) rotateY(14deg) rotate(8deg) scale(1.05); }
-}
-
 .testi-quote {
     font-family: 'Satoshi-Variable';
     font-size: 30px;
