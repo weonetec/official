@@ -520,7 +520,8 @@
         display: grid;
         grid-template-columns: repeat(2, 1fr);
         gap: 20px;
-        min-height: auto;
+        min-height: 100vh;
+        min-height: 100dvh;
         padding: 90px 24px;
         align-items: stretch;
         background-position: center;
@@ -761,7 +762,7 @@
     .value-swiper .value-text { font-size: 15px; line-height: 1.55; }
 
     /* Studio banner */
-    .studio-banner        { min-height: 50vh; }
+    .studio-banner        { min-height: 100vh; min-height: 100dvh; }
     .title-block .txt-intro { font-size: 64px; }
     .title-block .txt-bold  { font-size: 58px; line-height: 1; }
     .title-block .txt-outro { font-size: 64px; }
