@@ -908,25 +908,36 @@ li {
    Hover Glow Effect
 ========================= */
 
-/* Green border glow */
-.value-card:hover::before {
-    background: linear-gradient(216deg, #B2DF48 0%, #24281B 100%);
-    opacity: 0.6;
-}
+/* Touch devices report a synthetic :hover on tap that many mobile
+   browsers then leave "stuck" until something else is tapped, or that
+   flickers on/off mid-swipe as the touch moves — reported directly as
+   the cards glitching on touch, at any point, not tied to scroll
+   position. Gating all of this behind (hover: hover) and (pointer:
+   fine) means it only ever applies on a real mouse/trackpad, where
+   :hover actually behaves as designed; touch devices fall back to the
+   plain base .value-card look with no hover state at all — nothing
+   left to glitch. */
+@media (hover: hover) and (pointer: fine) {
+    /* Green border glow */
+    .value-card:hover::before {
+        background: linear-gradient(216deg, #B2DF48 0%, #24281B 100%);
+        opacity: 0.6;
+    }
 
-/* Green tint on the card's own background */
-.value-card:hover {
-    background: linear-gradient(224deg, rgba(24, 38, 8, 1) 0%, rgba(10, 16, 4, 1) 48%, rgba(3, 3, 3, 1) 100%);
-}
+    /* Green tint on the card's own background */
+    .value-card:hover {
+        background: linear-gradient(224deg, rgba(24, 38, 8, 1) 0%, rgba(10, 16, 4, 1) 48%, rgba(3, 3, 3, 1) 100%);
+    }
 
-/* Green border glow on the icon */
-.value-card:hover .value-icon {
-    border-color: rgba(163, 214, 0, 0.3);
-}
+    /* Green border glow on the icon */
+    .value-card:hover .value-icon {
+        border-color: rgba(163, 214, 0, 0.3);
+    }
 
-.value-card:hover .value-icon::before {
-    background: linear-gradient(216deg, #B2DF48 0%, #24281B 100%);
-    opacity: 0.6;
+    .value-card:hover .value-icon::before {
+        background: linear-gradient(216deg, #B2DF48 0%, #24281B 100%);
+        opacity: 0.6;
+    }
 }
 
 
