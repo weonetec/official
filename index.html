@@ -1977,10 +1977,17 @@
             // where the text tween actually clears the screen — scale with
             // viewport width: text was still fully on screen at the old
             // 0.85 mark, and didn't fully clear until ~0.895 on desktop
-            // (~1070px) and ~0.94-0.945 on phone widths (320-375px). 0.96
-            // clears with margin on every measured width, still leaving a
-            // beat before the pin releases at 1.0 for the cards to reveal.
-            const SHOW_POINT = PIN_LENGTH * 0.96;  // scrolling down past here -> cards appear
+            // (~1070px) and ~0.95 on phone widths (320-414px), confirmed
+            // again directly against this file's current state. The old
+            // 0.96 mark only left a ~24px buffer past that on phones —
+            // fine against instant/slow scroll-position jumps, but on a
+            // real device a fast touch flick reported the cards popping in
+            // while the text was still visibly mid-slide, which a margin
+            // that thin can't absorb (Lenis/GSAP's scroll-position sync has
+            // some slack under real momentum that a synthetic instant jump
+            // never exercises). Moved to 0.975 — still comfortably inside
+            // the 1.0 pin-release point, but with ~3x the buffer.
+            const SHOW_POINT = PIN_LENGTH * 0.975;  // scrolling down past here -> cards appear
             const HIDE_POINT = PIN_LENGTH * 0.81;  // scrolling back up past here -> cards disappear
             // A real scroll position can wobble by a handful of pixels on
             // its own — momentum settling, rubber-banding at rest — even
