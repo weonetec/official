@@ -1537,7 +1537,17 @@
             duration: 1.2,
             easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
             smooth: true,
-            smoothTouch: false
+            // syncTouch (not the old "smoothTouch" key, which this Lenis
+            // version doesn't read at all) routes touch scrolling through
+            // Lenis's own rAF-driven loop instead of raw native scroll
+            // events. Native touch-scroll events are throttled/coalesced
+            // by mobile browsers well below 60fps, and every scroll-tied
+            // hero animation (text reveal, letter scatter, card handoff)
+            // is driven off lenis.on('scroll', ScrollTrigger.update) below
+            // — so without this, touch scrolling only advanced that in
+            // irregular bursts instead of every frame.
+            syncTouch: true,
+            syncTouchLerp: 0.1
         });
 
         // ── Drive Lenis via GSAP ticker (replaces manual RAF loop) ──
@@ -1803,6 +1813,14 @@
 
     <script>
         gsap.registerPlugin(ScrollTrigger);
+
+        // Mobile address-bar collapse/expand fires a native window resize
+        // event — by default GSAP treats that like any other resize and
+        // auto-refreshes (recalculating every trigger's start/end), right
+        // in the middle of the same first-scroll gesture that's driving
+        // the hero's pin/scrub. ignoreMobileResize skips auto-refresh for
+        // exactly that case (width unchanged, height change is small).
+        ScrollTrigger.config({ ignoreMobileResize: true });
 
         window.addEventListener("load", () => {
         // Defer so ScrollTrigger.refresh() (main.js load handler) fires first

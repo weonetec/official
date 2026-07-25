@@ -170,7 +170,11 @@ li {
    Navbar auto-color — background switches by section
 ========================= */
 .site-header {
-    transition: transform 0.3s ease, background 0.4s ease, box-shadow 0.4s ease, backdrop-filter 0.4s ease;
+    /* backdrop-filter isn't listed here — nothing ever changes its value
+       (only background/mask-image/transform do across .header-hidden/
+       .scrolled/.nav-light), so transitioning it was pure wasted
+       compositor work on every class toggle. */
+    transition: transform 0.3s ease, background 0.4s ease, box-shadow 0.4s ease;
 }
 
 /* Over light/white sections → dark navbar background */
@@ -677,7 +681,6 @@ li {
     color: var(--text);
     transform-style: preserve-3d;
     text-decoration: none;
-    backdrop-filter: blur(12px);
     /* overflow: hidden; */
     /* This (not .is-visible below) is what actually governs the EXIT
        transition — CSS uses whichever rule matches the state being
