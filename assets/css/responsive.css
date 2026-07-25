@@ -34,6 +34,35 @@
 }
 
 /* ─────────────────────────────────────────────────────────
+   MOBILE STICKY CTA — replaces the header's "Get A Call Back" button
+   below 1199px (see the ≤1199px block, which hides .header-cta
+   entirely there instead of the old icon-only treatment). Fixed to
+   the bottom of the screen so there's always a visible, one-tap CTA
+   even though the header button is gone and the hamburger drawer's
+   own CTA (.mob-nav-cta) is hidden until the menu is opened. Hidden
+   by default (desktop) — see the ≤1199px block below for how it's
+   revealed. z-index sits below the drawer/overlay (999/998) so
+   opening the hamburger menu covers it, avoiding two competing CTAs
+   on screen at once.
+───────────────────────────────────────────────────────── */
+.mobile-sticky-cta {
+    display: none;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 900;
+    padding: 14px 20px calc(14px + env(safe-area-inset-bottom));
+    background: #0a0a0a;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.mobile-sticky-cta .cta-btn {
+    width: 100%;
+    justify-content: center;
+}
+
+/* ─────────────────────────────────────────────────────────
    MOBILE NAV DRAWER — base styles (must come before media queries)
 ───────────────────────────────────────────────────────── */
 
@@ -280,22 +309,20 @@
     /* Header */
     .nav-list { gap: 60px; }
 
-    /* Header CTA – icon only. Below 1200px, .header-cta sits in a
-       Bootstrap col-lg-2 (~16.667%) column that's too narrow for the full
-       "Get A Call Back" label + icon, so the text wraps to 2-3 lines and
-       blows out the header's height. Same icon-only treatment as the
-       ≤767px rule below — harmless overlap with that rule since both set
-       the same properties. Scoped to .site-header specifically — some
-       pages (coming-soon.html) reuse the bare .header-cta/.cta-btn class
-       names for an unrelated standalone hero CTA that isn't in a cramped
-       nav column and has no hamburger-drawer fallback, so a bare
+    /* Header CTA – removed below 1200px, not just shrunk to icon-only.
+       .header-cta sits in a Bootstrap col-lg-2 (~16.667%) column that's
+       too narrow for the full "Get A Call Back" label + icon at this
+       width, and an icon-only button here read as an orphaned, hard-to-
+       parse circle floating next to the nav. Replaced with a fixed
+       bottom-of-screen CTA (.mobile-sticky-cta, revealed below) that
+       stays reachable everywhere on the page instead. Scoped to
+       .site-header specifically — some pages (coming-soon.html) reuse
+       the bare .header-cta/.cta-btn class names for an unrelated
+       standalone hero CTA that isn't in a cramped nav column, so a bare
        .header-cta selector here would silently break that button. */
-    .site-header .header-cta .cta-btn {
-        font-size: 0;
-        padding: 10px 10px;
-        min-width: unset;
-    }
-    .site-header .header-cta .cta-btn .cta-icon { margin-left: 0; }
+    .site-header .header-cta { display: none; }
+
+    .mobile-sticky-cta { display: flex; }
 
     /* CTA button — general scale for every OTHER .cta-btn on the site
        (footer, about/CTA bands, popup sidebar, hero sections). These keep
@@ -667,15 +694,6 @@
 
     /* Generic section wrapper */
     .section { padding: 56px 0 56px 0; }
-
-    /* Header CTA – icon only on mobile (scoped to .site-header, see the
-       ≤1199px block for why) */
-    .site-header .header-cta .cta-btn {
-        font-size: 0;
-        padding: 10px 10px;
-        min-width: unset;
-    }
-    .site-header .header-cta .cta-btn .cta-icon { margin-left: 0; }
 
     /* CTA button — general scale (see ≤1199px block for why this is
        unscoped, unlike the header's icon-only rule above) */
