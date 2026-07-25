@@ -58,9 +58,12 @@
 }
 
 /* Button keeps its natural pill size (same as the header's version)
-   instead of stretching edge to edge across the bar. */
+   instead of stretching edge to edge across the bar. A black shadow
+   sits behind the pill itself (not a full-width bar) so it stays
+   legible over whatever page content scrolls underneath it. */
 .mobile-sticky-cta .cta-btn {
     width: auto;
+    box-shadow: 0 8px 28px rgba(0, 0, 0, 0.6);
 }
 
 /* ─────────────────────────────────────────────────────────
