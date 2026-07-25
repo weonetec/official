@@ -32,8 +32,16 @@
         '        </div>' +
         '        <div class="pp-field">' +
         '          <label>Email Address <span>*</span></label>' +
-        '          <input type="email" name="email" placeholder="john@company.com" required>' +
+        '          <div class="pp-email-row">' +
+        '            <input type="email" name="email" placeholder="john@company.com" required>' +
+        '            <button type="button" class="pp-verify-btn">Verify</button>' +
+        '          </div>' +
         '          <span class="pp-error-msg"></span>' +
+        '          <div class="pp-verify-code-row" style="display:none;">' +
+        '            <input type="text" class="pp-verify-code-input" placeholder="6-digit code" maxlength="6" inputmode="numeric" autocomplete="one-time-code">' +
+        '            <button type="button" class="pp-verify-code-btn">Confirm</button>' +
+        '          </div>' +
+        '          <span class="pp-verify-status"></span>' +
         '        </div>' +
         '      </div>' +
         '      <div class="pp-row">' +
@@ -147,6 +155,7 @@
         function resetForm() {
             form.reset();
             clearErrors();
+            resetVerification();
         }
 
         // Delegated on document, not the buttons themselves — works for
@@ -185,6 +194,113 @@
 
         var EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
+        // ---- Email verification ----
+        var emailInput = form.querySelector('[name="email"]');
+        var verifyBtn = form.querySelector('.pp-verify-btn');
+        var verifyCodeRow = form.querySelector('.pp-verify-code-row');
+        var verifyCodeInput = form.querySelector('.pp-verify-code-input');
+        var verifyCodeBtn = form.querySelector('.pp-verify-code-btn');
+        var verifyStatus = form.querySelector('.pp-verify-status');
+        var verifiedEmail = null; // the exact address currently confirmed verified
+        var resendCooldownTimer = null;
+
+        function setVerifyStatus(text, mode) {
+            verifyStatus.textContent = text;
+            verifyStatus.classList.toggle('is-error', mode === 'error');
+            verifyStatus.classList.toggle('is-success', mode === 'success');
+        }
+
+        function resetVerification() {
+            verifiedEmail = null;
+            if (resendCooldownTimer) clearInterval(resendCooldownTimer);
+            verifyCodeRow.style.display = 'none';
+            verifyCodeInput.value = '';
+            verifyBtn.style.display = '';
+            verifyBtn.disabled = false;
+            verifyBtn.textContent = 'Verify';
+            setVerifyStatus('');
+            emailInput.classList.remove('pp-email-verified');
+        }
+
+        // Editing the email after verifying invalidates that verification —
+        // otherwise someone could verify their own address, then swap in a
+        // different one and still get the form through.
+        emailInput.addEventListener('input', function () {
+            if (verifiedEmail && emailInput.value.trim() !== verifiedEmail) resetVerification();
+        });
+
+        function startResendCooldown() {
+            var seconds = 45;
+            verifyBtn.disabled = true;
+            if (resendCooldownTimer) clearInterval(resendCooldownTimer);
+            resendCooldownTimer = setInterval(function () {
+                seconds--;
+                if (seconds <= 0) {
+                    clearInterval(resendCooldownTimer);
+                    verifyBtn.disabled = false;
+                    verifyBtn.textContent = 'Resend code';
+                } else {
+                    verifyBtn.textContent = 'Resend (' + seconds + 's)';
+                }
+            }, 1000);
+        }
+
+        verifyBtn.addEventListener('click', function () {
+            var email = emailInput.value.trim();
+            if (!EMAIL_RE.test(email)) {
+                showError(emailInput, 'Enter a valid email address first.');
+                return;
+            }
+            clearError(emailInput);
+            verifyBtn.disabled = true;
+            verifyBtn.textContent = 'Sending...';
+            setVerifyStatus('');
+
+            fetch('assets/php/send-verification.php', { method: 'POST', body: new URLSearchParams({ email: email }) })
+                .then(function (res) { return res.json(); })
+                .catch(function () { return { success: false, error: 'Could not reach the server.' }; })
+                .then(function (result) {
+                    if (!result || !result.success) {
+                        verifyBtn.disabled = false;
+                        verifyBtn.textContent = 'Verify';
+                        setVerifyStatus((result && result.error) || 'Could not send the code.', 'error');
+                        return;
+                    }
+                    verifyCodeRow.style.display = 'flex';
+                    verifyBtn.textContent = 'Resend code';
+                    setVerifyStatus('Code sent to ' + email + '.');
+                    startResendCooldown();
+                    verifyCodeInput.focus();
+                });
+        });
+
+        verifyCodeBtn.addEventListener('click', function () {
+            var email = emailInput.value.trim();
+            var code = verifyCodeInput.value.trim();
+            if (!code) { setVerifyStatus('Enter the code sent to your email.', 'error'); return; }
+
+            verifyCodeBtn.disabled = true;
+            verifyCodeBtn.textContent = 'Checking...';
+
+            fetch('assets/php/verify-code.php', { method: 'POST', body: new URLSearchParams({ email: email, code: code }) })
+                .then(function (res) { return res.json(); })
+                .catch(function () { return { success: false, error: 'Could not reach the server.' }; })
+                .then(function (result) {
+                    verifyCodeBtn.disabled = false;
+                    verifyCodeBtn.textContent = 'Confirm';
+                    if (!result || !result.success) {
+                        setVerifyStatus((result && result.error) || 'Invalid code.', 'error');
+                        return;
+                    }
+                    verifiedEmail = email;
+                    if (resendCooldownTimer) clearInterval(resendCooldownTimer);
+                    verifyCodeRow.style.display = 'none';
+                    verifyBtn.style.display = 'none';
+                    emailInput.classList.add('pp-email-verified');
+                    setVerifyStatus('Email verified', 'success');
+                });
+        });
+
         function validate() {
             clearErrors();
             var ok = true;
@@ -193,8 +309,10 @@
             if (!nameEl.value.trim()) { showError(nameEl, 'Please enter your name.'); ok = false; }
 
             var emailEl = form.querySelector('[name="email"]');
-            if (!emailEl.value.trim()) { showError(emailEl, 'Please enter your email.'); ok = false; }
-            else if (!EMAIL_RE.test(emailEl.value.trim())) { showError(emailEl, 'Enter a valid email address.'); ok = false; }
+            var emailVal = emailEl.value.trim();
+            if (!emailVal) { showError(emailEl, 'Please enter your email.'); ok = false; }
+            else if (!EMAIL_RE.test(emailVal)) { showError(emailEl, 'Enter a valid email address.'); ok = false; }
+            else if (verifiedEmail !== emailVal) { showError(emailEl, 'Please verify your email address.'); ok = false; }
 
             if (form.querySelectorAll('[name="service[]"]:checked').length === 0) {
                 var svcWrap = serviceGrid.closest('.pp-field');

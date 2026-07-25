@@ -3,9 +3,14 @@
  * Receives the project popup form (assets/js/popup.js) and relays it via
  * SMTP through PHPMailer. Always responds with JSON so the frontend can
  * show a real success/error state instead of assuming success.
+ *
+ * Requires the submitted email to already be verified (see
+ * send-verification.php / verify-code.php) - re-checked here server-side
+ * so it can't be skipped by posting straight to this endpoint.
  */
 
 header('Content-Type: application/json');
+session_start();
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     http_response_code(405);
@@ -49,6 +54,9 @@ if ($email === '' || !filter_var($email, FILTER_VALIDATE_EMAIL)) $errors[] = 'A 
 if (empty($services)) $errors[] = 'At least one service is required.';
 if ($brief === '') $errors[] = 'Project brief is required.';
 
+$verified = isset($_SESSION['pp_verify'][$email]['verified']) && $_SESSION['pp_verify'][$email]['verified'] === true;
+if (!$verified) $errors[] = 'Please verify your email address first.';
+
 if (!empty($errors)) {
     http_response_code(422);
     echo json_encode(['success' => false, 'error' => implode(' ', $errors)]);
@@ -58,6 +66,19 @@ if (!empty($errors)) {
 require __DIR__ . '/PHPMailer/Exception.php';
 require __DIR__ . '/PHPMailer/PHPMailer.php';
 require __DIR__ . '/PHPMailer/SMTP.php';
+require __DIR__ . '/email-template.php';
+
+$SERVICE_LABELS = [
+    'ui-ux'     => 'UI/UX Design',
+    'branding'  => 'Logo & Branding',
+    'web-dev'   => 'Web Development',
+    'motion'    => 'Motion & Animation',
+    'social'    => 'Social Media Design',
+    'other'     => 'Other',
+];
+$serviceLabels = array_map(function ($s) use ($SERVICE_LABELS) {
+    return isset($SERVICE_LABELS[$s]) ? $SERVICE_LABELS[$s] : $s;
+}, $services);
 
 $mail = new PHPMailer\PHPMailer\PHPMailer(true);
 
@@ -72,7 +93,9 @@ try {
         ? PHPMailer\PHPMailer\PHPMailer::ENCRYPTION_SMTPS
         : PHPMailer\PHPMailer\PHPMailer::ENCRYPTION_STARTTLS;
     $mail->CharSet    = 'UTF-8';
+    $mail->isHTML(true);
 
+    // ---- 1. Notify the team ----
     // From must be the authenticated mailbox — most SMTP providers (Hostinger
     // included) reject or flag mail whose From doesn't match the logged-in
     // account. Reply-To is the actual lead, so hitting "reply" in the inbox
@@ -80,26 +103,52 @@ try {
     $mail->setFrom($config['from_email'], $config['from_name']);
     $mail->addAddress($config['to_email'], $config['to_name']);
     $mail->addReplyTo($email, $name);
-
     $mail->Subject = 'New project inquiry from ' . $name;
 
-    $lines = [];
-    $lines[] = 'Name: ' . $name;
-    $lines[] = 'Email: ' . $email;
-    if ($phone !== '') $lines[] = 'Phone: ' . $phone;
-    if ($company !== '') $lines[] = 'Company: ' . $company;
-    $lines[] = 'Service(s): ' . implode(', ', $services);
-    if ($budget !== '') $lines[] = 'Budget: ' . $budget;
-    if ($timeline !== '') $lines[] = 'Timeline: ' . $timeline;
-    if ($source !== '') $lines[] = 'Heard about us via: ' . $source;
-    $lines[] = '';
-    $lines[] = 'Project brief:';
-    $lines[] = $brief;
+    $detailsRows = ''
+        . pp_email_row('Name', $name)
+        . pp_email_row('Email', $email)
+        . pp_email_row('Phone', $phone)
+        . pp_email_row('Company', $company)
+        . pp_email_row('Budget', $budget)
+        . pp_email_row('Timeline', $timeline)
+        . pp_email_row('Heard via', $source);
 
-    $mail->isHTML(false);
-    $mail->Body = implode("\n", $lines);
+    $tagsHtml = '';
+    foreach ($serviceLabels as $label) $tagsHtml .= pp_email_tag($label);
+
+    $notifyBody = ''
+        . '<p style="margin:0 0 24px;">A new lead came in through the website. Reply to this email to answer them directly.</p>'
+        . '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:24px;">' . $detailsRows . '</table>'
+        . '<p style="margin:0 0 8px; color:#6b7280; font-size:13px; text-transform:uppercase; letter-spacing:0.5px;">Service(s)</p>'
+        . '<div style="margin:0 0 24px;">' . $tagsHtml . '</div>'
+        . '<p style="margin:0 0 8px; color:#6b7280; font-size:13px; text-transform:uppercase; letter-spacing:0.5px;">Project brief</p>'
+        . '<p style="margin:0; white-space:pre-wrap;">' . nl2br(htmlspecialchars($brief)) . '</p>';
+
+    $mail->Body = pp_email_html('New project inquiry from ' . $name, 'New Project Inquiry', $notifyBody);
+    $mail->AltBody = "New project inquiry from $name\nEmail: $email\nPhone: $phone\nCompany: $company\nService(s): " . implode(', ', $serviceLabels) . "\nBudget: $budget\nTimeline: $timeline\nHeard via: $source\n\nBrief:\n$brief";
 
     $mail->send();
+
+    // ---- 2. Confirm to the sender ----
+    // Same visual template, different content, reset addressing since
+    // PHPMailer keeps whatever was set on the first send() otherwise.
+    $mail->clearAddresses();
+    $mail->clearReplyTos();
+    $mail->addAddress($email, $name);
+    $mail->Subject = 'We\'ve got your brief — WeOne';
+
+    $confirmBody = ''
+        . '<p style="margin:0 0 20px;">Hey ' . htmlspecialchars($name) . ',</p>'
+        . '<p style="margin:0 0 20px;">Thanks for reaching out — we\'ve received your project brief and our team will get back to you within 24 hours.</p>'
+        . '<p style="margin:0 0 20px;">In the meantime, feel free to follow us on Instagram for a look at recent work.</p>'
+        . '<p style="margin:0;">Talk soon,<br>The WeOne Team</p>';
+
+    $mail->Body = pp_email_html('We\'ve received your project brief', 'We\'ve Got Your Brief!', $confirmBody);
+    $mail->AltBody = "Hey $name,\n\nThanks for reaching out - we've received your project brief and our team will get back to you within 24 hours.\n\nTalk soon,\nThe WeOne Team";
+
+    $mail->send();
+
     echo json_encode(['success' => true]);
 } catch (Exception $e) {
     http_response_code(502);

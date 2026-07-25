@@ -116,6 +116,54 @@
 .pp-field select option { background: #111; }
 .pp-field textarea { resize: vertical; min-height: 110px; }
 
+/* ── Email verification ── */
+.pp-email-row { display: flex; gap: 8px; }
+.pp-email-row input { flex: 1 1 auto; }
+.pp-email-row input.pp-email-verified { border-color: #B2DF48; background: rgba(178,223,72,0.06); }
+.pp-verify-btn,
+.pp-verify-code-btn {
+    flex: 0 0 auto;
+    background: rgba(178,223,72,0.1);
+    border: 1px solid rgba(178,223,72,0.4);
+    color: #B2DF48;
+    border-radius: 10px;
+    padding: 0 16px;
+    font-size: 13px;
+    font-weight: 600;
+    font-family: 'Satoshi-Variable', sans-serif;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background 0.2s, opacity 0.2s;
+}
+.pp-verify-btn:hover,
+.pp-verify-code-btn:hover { background: rgba(178,223,72,0.2); }
+.pp-verify-btn:disabled,
+.pp-verify-code-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+.pp-verify-code-row { display: flex; gap: 8px; margin-top: 4px; }
+.pp-verify-code-row input {
+    flex: 1 1 auto;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 10px;
+    color: #fff;
+    font-size: 14px;
+    font-family: 'Satoshi-Variable', sans-serif;
+    padding: 13px 16px;
+    outline: none;
+    letter-spacing: 4px;
+}
+.pp-verify-code-row input:focus { border-color: #B2DF48; }
+.pp-verify-status {
+    display: block;
+    font-size: 12px;
+    font-family: 'Satoshi-Variable', sans-serif;
+    color: rgba(255,255,255,0.4);
+    min-height: 0;
+}
+.pp-verify-status:empty { display: none; }
+.pp-verify-status.is-error { color: #FF6B6B; }
+.pp-verify-status.is-success { color: #B2DF48; font-weight: 600; }
+
 /* ── Service Chips ── */
 .pp-service-grid { display: flex; flex-wrap: wrap; gap: 10px; }
 .pp-chip {
