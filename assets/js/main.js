@@ -208,7 +208,8 @@ window.addEventListener('scroll', function () {
 // DESIGN FUTURE — card stack ↔ spread animation (desktop only)
 // Uses rAF + getBoundingClientRect (same as badges)
 // so it works correctly despite GSAP's hero-banner
-// pin shifting ScrollTrigger positions by 1500px.
+// pin shifting ScrollTrigger positions by however long the hero's own
+// scroll-jack runs (PIN_LENGTH in index.html).
 //
 // The idle state alone (see stackX below) spreads cards up to ±540px from
 // center via inline transform — a ~1380px total footprint that doesn't fit

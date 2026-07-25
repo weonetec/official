@@ -1990,7 +1990,7 @@
 
             gsap.set(container, { x: startX });
 
-            const PIN_LENGTH = 1500;              // total scroll distance the pinned hero consumes
+            const PIN_LENGTH = 2400;              // total scroll distance the pinned hero consumes — keep in sync with the 2400px in .hero-scroll-space (main.css and responsive.css)
             // Cards are meant to appear only once the reveal text has fully
             // cleared the viewport, not mid-slide. Measured directly (via
             // #text's getBoundingClientRect().right crossing 0) across
@@ -2006,7 +2006,7 @@
             // A real scroll position can wobble by a handful of pixels on
             // its own — momentum settling, rubber-banding at rest — even
             // with no ease/lag layered on top of it. Two separate points
-            // (not one) means that wobble has to travel the whole 225px gap
+            // (not one) means that wobble has to travel the whole 360px gap
             // between them before anything can re-trigger, not just cross
             // one exact pixel line.
 

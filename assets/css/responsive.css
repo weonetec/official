@@ -440,10 +440,10 @@
        bottom offsets — see the .value-section rule below for the full
        story of why that kept breaking on real devices. */
     .intro                 { height: 92vh; height: 92dvh; padding: 60px 24px 50px; display: flex; flex-direction: column; }
-    /* Mirrors .intro's own height above, plus the same 1500px of extra
+    /* Mirrors .intro's own height above, plus the same 2400px of extra
        scroll room — see .hero-scroll-space in main.css for why this pair
        has to match at every breakpoint .intro's height changes at. */
-    .hero-scroll-space     { height: calc(92vh + 1500px); height: calc(92dvh + 1500px); }
+    .hero-scroll-space     { height: calc(92vh + 2400px); height: calc(92dvh + 2400px); }
     /* The old 50vh/50dvh explicit height existed to carve out a fixed "half
        the pinned box" zone to center the hero text within, back when
        .value-section was absolutely positioned against vh guesses and
