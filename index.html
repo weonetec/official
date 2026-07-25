@@ -1894,9 +1894,32 @@
             // eat the swipe gesture before Swiper's own touch handling gets
             // it. `nested:true` makes Swiper stop the touch event from
             // bubbling to the pinned/scroll-jacked ancestors, and
-            // data-lenis-prevent (set on the .value-swiper element itself)
-            // tells Lenis to skip its own touch handling there entirely.
+            // data-lenis-prevent tells Lenis to skip its own scroll handling
+            // there entirely — but Lenis honors that attribute for EVERY
+            // input type it manages, not just touch, including ordinary
+            // mouse-wheel scrolling. Left on permanently, it made Lenis skip
+            // its smooth/eased scroll for any wheel scroll whose cursor
+            // happened to be over the cards — confirmed directly: scrolling
+            // elsewhere produced Lenis's normal ~50-step eased glide, while
+            // scrolling with the cursor over a card produced a single
+            // instant, unsmoothed jump. That's only actually needed while
+            // the swiper can be touch-dragged (allowTouchMove true, below
+            // the 992px breakpoint) — the desktop 3-up row never drags, so
+            // nothing there needs protecting from Lenis. Toggling the
+            // attribute in sync with Swiper's own resolved allowTouchMove
+            // (via the breakpoint/init callbacks below, the same source of
+            // truth the breakpoints map itself uses) keeps the touch
+            // protection where it's needed and restores smooth wheel-scroll
+            // everywhere else.
             if (document.querySelector(".value-swiper")) {
+                const valueSwiperEl = document.querySelector(".value-swiper");
+                function syncValueSwiperLenisPrevent(swiper) {
+                    if (swiper.params.allowTouchMove) {
+                        valueSwiperEl.setAttribute("data-lenis-prevent", "");
+                    } else {
+                        valueSwiperEl.removeAttribute("data-lenis-prevent");
+                    }
+                }
                 new Swiper(".value-swiper", {
                     slidesPerView: 1.12,
                     spaceBetween: 16,
@@ -1920,6 +1943,10 @@
                         576: { slidesPerView: 1.4, spaceBetween: 20, allowTouchMove: true, simulateTouch: true },
                         768: { slidesPerView: 1.8, spaceBetween: 24, allowTouchMove: true, simulateTouch: true },
                         992: { slidesPerView: 3, spaceBetween: 32, allowTouchMove: false, simulateTouch: false }
+                    },
+                    on: {
+                        init: syncValueSwiperLenisPrevent,
+                        breakpoint: syncValueSwiperLenisPrevent
                     }
                 });
             }
