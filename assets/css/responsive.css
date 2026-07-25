@@ -458,11 +458,28 @@
    and restored again at ≤991px (see that block further down). The
    service-desc paragraph also gets a shorter max-width here, only in
    this range, narrower than main.css's own base 400px cap.
-───────────────────────────────────────────────────────── */
+
+   The text column and the gradient-box image both need to start flush
+   with the card's own 20px padding-top instead of the extra spacing
+   they currently get:
+   - Bootstrap's .align-items-center (itself !important) vertically
+     centers the row's two columns. The narrower text column above is
+     noticeably shorter than the fixed-height (347px) gradient-box, so
+     centering pushes the text down well past the card's padding.
+   - .gradient-box also carries its own margin-top:18px (elsewhere in
+     this file), meant to visually separate it from the text once they
+     STACK on top of each other at ≤991px. In this side-by-side range
+     that margin has nothing to separate from and just pushes the
+     image down an extra 18px on top of the card's own padding.
+   Both are corrected here only — negligible height difference above
+   1399px, and the margin-top is exactly what's needed once the
+   columns actually stack at ≤991px. */
 @media (max-width: 1399px) and (min-width: 991px) {
     .service-desc              { max-width: 320px; }
     .feature-row               { display: flex; flex-direction: column; flex-wrap: nowrap; margin-bottom: 6px; }
     .feature-row .feature-item { flex: 0 0 100%; max-width: 100%; font-size: 12.5px; gap: 8px; margin-bottom: 12px; padding-right: 0; }
+    .service-card .row.align-items-center { align-items: flex-start !important; }
+    .gradient-box               { margin-top: 0; }
 }
 
 
