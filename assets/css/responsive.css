@@ -60,9 +60,28 @@
 }
 
 /* Button keeps its natural pill size (same as the header's version)
-   instead of stretching edge to edge across the bar. */
+   instead of stretching edge to edge across the bar. It also nudges
+   itself with a quick shake once every 5s cycle (a short burst in the
+   first ~12% of the animation, then holds still for the rest) to draw
+   the eye back to it without being a constant distraction. Animates
+   the button itself, not the outer .mobile-sticky-cta pill, since that
+   already carries its own translateX(-50%) centering transform. */
 .mobile-sticky-cta .cta-btn {
     width: auto;
+    animation: stickyCtaShake 5s ease-in-out infinite;
+}
+@keyframes stickyCtaShake {
+    0%   { transform: translateX(0) rotate(0deg); }
+    2%   { transform: translateX(-4px) rotate(-3deg); }
+    4%   { transform: translateX(4px) rotate(3deg); }
+    6%   { transform: translateX(-3px) rotate(-2deg); }
+    8%   { transform: translateX(3px) rotate(2deg); }
+    10%  { transform: translateX(-1px) rotate(-1deg); }
+    12%  { transform: translateX(0) rotate(0deg); }
+    100% { transform: translateX(0) rotate(0deg); }
+}
+@media (prefers-reduced-motion: reduce) {
+    .mobile-sticky-cta .cta-btn { animation: none; }
 }
 
 /* ─────────────────────────────────────────────────────────
