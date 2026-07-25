@@ -317,29 +317,16 @@
 .mob-nav-drawer ul li a.active::before { opacity: 1; }
 .mob-nav-drawer ul li a.active .mob-nav-arrow { opacity: 0.6; transform: translate(0, 0) rotate(0deg); }
 
-.mob-nav-cta {
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    /* margin-top:auto only made sense pinning this to the bottom of a
-       full-height drawer — the popup's height is now content-sized, so
-       auto would resolve to 0 and leave no gap above the button. */
+/* The popup's CTA now uses the exact same markup/classes as the
+   desktop header's button (.cta-btn — transparent bg, green outline,
+   icon + glow-layer + inner-shadow), so no color/shape rules are
+   needed here anymore — just spacing/stacking specific to sitting
+   inside the popup. .mob-nav-cta is kept as a hook class on the same
+   element for this, not a styled component of its own. */
+.mob-nav-drawer .cta-btn {
     margin-top: 28px;
-    background: #B2DF48;
-    color: #000;
-    font-weight: 800;
-    font-size: 15px;
-    padding: 13px 22px;
-    border-radius: 40px;
-    text-decoration: none;
-    width: fit-content;
-    transition: opacity 0.2s, transform 0.2s ease;
-    font-family: 'Satoshi-Variable', sans-serif;
-    position: relative;
     z-index: 3;
-    box-shadow: 0 8px 26px -10px rgba(178, 223, 72, 0.55);
 }
-.mob-nav-cta:hover { opacity: 0.88; color: #000; transform: translateY(-1px); }
 
 
 /* ── Container max-width overrides ── */
