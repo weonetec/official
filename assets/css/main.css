@@ -1293,17 +1293,21 @@ li {
 
 
 /* ===== Right Gradient Box ===== */
-/* Empty placeholder — was an image (ui-ux/web-dev/logo-branding/DM.png),
-   now intentionally left blank. Height matches the old image's fixed
-   347px so the card's proportions/layout don't shift; background/
-   border keep it visible as a box instead of collapsing to nothing
-   now that it has no content of its own. */
 .gradient-box {
     width: 100%;
     height: 347px;
     border-radius: 16px;
     background: rgba(255, 255, 255, 0.4);
     border: 1px solid rgba(255, 255, 255, 0.7);
+    overflow: hidden;
+}
+
+.gradient-box img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 16px;
+    display: block;
 }
 
 .custom-accord .accordion-item {
