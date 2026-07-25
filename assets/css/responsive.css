@@ -851,28 +851,108 @@
     .studio-banner .badge { min-height: 130px; padding: 18px 20px; }
     .badge__text { font-size: 20px !important; }
 
-    /* Re-flip to a strict top-to-bottom alternation — the 2-col
-       checkerboard pattern above doesn't read correctly once badges
-       stack into a single column */
+    /* Force a strict top-to-bottom white/black alternation once badges
+       stack into a single column on phones. Set explicitly for all 8
+       badges (not just the ones that need to change) so this doesn't
+       depend on which overrides happen to survive cascading down from
+       the >767px checkerboard above — that partial approach previously
+       left omni-r and brand both landing on the same color as their
+       neighbor, breaking the alternation two badges from the end. */
+    .badge--exp,
     .badge--speed-l,
-    .badge--omni-r {
+    .badge--speed-r,
+    .badge--brand {
         background: #E9ECFF;
         box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
     }
+    .badge--exp .badge__text,
     .badge--speed-l .badge__text,
-    .badge--omni-r .badge__text { color: #111; }
+    .badge--speed-r .badge__text,
+    .badge--brand .badge__text { color: #111; }
+    /* Both the ancestor svg (for shapes with no color of their own) AND
+       every shape directly (for the ones that bake their own inline
+       stroke="..." attribute, which only a same-element CSS rule beats
+       — see the fill:none / stroke rules this mirrors in main.css) —
+       these badges still carry their original desktop badge--light/dark
+       class (only background/text is overridden above), so main.css's
+       own .badge--light/.badge--dark shape rules don't apply here; each
+       badge needs its own direct override at the identity-class level. */
+    .badge--exp .badge__icon svg,
     .badge--speed-l .badge__icon svg,
-    .badge--omni-r .badge__icon svg { stroke: #111111; }
+    .badge--speed-r .badge__icon svg,
+    .badge--brand .badge__icon svg,
+    .badge--exp .badge__icon svg path,
+    .badge--exp .badge__icon svg circle,
+    .badge--exp .badge__icon svg ellipse,
+    .badge--exp .badge__icon svg line,
+    .badge--exp .badge__icon svg polyline,
+    .badge--exp .badge__icon svg rect,
+    .badge--exp .badge__icon svg polygon,
+    .badge--speed-l .badge__icon svg path,
+    .badge--speed-l .badge__icon svg circle,
+    .badge--speed-l .badge__icon svg ellipse,
+    .badge--speed-l .badge__icon svg line,
+    .badge--speed-l .badge__icon svg polyline,
+    .badge--speed-l .badge__icon svg rect,
+    .badge--speed-l .badge__icon svg polygon,
+    .badge--speed-r .badge__icon svg path,
+    .badge--speed-r .badge__icon svg circle,
+    .badge--speed-r .badge__icon svg ellipse,
+    .badge--speed-r .badge__icon svg line,
+    .badge--speed-r .badge__icon svg polyline,
+    .badge--speed-r .badge__icon svg rect,
+    .badge--speed-r .badge__icon svg polygon,
+    .badge--brand .badge__icon svg path,
+    .badge--brand .badge__icon svg circle,
+    .badge--brand .badge__icon svg ellipse,
+    .badge--brand .badge__icon svg line,
+    .badge--brand .badge__icon svg polyline,
+    .badge--brand .badge__icon svg rect,
+    .badge--brand .badge__icon svg polygon { stroke: #111111; }
 
+    .badge--flex,
     .badge--omni-l,
+    .badge--omni-r,
     .badge--result {
         background: #0a0a0a;
         box-shadow: none;
     }
+    .badge--flex .badge__text,
     .badge--omni-l .badge__text,
+    .badge--omni-r .badge__text,
     .badge--result .badge__text { color: #aaff2e; }
+    .badge--flex .badge__icon svg,
     .badge--omni-l .badge__icon svg,
-    .badge--result .badge__icon svg { stroke: #aaff2e; }
+    .badge--omni-r .badge__icon svg,
+    .badge--result .badge__icon svg,
+    .badge--flex .badge__icon svg path,
+    .badge--flex .badge__icon svg circle,
+    .badge--flex .badge__icon svg ellipse,
+    .badge--flex .badge__icon svg line,
+    .badge--flex .badge__icon svg polyline,
+    .badge--flex .badge__icon svg rect,
+    .badge--flex .badge__icon svg polygon,
+    .badge--omni-l .badge__icon svg path,
+    .badge--omni-l .badge__icon svg circle,
+    .badge--omni-l .badge__icon svg ellipse,
+    .badge--omni-l .badge__icon svg line,
+    .badge--omni-l .badge__icon svg polyline,
+    .badge--omni-l .badge__icon svg rect,
+    .badge--omni-l .badge__icon svg polygon,
+    .badge--omni-r .badge__icon svg path,
+    .badge--omni-r .badge__icon svg circle,
+    .badge--omni-r .badge__icon svg ellipse,
+    .badge--omni-r .badge__icon svg line,
+    .badge--omni-r .badge__icon svg polyline,
+    .badge--omni-r .badge__icon svg rect,
+    .badge--omni-r .badge__icon svg polygon,
+    .badge--result .badge__icon svg path,
+    .badge--result .badge__icon svg circle,
+    .badge--result .badge__icon svg ellipse,
+    .badge--result .badge__icon svg line,
+    .badge--result .badge__icon svg polyline,
+    .badge--result .badge__icon svg rect,
+    .badge--result .badge__icon svg polygon { stroke: #aaff2e; }
     .title-block .txt-intro { font-size: 38px; }
     .title-block .txt-bold  { font-size: 34px; line-height: 1; }
     .title-block .txt-outro { font-size: 38px; }

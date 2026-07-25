@@ -2073,6 +2073,37 @@ li {
     fill: none;
 }
 
+/* Some Lottie icons bake an explicit stroke="..." attribute onto
+   individual paths (not just fill) — an ancestor-level `stroke` (the
+   .badge--dark/.badge--light rules above) only reaches descendants
+   through inheritance, which a shape's OWN attribute always wins over,
+   the same way its own fill attribute would if the rule above didn't
+   already target these shapes directly. Mirrors that same fill:none
+   pattern for stroke so every shape recolors regardless of what its
+   source JSON baked in — otherwise a badge whose background flips
+   (mobile alternation, see responsive.css) can leave a few paths stuck
+   in their original near-black/near-white color, unreadable against
+   the new background. */
+.badge--dark .badge__icon svg path,
+.badge--dark .badge__icon svg circle,
+.badge--dark .badge__icon svg ellipse,
+.badge--dark .badge__icon svg line,
+.badge--dark .badge__icon svg polyline,
+.badge--dark .badge__icon svg rect,
+.badge--dark .badge__icon svg polygon {
+    stroke: #aaff2e;
+}
+
+.badge--light .badge__icon svg path,
+.badge--light .badge__icon svg circle,
+.badge--light .badge__icon svg ellipse,
+.badge--light .badge__icon svg line,
+.badge--light .badge__icon svg polyline,
+.badge--light .badge__icon svg rect,
+.badge--light .badge__icon svg polygon {
+    stroke: #111111;
+}
+
 
 /* === ANIMATIONS === */
 @keyframes revealUp {
