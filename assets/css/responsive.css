@@ -839,9 +839,15 @@
     .footer-address         { order: 3; }
     .footer-right           { order: 4; }
     .footer-illus           { order: 5; margin-top: 0; }
-    .footer-heading         { font-size: 28px; }
-    .footer-heading span.italic { font-size: 34px; }
-    .footer-desc            { max-width: 100%; }
+    .footer-heading         { font-size: 32px; }
+    .footer-heading span.italic { font-size: 38px; }
+    /* footer-desc's own margin-bottom:36px (main.css, unconditional) used
+       to be the ONLY spacing before the CTA button. Now that footer-left
+       is display:contents, footer-inner's own flex gap (40px above) ALSO
+       applies between them, stacking on top of that margin for a much
+       bigger gap than intended (76px) — zeroed here so the gap comes from
+       one source only. */
+    .footer-desc            { max-width: 100%; margin-bottom: 0; }
     .footer-address-label   { font-size: 18px; }
     .footer-address p       { font-size: 16px; }
     .footer-nav-link        { font-size: 20px; padding: 32px 0; }
@@ -980,8 +986,8 @@
 
     /* Footer */
     .footer-inner   { gap: 32px; }
-    .footer-heading { font-size: 24px; }
-    .footer-heading span.italic { font-size: 28px; }
+    .footer-heading { font-size: 28px; }
+    .footer-heading span.italic { font-size: 32px; }
     .footer-desc    { font-size: 15px; }
     .footer-nav-link { font-size: 18px; padding: 26px 0; }
     .footer-socials-pill    { height: 54px; }
@@ -1202,8 +1208,8 @@
     .main-title { font-size: 34px; }
 
     /* Footer */
-    .footer-heading { font-size: 20px; }
-    .footer-heading span.italic { font-size: 24px; }
+    .footer-heading { font-size: 24px; }
+    .footer-heading span.italic { font-size: 28px; }
     .footer-cta-btn   { font-size: 14px; padding: 8px 10px 8px 20px; }
     .footer-cta-arrow { width: 34px; height: 34px; }
     .footer-contact-label { font-size: 15px; }
