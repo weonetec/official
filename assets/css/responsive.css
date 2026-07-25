@@ -455,9 +455,12 @@
    1399-991px  –  What We Do feature pointers, single column
    Only in this range: the 4 feature-item pointers stack vertically,
    one after another, instead of the 2-column layout used above 1399
-   and restored again at ≤991px (see that block further down).
+   and restored again at ≤991px (see that block further down). The
+   service-desc paragraph also gets a shorter max-width here, only in
+   this range, narrower than main.css's own base 400px cap.
 ───────────────────────────────────────────────────────── */
 @media (max-width: 1399px) and (min-width: 991px) {
+    .service-desc              { max-width: 320px; }
     .feature-row               { display: flex; flex-direction: column; flex-wrap: nowrap; margin-bottom: 6px; }
     .feature-row .feature-item { flex: 0 0 100%; max-width: 100%; font-size: 12.5px; gap: 8px; margin-bottom: 12px; padding-right: 0; }
 }
