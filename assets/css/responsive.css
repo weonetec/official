@@ -301,6 +301,31 @@
     @keyframes card-pendulum-3 { 0%, 100% { transform: translateX(0) rotate(0deg); }   50% { transform: translateX(0) rotate(6deg); } }
     @keyframes card-pendulum-4 { 0%, 100% { transform: translateX(0) rotate(18deg); }  50% { transform: translateX(0) rotate(12deg); } }
     @keyframes card-pendulum-5 { 0%, 100% { transform: translateX(0) rotate(-11deg); } 50% { transform: translateX(0) rotate(-17deg); } }
+
+    /* Service cards (.what_we_do) — unified from here down to the
+       narrowest phone (previously two separate tiers, one at <=991px
+       and a tighter one at <=767px; merged into one so 764-1399px reads
+       identically to the <=767px phone layout instead of a looser
+       in-between size). min-height:auto/.content-wrap here are the
+       <=991px tier's own contribution (desktop's .service-card is a
+       fixed min-height:400px for the side-by-side layout; stacked
+       content below that needs to size to itself instead) — everything
+       else is the former <=767px tier's values as-is. */
+    .service-card              { min-height: auto; padding: 20px; border-radius: 20px; }
+    .content-wrap              { max-width: 100%; }
+    .service-title             { font-size: 20px; margin-bottom: 8px; }
+    .service-desc              { font-size: 13.5px; line-height: 1.55; margin-bottom: 14px; }
+    .feature-row               { display: flex; flex-wrap: wrap; margin-bottom: 6px; }
+    .feature-row .feature-item { flex: 0 0 50%; max-width: 50%; font-size: 12.5px; gap: 8px; margin-bottom: 12px; padding-right: 6px; }
+    .service-btn               { padding: 8px 12px 8px 16px; font-size: 13px; }
+    .service-btn .service-btn-icon img { width: 18px; }
+    .gradient-box              { margin-top: 18px; }
+    .gradient-box img          { width: 100%; max-height: 100%; }
+    .sc                        { margin-bottom: 36px; }
+    .sc:nth-child(1) { top: 36px;  }
+    .sc:nth-child(2) { top: 90px;  }
+    .sc:nth-child(3) { top: 142px; }
+    .sc:nth-child(4) { top: 195px; }
 }
 
 
@@ -591,24 +616,9 @@
     .stack-text .stacking_text             { font-size: 56px; }
     .stack-text .stacking_text .neon-green { font-size: 76px; }
 
-    /* Service cards (.what_we_do) — the sticky peek-stack effect stays on
-       tab/phone, but the card content (side-by-side on desktop) stacks
-       into one tall column here, so it's shrunk/tightened to keep the
-       peek-stack rhythm (.sc top offsets) proportionate and readable. */
-    .service-card            { min-height: auto; padding: 24px; border-radius: 22px; }
-    .content-wrap            { max-width: 100%; }
-    .service-title           { font-size: 24px; margin-bottom: 10px; }
-    .service-desc            { font-size: 15px; line-height: 1.6; margin-bottom: 16px; max-width: 100%; }
-    .feature-row              { margin-bottom: 10px; }
-    .feature-item             { font-size: 14px; gap: 10px; margin-bottom: 14px; }
-    .service-btn              { padding: 9px 14px 9px 18px; font-size: 14px; }
-    .gradient-box            { margin-top: 20px; }
-    .gradient-box img        { width: 100%; height: auto; max-height: 200px; object-fit: contain; }
-    .sc                      { margin-bottom: 60px; }
-    .sc:nth-child(1) { top: 60px;  }
-    .sc:nth-child(2) { top: 110px; }
-    .sc:nth-child(3) { top: 160px; }
-    .sc:nth-child(4) { top: 210px; }
+    /* Service cards (.what_we_do) — now unified into a single tier that
+       starts at <=1399px (see that block above), so nothing needs
+       restating here. */
 
     /* Design future — the vertical-stack/pendulum ruleset that used to live
        here moved to the ≤1399px block above (see comment there for why),
@@ -740,25 +750,9 @@
     .stack-text .stacking_text             { font-size: 42px; }
     .stack-text .stacking_text .neon-green { font-size: 56px; }
 
-    /* Service cards (.what_we_do) — phones are narrower than tablets, so
-       the feature list (1-per-row by default below Bootstrap's md
-       breakpoint) is forced back to 2 columns to keep the card shorter,
-       plus a further size/spacing trim so the peek-stack still reads
-       cleanly at this height. */
-    .service-card             { padding: 20px; border-radius: 20px; }
-    .service-title            { font-size: 20px; margin-bottom: 8px; }
-    .service-desc             { font-size: 13.5px; line-height: 1.55; margin-bottom: 14px; }
-    .feature-row               { display: flex; flex-wrap: wrap; margin-bottom: 6px; }
-    .feature-row .feature-item { flex: 0 0 50%; max-width: 50%; font-size: 12.5px; gap: 8px; margin-bottom: 12px; padding-right: 6px; }
-    .service-btn               { padding: 8px 12px 8px 16px; font-size: 13px; }
-    .service-btn .service-btn-icon img { width: 18px; }
-    .gradient-box             { margin-top: 18px; }
-    .gradient-box img         { width: 100%; max-height: 100%; }
-    .sc                       { margin-bottom: 36px; }
-    .sc:nth-child(1) { top: 36px; }
-    .sc:nth-child(2) { top: 90px; }
-    .sc:nth-child(3) { top: 142px; }
-    .sc:nth-child(4) { top: 195px; }
+    /* Service cards (.what_we_do) — now unified into a single tier that
+       starts at <=1399px (see that block above), so nothing needs
+       restating here. */
 
     /* stack-section's own left/right padding compounds with the
        .container/.row/.col-lg-10 gutters above it, squeezing the card
