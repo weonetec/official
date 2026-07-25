@@ -623,7 +623,7 @@
        here moved to the ≤1399px block above (see comment there for why),
        since it now needs to apply well above this 991px tier too. Only the
        progressive font-size tuning for this narrower tier stays. */
-    .designFuture .wetitle { font-size: 52px; line-height: 58px; }
+    .designFuture .wetitle { font-size: 52px; line-height: 1.05; }
     .by-category   { font-size: 48px; }
     .category-item { font-size: 18px; }
     .category-item.ui-ux      { padding-left: 100px; }
@@ -759,7 +759,7 @@
     .stack-section { padding: 0; }
 
     /* Design future */
-    .designFuture .wetitle { font-size: 36px; line-height: 42px; }
+    .designFuture .wetitle { font-size: 36px; line-height: 1.05; }
     .card                   { max-width: 250px; min-height: 170px; padding: 20px 18px 18px; }
     .card-icon              { width: 84px; height: 84px; }
     .by-category           { font-size: 34px; }
@@ -1014,7 +1014,7 @@
     .stack-text .stacking_text .neon-green { font-size: 46px; }
 
     /* Design future */
-    .designFuture .wetitle { font-size: 28px; line-height: 34px; }
+    .designFuture .wetitle { font-size: 28px; line-height: 1.05; }
     .card                   { max-width: 230px; min-height: 155px; }
     .card-icon              { width: 72px; height: 72px; }
     .by-category           { font-size: 26px; }
