@@ -54,8 +54,7 @@
     right: 0;
     z-index: 900;
     padding: 14px 20px calc(14px + env(safe-area-inset-bottom));
-    background: #0a0a0a;
-    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    background: transparent;
 }
 
 /* Button keeps its natural pill size (same as the header's version)
