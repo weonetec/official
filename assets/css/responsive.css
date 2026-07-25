@@ -437,8 +437,9 @@
     .content-wrap              { max-width: 100%; }
     .service-title             { font-size: 20px; margin-bottom: 8px; }
     .service-desc              { font-size: 13.5px; line-height: 1.55; margin-bottom: 14px; }
-    .feature-row               { display: flex; flex-wrap: wrap; margin-bottom: 6px; }
-    .feature-row .feature-item { flex: 0 0 50%; max-width: 50%; font-size: 12.5px; gap: 8px; margin-bottom: 12px; padding-right: 6px; }
+    /* .feature-row/.feature-item's column count is NOT unified here —
+       see the dedicated 1399-991px block below and the restored 2-column
+       rule in the ≤991px block further down this file. */
     .service-btn               { padding: 8px 12px 8px 16px; font-size: 13px; }
     .service-btn .service-btn-icon img { width: 18px; }
     .gradient-box              { margin-top: 18px; }
@@ -447,6 +448,18 @@
     .sc:nth-child(2) { top: 90px;  }
     .sc:nth-child(3) { top: 142px; }
     .sc:nth-child(4) { top: 195px; }
+}
+
+
+/* ─────────────────────────────────────────────────────────
+   1399-991px  –  What We Do feature pointers, single column
+   Only in this range: the 4 feature-item pointers stack vertically,
+   one after another, instead of the 2-column layout used above 1399
+   and restored again at ≤991px (see that block further down).
+───────────────────────────────────────────────────────── */
+@media (max-width: 1399px) and (min-width: 991px) {
+    .feature-row               { display: flex; flex-direction: column; flex-wrap: nowrap; margin-bottom: 6px; }
+    .feature-row .feature-item { flex: 0 0 100%; max-width: 100%; font-size: 12.5px; gap: 8px; margin-bottom: 12px; padding-right: 0; }
 }
 
 
@@ -610,6 +623,15 @@
    ≤ 991px  –  Tablet / Bootstrap lg breakpoint
 ───────────────────────────────────────────────────────── */
 @media (max-width: 991px) {
+
+    /* What We Do feature pointers — back to 2 columns here (matches
+       everything above 1399px too); the 1399-991px block above is the
+       only range that stacks these vertically. flex-direction must be
+       reset explicitly — the column value from that block otherwise
+       cascades straight through, since this rule never used to need
+       to touch that property before that block existed. */
+    .feature-row               { display: flex; flex-direction: row; flex-wrap: wrap; margin-bottom: 6px; }
+    .feature-row .feature-item { flex: 0 0 50%; max-width: 50%; font-size: 12.5px; gap: 8px; margin-bottom: 12px; padding-right: 6px; }
 
     /* ── Mobile hamburger visible ── */
     .mob-nav-toggle { display: flex; }
