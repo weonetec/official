@@ -59,9 +59,29 @@
 }
 
 /* Button keeps its natural pill size (same as the header's version)
-   instead of stretching edge to edge across the bar. */
+   instead of stretching edge to edge across the bar. Solid pill
+   with a black stroke instead of the header version's transparent/
+   glow treatment, and the glow/inner-shadow blur layers it inherits
+   from the shared .cta-btn class are switched off to keep it flat. */
 .mobile-sticky-cta .cta-btn {
     width: auto;
+    background: #B2DF48;
+    color: #000;
+    border: 1.5px solid #000;
+}
+.mobile-sticky-cta .cta-btn:hover {
+    color: #000;
+    border-color: #000;
+}
+.mobile-sticky-cta .cta-btn .cta-icon svg path {
+    fill: #000;
+}
+.mobile-sticky-cta .cta-btn:hover .cta-icon svg path {
+    fill: #000;
+}
+.mobile-sticky-cta .cta-btn .btn-glow-layer,
+.mobile-sticky-cta .cta-btn .btn-inner-shadow.mini {
+    display: none;
 }
 
 /* ─────────────────────────────────────────────────────────
