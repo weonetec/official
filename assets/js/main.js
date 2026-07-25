@@ -411,12 +411,41 @@ window.addEventListener('scroll', function () {
     var closeBtn = document.querySelector('.mob-nav-close');
     if (!toggle || !overlay || !drawer) return;
 
+    // Stagger the links + CTA in on open (GSAP is already loaded site-wide
+    // for the hero/ScrollTrigger work). The CSS never sets these hidden by
+    // default, so if GSAP is absent the drawer still renders fully visible
+    // — this is a pure enhancement, not a dependency.
+    var navItems = drawer.querySelectorAll('ul li, .mob-nav-cta');
+    var hasGSAP = typeof gsap !== 'undefined';
+    var prefersReducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var revealTween = null;
+
+    function playReveal() {
+        if (!hasGSAP || prefersReducedMotion) return;
+        if (revealTween) revealTween.kill();
+        revealTween = gsap.fromTo(navItems,
+            { opacity: 0, y: 22, filter: 'blur(6px)' },
+            {
+                opacity: 1,
+                y: 0,
+                filter: 'blur(0px)',
+                duration: 0.55,
+                ease: 'power3.out',
+                stagger: 0.08,
+                delay: 0.15,
+                overwrite: true,
+                clearProps: 'filter'
+            }
+        );
+    }
+
     function openNav() {
         toggle.classList.add('open');
         overlay.style.display = 'block';
         drawer.classList.add('open');
         document.body.style.overflow = 'hidden';
         requestAnimationFrame(function () { overlay.classList.add('active'); });
+        playReveal();
     }
 
     function closeNav() {
@@ -428,6 +457,10 @@ window.addEventListener('scroll', function () {
             overlay.style.display = 'none';
             overlay.removeEventListener('transitionend', handler);
         });
+        if (hasGSAP) {
+            if (revealTween) { revealTween.kill(); revealTween = null; }
+            gsap.set(navItems, { clearProps: 'opacity,transform,filter' });
+        }
     }
 
     toggle.addEventListener('click', function () {

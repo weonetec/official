@@ -66,6 +66,9 @@
 
 /* ─────────────────────────────────────────────────────────
    MOBILE NAV DRAWER — base styles (must come before media queries)
+   Modern frosted-glass drawer: translucent blurred/saturated panel,
+   a gradient edge glow that sweeps once on open, auto-numbered links
+   via a CSS counter, and a slide-in arrow on hover/tap.
 ───────────────────────────────────────────────────────── */
 
 /* Hamburger button – hidden by default, shown at ≤991px */
@@ -77,51 +80,64 @@
     gap: 5px;
     width: 38px;
     height: 38px;
-    background: transparent;
+    background: rgba(255, 255, 255, 0.03);
     border: 1.5px solid rgba(255,255,255,0.18);
     border-radius: 10px;
     cursor: pointer;
     padding: 4px;
     z-index: 1001;
     flex-shrink: 0;
-    transition: border-color 0.2s;
+    transition: border-color 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
 }
 .mob-nav-toggle:hover { border-color: rgba(255,255,255,0.45); }
+.mob-nav-toggle.open {
+    border-color: rgba(178, 223, 72, 0.55);
+    background: rgba(178, 223, 72, 0.08);
+    box-shadow: 0 0 0 4px rgba(178, 223, 72, 0.08), 0 0 18px rgba(178, 223, 72, 0.25);
+}
 .mob-nav-toggle span {
     display: block;
     width: 20px;
     height: 2px;
     background: #fff;
     border-radius: 2px;
-    transition: transform 0.3s ease, opacity 0.2s ease;
+    transition: transform 0.3s ease, opacity 0.2s ease, background 0.25s ease;
     transform-origin: center;
 }
+.mob-nav-toggle.open span { background: #B2DF48; }
 .mob-nav-toggle.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
 .mob-nav-toggle.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
 .mob-nav-toggle.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
 
-/* Overlay */
+/* Overlay — a faint green cast from the top-right (where the drawer
+   docks) so the dimmed page reads as part of the same glass
+   composition rather than a flat scrim. */
 .mob-nav-overlay {
     display: none;
     position: fixed;
     inset: 0;
-    background: rgba(0,0,0,0.55);
+    background: radial-gradient(120% 100% at 100% 0%, rgba(178, 223, 72, 0.05), rgba(0, 0, 0, 0.6) 55%);
     z-index: 998;
     opacity: 0;
-    transition: opacity 0.3s ease;
-    backdrop-filter: blur(2px);
+    transition: opacity 0.35s ease;
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
 }
 .mob-nav-overlay.active { opacity: 1; }
 
-/* Drawer panel */
+/* Drawer panel — frosted glass card, rounded on its left edge only
+   (right edge is flush with the viewport edge). */
 .mob-nav-drawer {
     position: fixed;
     top: 0;
     right: 0;
     width: min(300px, 88vw);
     height: 100dvh;
-    background: #0d0d0d;
-    border-left: 1px solid rgba(255,255,255,0.07);
+    background:
+        linear-gradient(155deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0) 40%),
+        linear-gradient(175deg, rgba(20, 20, 20, 0.72) 0%, rgba(8, 8, 8, 0.88) 100%);
+    border-left: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 20px 0 0 20px;
     z-index: 999;
     padding: 90px 36px 40px;
     /* translateX(105%) only cleared its own box by 5% of its width (15px
@@ -133,12 +149,51 @@
        of 100% guarantees real clearance regardless of the drawer's own
        width (which itself varies, min(300px, 88vw)) or any rounding. */
     transform: translateX(calc(100% + 40px));
-    transition: transform 0.38s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: transform 0.45s cubic-bezier(0.4, 0, 0.2, 1);
     display: flex;
     flex-direction: column;
     gap: 0;
+    backdrop-filter: blur(22px) saturate(150%);
+    -webkit-backdrop-filter: blur(22px) saturate(150%);
+    box-shadow:
+        -60px 0 90px -30px rgba(178, 223, 72, 0.22),
+        -12px 0 40px -10px rgba(124, 255, 0, 0.14),
+        inset 0 1px 0 rgba(255, 255, 255, 0.08);
 }
 .mob-nav-drawer.open { transform: translateX(0); }
+
+/* Fallback for browsers without backdrop-filter support: keep the
+   panel legible with a plain solid gradient instead of glass. */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+    .mob-nav-drawer { background: linear-gradient(175deg, #171717 0%, #0a0a0a 100%); }
+}
+
+/* Gradient edge glow — a 1.5px hairline traced around the panel via a
+   padding + mask-composite trick (no extra wrapper element needed).
+   Sweeps once via a background-position transition when the drawer
+   opens, then holds — an "alive" glass edge without paying for
+   continuous repaints under the 22px blur for as long as the menu
+   stays open. */
+.mob-nav-drawer::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1.5px;
+    background: linear-gradient(120deg, rgba(178, 223, 72, 0.9), rgba(124, 255, 0, 0.25) 30%, rgba(255, 255, 255, 0.35) 55%, rgba(178, 223, 72, 0.8) 100%);
+    background-size: 240% 240%;
+    background-position: 0% 50%;
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+    z-index: 2;
+    transition: background-position 1.2s ease;
+}
+.mob-nav-drawer.open::before { background-position: 100% 50%; }
+@media (prefers-reduced-motion: reduce) {
+    .mob-nav-drawer::before { transition: none; }
+}
 
 /* Explicit close control — the hamburger button also morphs into an X and
    still works (it sits above the drawer, z-index 1001 vs 999), but that's
@@ -161,37 +216,81 @@
     justify-content: center;
     cursor: pointer;
     padding: 0;
-    transition: background 0.2s, border-color 0.2s, color 0.2s;
+    z-index: 3;
+    transition: background 0.2s, border-color 0.2s, color 0.2s, transform 0.3s ease;
 }
-.mob-nav-close:hover {
-    background: rgba(178, 223, 72, 0.12);
+.mob-nav-close:hover,
+.mob-nav-close:active {
+    background: rgba(178, 223, 72, 0.14);
     border-color: #B2DF48;
     color: #B2DF48;
+    transform: rotate(90deg);
 }
 
+/* Nav list — each link auto-numbers itself via a CSS counter (no
+   hardcoded "01/02/03" in the markup, so adding/removing a link
+   renumbers everything automatically) and reveals a trailing arrow
+   icon on hover/tap. */
 .mob-nav-drawer ul {
     list-style: none;
     margin: 0;
     padding: 0;
     display: flex;
     flex-direction: column;
+    counter-reset: mobNavCount;
+    position: relative;
+    z-index: 3;
+}
+.mob-nav-drawer ul li {
+    counter-increment: mobNavCount;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.07);
 }
 .mob-nav-drawer ul li a {
-    display: block;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    width: 100%;
     font-size: 26px;
     font-weight: 800;
     color: #fff;
     text-decoration: none;
     padding: 16px 0;
-    border-bottom: 1px solid rgba(255,255,255,0.07);
-    transition: color 0.2s, padding-left 0.2s;
+    transition: color 0.25s ease, gap 0.25s ease;
     font-family: 'Satoshi-Variable', sans-serif;
     letter-spacing: -0.02em;
 }
-.mob-nav-drawer ul li a:hover {
+.mob-nav-drawer ul li a::before {
+    content: counter(mobNavCount, decimal-leading-zero);
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
     color: #B2DF48;
-    padding-left: 8px;
+    opacity: 0.75;
+    transition: opacity 0.25s ease, transform 0.25s ease;
 }
+.mob-nav-drawer ul li a .mob-nav-arrow {
+    margin-left: auto;
+    font-size: 20px;
+    opacity: 0;
+    transform: translate(-6px, 6px) rotate(-20deg);
+    transition: opacity 0.25s ease, transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), color 0.25s ease;
+}
+.mob-nav-drawer ul li a:hover,
+.mob-nav-drawer ul li a:active { color: #B2DF48; gap: 18px; }
+.mob-nav-drawer ul li a:hover::before,
+.mob-nav-drawer ul li a:active::before { opacity: 1; transform: translateY(-3px); }
+.mob-nav-drawer ul li a:hover .mob-nav-arrow,
+.mob-nav-drawer ul li a:active .mob-nav-arrow {
+    opacity: 1;
+    transform: translate(0, 0) rotate(0deg);
+    color: #B2DF48;
+}
+
+/* Current page — mirrors the desktop header nav's .active state,
+   permanently highlighted rather than only on hover/tap */
+.mob-nav-drawer ul li a.active { color: #B2DF48; }
+.mob-nav-drawer ul li a.active::before { opacity: 1; }
+.mob-nav-drawer ul li a.active .mob-nav-arrow { opacity: 0.6; transform: translate(0, 0) rotate(0deg); }
 
 .mob-nav-cta {
     display: inline-flex;
@@ -206,10 +305,13 @@
     border-radius: 40px;
     text-decoration: none;
     width: fit-content;
-    transition: opacity 0.2s;
+    transition: opacity 0.2s, transform 0.2s ease;
     font-family: 'Satoshi-Variable', sans-serif;
+    position: relative;
+    z-index: 3;
+    box-shadow: 0 8px 26px -10px rgba(178, 223, 72, 0.55);
 }
-.mob-nav-cta:hover { opacity: 0.88; color: #000; }
+.mob-nav-cta:hover { opacity: 0.88; color: #000; transform: translateY(-1px); }
 
 
 /* ── Container max-width overrides ── */
