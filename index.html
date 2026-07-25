@@ -1534,9 +1534,19 @@
     </script> -->
     <script>
         const lenis = new Lenis({
-            duration: 1.2,
-            easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
             smooth: true,
+            // duration/easing used to be set here for wheel scrolling. That
+            // forces Lenis onto its time-based fromTo() path instead of its
+            // default lerp/damp path — and fromTo() unconditionally resets
+            // to t=0 on every call. A wheel fires far more often than once
+            // per duration, so the eased curve was being restarted from its
+            // steep leading edge over and over, never reaching its settled
+            // tail: a real positional ratchet, invisible to frame-rate
+            // monitoring since every frame still renders on schedule — only
+            // the scroll value fed into it was wrong. lerp (below, via
+            // syncTouchLerp for touch and Lenis's own default for wheel)
+            // instead nudges toward an ever-updating target every tick, so
+            // a rapid stream of wheel events never restarts anything.
             // syncTouch (not the old "smoothTouch" key, which this Lenis
             // version doesn't read at all) routes touch scrolling through
             // Lenis's own rAF-driven loop instead of raw native scroll
