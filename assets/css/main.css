@@ -287,6 +287,18 @@ li {
     position: relative;
 }
 
+/* Below ~1550px (until the <=1199px breakpoint switches this to an
+   icon-only button, see responsive.css) the header's col-lg-2 CTA
+   column gets narrow enough that its content-box falls just a few
+   pixels short of "Get A Call Back"'s natural width — flexbox's
+   default white-space:normal lets the label wrap into two lines
+   there instead of overflowing by that same few pixels. nowrap keeps
+   it on one line; the sliver of overflow this allows is absorbed by
+   the column's own right-alignment, not visible. */
+.site-header .header-cta .cta-btn {
+    white-space: nowrap;
+}
+
 /* =========================
    CTA Button Base
 ========================= */
