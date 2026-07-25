@@ -433,13 +433,17 @@ li {
 /* Tall spacer .intro (position:sticky) travels through — see the comment
    there for why this replaced GSAP's JS-driven pin. Height is .intro's own
    height (the "stuck" box itself) PLUS the extra scroll distance the
-   scroll-scrubbed text reveal needs (2400px — keep in sync with
-   PIN_LENGTH in index.html) — mirrors .intro's own height at each
-   breakpoint below, see responsive.css for the mobile/tablet version of
-   this same pairing. */
+   pinned hero sequence needs (3000px — keep in sync with
+   TOTAL_SCROLL_LENGTH in index.html, NOT the bare PIN_LENGTH constant —
+   the text tween itself only uses the first 2400px of this; the
+   remaining 600px is dead scroll room reserved purely for the card
+   show/hide handoff + dwell time, so it can sit comfortably past where
+   the text is guaranteed to have finished) — mirrors .intro's own
+   height at each breakpoint below, see responsive.css for the
+   mobile/tablet version of this same pairing. */
 .hero-scroll-space {
     position: relative;
-    height: calc(100vh + 2400px);
+    height: calc(100vh + 3000px);
 }
 
 /* Beats the generic .section padding (declared later in this file, same
