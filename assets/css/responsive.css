@@ -320,7 +320,7 @@
     .service-btn               { padding: 8px 12px 8px 16px; font-size: 13px; }
     .service-btn .service-btn-icon img { width: 18px; }
     .gradient-box              { margin-top: 18px; }
-    .gradient-box img          { width: 100%; max-height: 100%; }
+    .gradient-box img          { width: 100%; max-height: 100%; object-fit: cover; }
     .sc                        { margin-bottom: 36px; }
     .sc:nth-child(1) { top: 36px;  }
     .sc:nth-child(2) { top: 90px;  }
