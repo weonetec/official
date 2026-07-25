@@ -692,7 +692,7 @@ li {
        to the exit too meant the last card could stay lingering at near-
        full opacity for over a second while the text had already faded
        most of the way in, an ugly, staggered overlap. */
-    transition: transform 0.5s ease, box-shadow 0.4s ease, border-color 0.4s ease, opacity 0.5s ease;
+    transition: transform 0.5s ease, box-shadow 0.4s ease, border-color 0.4s ease, opacity 0.5s ease, background 0.4s ease;
     /* Hidden until scrolled into place (see .is-visible below) — pure CSS,
        so the reveal doesn't depend on GSAP's ticker still being alive. */
     opacity: 0;
@@ -705,8 +705,11 @@ li {
     /* Entrance only — a bit slower and unstaggered here at the base level;
        the per-card stagger delay lives on .swiper-slide:nth-child(N)
        .value-card.is-visible below, so it likewise only ever applies while
-       entering, never while exiting. */
-    transition: transform 1s ease, box-shadow 0.4s ease, border-color 0.4s ease, opacity 1s ease;
+       entering, never while exiting. background here (not in the entrance
+       list above) is what the hover glow tint actually animates through
+       while a card is visible — without it the hover background swap
+       snapped instantly instead of fading. */
+    transition: transform 1s ease, box-shadow 0.4s ease, border-color 0.4s ease, opacity 1s ease, background 0.4s ease;
 }
 
 .value-card:before {
@@ -722,6 +725,10 @@ li {
     pointer-events: none;
     z-index: -1;
     opacity: 13%;
+    /* The hover glow (.value-card:hover::before below) swaps this to a
+       green gradient at higher opacity — without a transition here that
+       swap snapped instantly instead of fading in. */
+    transition: background 0.4s ease, opacity 0.4s ease;
 }
 
 
@@ -763,6 +770,9 @@ li {
     pointer-events: none;
     z-index: -1;
     opacity: 13%;
+    /* Same reasoning as .value-card:before — the hover glow swap
+       (.value-card:hover .value-icon::before below) needs this to fade. */
+    transition: background 0.4s ease, opacity 0.4s ease;
 }
 
 .value-lottie {
