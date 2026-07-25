@@ -824,7 +824,7 @@
     .custom-accord .accordion-button:not(.collapsed) { font-size: 19px; }
 
     /* Footer – stack vertically */
-    .footer-inner           { flex-direction: column; gap: 40px; }
+    .footer-inner           { flex-direction: column; gap: 20px; }
     /* Move the illustration to the very end of the stacked footer (after
        footer-right's nav/socials/contact) — display:contents "unwraps"
        footer-left so its children become direct flex items of
@@ -839,14 +839,16 @@
     .footer-address         { order: 3; }
     .footer-right           { order: 4; }
     .footer-illus           { order: 5; margin-top: 0; }
-    .footer-heading         { font-size: 32px; }
+    .footer-heading         { font-size: 32px; margin-bottom: 8px; }
     .footer-heading span.italic { font-size: 38px; }
     /* footer-desc's own margin-bottom:36px (main.css, unconditional) used
        to be the ONLY spacing before the CTA button. Now that footer-left
-       is display:contents, footer-inner's own flex gap (40px above) ALSO
-       applies between them, stacking on top of that margin for a much
-       bigger gap than intended (76px) — zeroed here so the gap comes from
-       one source only. */
+       is display:contents, footer-inner's own flex gap above ALSO applies
+       between them, stacking on top of that margin — zeroed here so the
+       gap comes from one source only. Same reasoning for footer-heading's
+       own margin-bottom (18px in main.css), reduced above instead of
+       zeroed since the heading needs a little breathing room from the
+       italic "ART." accent's descender. */
     .footer-desc            { max-width: 100%; margin-bottom: 0; }
     .footer-address-label   { font-size: 18px; }
     .footer-address p       { font-size: 16px; }
@@ -985,7 +987,7 @@
     .coming-wrapper { padding: 40px 16px; border-radius: 20px; }
 
     /* Footer */
-    .footer-inner   { gap: 32px; }
+    .footer-inner   { gap: 16px; }
     .footer-heading { font-size: 28px; }
     .footer-heading span.italic { font-size: 32px; }
     .footer-desc    { font-size: 15px; }
