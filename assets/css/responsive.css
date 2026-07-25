@@ -47,6 +47,7 @@
 ───────────────────────────────────────────────────────── */
 .mobile-sticky-cta {
     display: none;
+    justify-content: center;
     position: fixed;
     bottom: 0;
     left: 0;
@@ -57,9 +58,10 @@
     border-top: 1px solid rgba(255, 255, 255, 0.08);
 }
 
+/* Button keeps its natural pill size (same as the header's version)
+   instead of stretching edge to edge across the bar. */
 .mobile-sticky-cta .cta-btn {
-    width: 100%;
-    justify-content: center;
+    width: auto;
 }
 
 /* ─────────────────────────────────────────────────────────
