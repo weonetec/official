@@ -1,12 +1,18 @@
 RewriteEngine On
 
-# index.html -> the directory's own root (avoids two URLs for the homepage)
-RewriteCond %{THE_REQUEST} \s/+index\.html[\s?] [NC]
-RewriteRule ^index\.html$ ./ [NC,L,R=301]
+# index.html -> the directory it lives in (avoids two URLs for the homepage).
+# %1 captures everything BEFORE "index.html" (e.g. "test/" or "" at true
+# root) from the ORIGINAL request line, so the substitution is an absolute
+# path ("/%1") regardless of how deep this site is deployed - not a
+# relative one, which Apache would otherwise re-prepend the current
+# directory to, doubling it (this exact bug shipped once already).
+RewriteCond %{THE_REQUEST} \s/+(.*)index\.html[\s?] [NC]
+RewriteRule ^ /%1 [NC,L,R=301]
 
-# Visible redirect: page.html -> page (so the address bar updates)
-RewriteCond %{THE_REQUEST} \s/+([^.\s]+)\.html[\s?] [NC]
-RewriteRule ^ %1 [NC,L,R=301]
+# Visible redirect: page.html -> page (so the address bar updates).
+# Same absolute-path reasoning as above.
+RewriteCond %{THE_REQUEST} \s/+(.*)\.html[\s?] [NC]
+RewriteRule ^ /%1 [NC,L,R=301]
 
 # Internal rewrite: page -> page.html (serves the file, URL stays clean)
 RewriteCond %{REQUEST_FILENAME} !-f
