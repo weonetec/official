@@ -73,13 +73,10 @@
             width: 100%;
         }
 
-        /* Font-size steps mirror the home page's .hero-title exactly
-           (same clamp values at the same 991/767/575 breakpoints) so
-           this heading renders at the same height as the home hero. */
         .work-hero-headline h1 {
             font-family: 'Satoshi-Variable';
             font-weight: 800;
-            font-size: clamp(72px, 12vw, 96px);
+            font-size: 75px;
             line-height: 1;
             text-transform: uppercase;
             letter-spacing: -0.02em;
@@ -278,13 +275,15 @@
 
         /* ── Tablet landscape (≤1200px) ── */
         @media (max-width: 1200px) {
+            .work-hero-headline h1 { font-size: 64px; }
+
             .wg-card { width: 360px; }
         }
 
         /* ── Tablet portrait (≤991px) ── */
         @media (max-width: 991px) {
             .work-hero-headline { padding: 100px 30px 32px; }
-            .work-hero-headline h1 { font-size: clamp(62px, 11vw, 88px); }
+            .work-hero-headline h1 { font-size: 52px; }
 
             /* Below this breakpoint the gallery drops the scroll-jack
                entirely (JS also skips creating the ScrollTrigger — see
@@ -317,20 +316,16 @@
 
         /* ── Mobile large (≤767px) ── */
         @media (max-width: 767px) {
-            .work-hero-headline h1  { font-size: clamp(49px, 12vw, 71px); }
+            .work-hero-headline h1  { font-size: clamp(36px, 10vw, 52px); }
             .work-hero-headline     { padding: 90px 16px 28px; }
 
             .work-gallery-section { padding: 20px 0 40px; }
         }
 
-        /* ── Mobile small (≤575px) — matches the home page's .hero-title
-           breakpoint exactly, so the heading stays the same height. ── */
-        @media (max-width: 575px) {
-            .work-hero-headline h1 { font-size: clamp(40px, 14vw, 55px); }
-        }
-
-        /* ── Mobile extra-small (≤480px) ── */
+        /* ── Mobile small (≤480px) ── */
         @media (max-width: 480px) {
+            .work-hero-headline h1 { font-size: clamp(28px, 9vw, 40px); }
+
             .wg-card { width: 260px; padding: 24px; }
             .wg-card-title { font-size: 17px; }
         }
