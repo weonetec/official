@@ -42,7 +42,6 @@
         /* ---- Hero Wrapper ---- */
         .work-hero {
             position: relative;
-            min-height: 100vh;
             background: #000;
             overflow: hidden;
             display: flex;
@@ -70,14 +69,17 @@
             z-index: 2;
             max-width: 1400px;
             margin: 0 auto;
-            padding: 110px 24px 80px;
+            padding: 110px 24px 40px;
             width: 100%;
         }
 
+        /* Font-size steps mirror the home page's .hero-title exactly
+           (same clamp values at the same 991/767/575 breakpoints) so
+           this heading renders at the same height as the home hero. */
         .work-hero-headline h1 {
             font-family: 'Satoshi-Variable';
             font-weight: 800;
-            font-size: 75px;
+            font-size: clamp(72px, 12vw, 96px);
             line-height: 1;
             text-transform: uppercase;
             letter-spacing: -0.02em;
@@ -110,7 +112,7 @@
         ========================================= */
         .work-gallery-section {
             background: #000;
-            padding: 100px 0 60px;
+            padding: 20px 0 60px;
         }
 
         /* Tall spacer — its extra height (beyond 100vh) is set by JS,
@@ -120,12 +122,16 @@
             position: relative;
         }
 
+        /* flex-start (not center) so the card row sits right at the top
+           of the pinned viewport box — i.e. right below the h1 — instead
+           of vertically centered with a big empty gap above it. */
         .wg-sticky {
             position: sticky;
             top: 0;
             height: 100vh;
             display: flex;
-            align-items: center;
+            align-items: flex-start;
+            padding-top: 24px;
             overflow: hidden;
         }
 
@@ -272,23 +278,13 @@
 
         /* ── Tablet landscape (≤1200px) ── */
         @media (max-width: 1200px) {
-            .work-hero-headline h1 { font-size: 64px; }
-
             .wg-card { width: 360px; }
         }
 
         /* ── Tablet portrait (≤991px) ── */
         @media (max-width: 991px) {
-            /* .work-hero had no mobile override at all, so it kept a plain
-               min-height:100vh. vh is pinned to the viewport with the
-               mobile browser's address bar hidden, so with the bar
-               showing the hero is taller than what's visible, then jumps
-               as the bar hides/shows on scroll. dvh tracks the real
-               visible viewport instead; vh stays first as a fallback. */
-            .work-hero { min-height: 100vh; min-height: 100dvh; }
-
-            .work-hero-headline { padding: 100px 30px 60px; }
-            .work-hero-headline h1 { font-size: 52px; }
+            .work-hero-headline { padding: 100px 30px 32px; }
+            .work-hero-headline h1 { font-size: clamp(62px, 11vw, 88px); }
 
             /* Below this breakpoint the gallery drops the scroll-jack
                entirely (JS also skips creating the ScrollTrigger — see
@@ -321,16 +317,20 @@
 
         /* ── Mobile large (≤767px) ── */
         @media (max-width: 767px) {
-            .work-hero-headline h1  { font-size: clamp(36px, 10vw, 52px); }
-            .work-hero-headline     { padding: 90px 16px 50px; }
+            .work-hero-headline h1  { font-size: clamp(49px, 12vw, 71px); }
+            .work-hero-headline     { padding: 90px 16px 28px; }
 
-            .work-gallery-section { padding: 60px 0 40px; }
+            .work-gallery-section { padding: 20px 0 40px; }
         }
 
-        /* ── Mobile small (≤480px) ── */
-        @media (max-width: 480px) {
-            .work-hero-headline h1 { font-size: clamp(28px, 9vw, 40px); }
+        /* ── Mobile small (≤575px) — matches the home page's .hero-title
+           breakpoint exactly, so the heading stays the same height. ── */
+        @media (max-width: 575px) {
+            .work-hero-headline h1 { font-size: clamp(40px, 14vw, 55px); }
+        }
 
+        /* ── Mobile extra-small (≤480px) ── */
+        @media (max-width: 480px) {
             .wg-card { width: 260px; padding: 24px; }
             .wg-card-title { font-size: 17px; }
         }
@@ -786,6 +786,23 @@
                 const driveLength = scrollAmount * 1.15;
                 scrollSpace.style.height = `calc(100vh + ${driveLength}px)`;
 
+                // "Flow" motion — a velocity-driven skew + blur on the
+                // track, echoing madrepunk.com's fast-scroll whoosh (its
+                // card row visibly warps/smears on a quick scroll, then
+                // settles flat once you slow down). skewProxy/blurProxy
+                // hold the current amount; a new scroll tick only starts
+                // a fresh decay-to-0 tween when its velocity is stronger
+                // than whatever's already decaying, so fast, repeated
+                // scroll ticks don't stack competing tweens — this is
+                // GSAP's own recipe for velocity-based skew.
+                const clampSkew = gsap.utils.clamp(-16, 16);
+                const skewProxy = { v: 0 };
+                const blurProxy = { v: 0 };
+                const applySkew = () => gsap.set(track, { skewX: skewProxy.v });
+                const applyBlur = () => {
+                    track.style.filter = blurProxy.v > 0.05 ? `blur(${blurProxy.v.toFixed(2)}px)` : '';
+                };
+
                 const tween = gsap.fromTo(track,
                     { x: 0 },
                     {
@@ -796,6 +813,18 @@
                             start: 'top top',
                             end: '+=' + driveLength,
                             scrub: true,
+                            onUpdate: (self) => {
+                                const skew = clampSkew(self.getVelocity() / -250);
+                                if (Math.abs(skew) > Math.abs(skewProxy.v)) {
+                                    skewProxy.v = skew;
+                                    gsap.to(skewProxy, { v: 0, duration: 0.8, ease: 'power3', overwrite: true, onUpdate: applySkew });
+                                }
+                                const blur = Math.min(Math.abs(self.getVelocity()) / 2200, 6);
+                                if (blur > blurProxy.v) {
+                                    blurProxy.v = blur;
+                                    gsap.to(blurProxy, { v: 0, duration: 0.6, ease: 'power2', overwrite: true, onUpdate: applyBlur });
+                                }
+                            },
                         }
                     }
                 );
@@ -806,7 +835,9 @@
                 return () => {
                     tween.scrollTrigger.kill();
                     tween.kill();
+                    gsap.killTweensOf([skewProxy, blurProxy]);
                     gsap.set(track, { clearProps: 'transform' });
+                    track.style.filter = '';
                     scrollSpace.style.height = '';
                 };
             });
