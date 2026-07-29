@@ -117,115 +117,209 @@
         }
 
         /* =========================================
-           PORTFOLIO GRID SECTION
+           WORK GALLERY — horizontal scroll-jacked row of project
+           cards, pinned in place via native position:sticky (not a
+           JS-driven pin — see index.html's hero for why that's the
+           more reliable choice) while GSAP ScrollTrigger scrubs the
+           track's translateX in sync with vertical scroll. Below
+           991px this same track becomes a plain native horizontally-
+           scrollable strip instead (see the ≤991px block) — scroll-
+           jacking under real touch input is exactly the class of bug
+           this project spent a lot of effort chasing down elsewhere
+           on this site, so mobile gets the simpler, safer pattern
+           instead of trying to extend the desktop mechanism to touch.
         ========================================= */
-        .portfolio-grid-section {
+        .work-gallery-section {
             background: #000;
-            padding: 60px 0 120px;
+            padding: 100px 0 60px;
         }
 
-        .portfolio-grid-inner {
+        .wg-eyebrow {
             max-width: 1400px;
-            margin: 0 auto;
+            margin: 0 auto 60px;
             padding: 0 24px;
-            display: flex;
-            flex-direction: column;
-            gap: 80px;
         }
 
-        /* Each row is a pair: left (big) + right (small, offset down) */
-        .pg-pair {
-            display: flex;
-            align-items: flex-start;
-            gap: 8%;
+        .wg-eyebrow-label {
+            display: inline-block;
+            font-family: 'Satoshi-Variable';
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: #B2DF48;
+            margin-bottom: 14px;
         }
 
-        /* Card base */
-        .pg-card {
-            width: 100%;
-            animation: pgFloat 5s ease-in-out infinite;
+        .wg-eyebrow-title {
+            font-family: 'Satoshi-Variable';
+            font-weight: 800;
+            font-size: 48px;
+            line-height: 1.1;
+            color: #fff;
+            text-transform: uppercase;
+            margin: 0;
         }
 
-        /* Left card in pair — bigger */
-        .pg-card--left {
-            flex: 0 0 52%;
-            margin-top: 0;
+        .wg-eyebrow-title .accent {
+            font-family: 'Morganite';
+            font-weight: 600;
+            font-style: italic;
+            color: #B2DF48;
+            text-transform: none;
         }
 
-        /* Right card in pair — smaller, offset down */
-        .pg-card--sm {
-            flex: 0 0 38%;
-            margin-top: 80px;
+        /* Tall spacer — its extra height (beyond 100vh) is set by JS,
+           proportional to how far the track actually needs to travel
+           horizontally, not a hardcoded guess. */
+        .wg-scroll-space {
+            position: relative;
         }
 
-        /* Stagger float per pair */
-        .pg-pair:nth-child(1) .pg-card--left  { animation-delay: 0s; }
-        .pg-pair:nth-child(1) .pg-card--sm    { animation-delay: 0.8s; }
-        .pg-pair:nth-child(2) .pg-card--left  { animation-delay: 1.2s; }
-        .pg-pair:nth-child(2) .pg-card--sm    { animation-delay: 2s; }
-        .pg-pair:nth-child(3) .pg-card--left  { animation-delay: 2.4s; }
-        .pg-pair:nth-child(3) .pg-card--sm    { animation-delay: 3.2s; }
-        .pg-pair:nth-child(4) .pg-card--left  { animation-delay: 0.6s; }
-        .pg-pair:nth-child(4) .pg-card--sm    { animation-delay: 1.4s; }
-        .pg-pair:nth-child(5) .pg-card--left  { animation-delay: 1.8s; }
-        .pg-pair:nth-child(5) .pg-card--sm    { animation-delay: 2.6s; }
-        .pg-pair:nth-child(6) .pg-card--left  { animation-delay: 3s; }
-        .pg-pair:nth-child(6) .pg-card--sm    { animation-delay: 0.4s; }
-
-        @keyframes pgFloat {
-            0%,  100% { transform: translateY(0px); }
-            50%        { transform: translateY(-10px); }
-        }
-
-
-        /* Title row */
-        .pg-card-meta {
+        .wg-sticky {
+            position: sticky;
+            top: 0;
+            height: 100vh;
             display: flex;
             align-items: center;
-            justify-content: space-between;
-            margin-bottom: 10px;
+            overflow: hidden;
         }
 
-        .pg-card-title {
-            font-family: 'Satoshi-Variable';
-            font-weight: 700;
-            font-size: 22px;
-            color: #fff;
-        }
-
-        .pg-card--sm .pg-card-title {
-            font-size: 19px;
-        }
-
-        .pg-card-cat {
-            font-family: 'Satoshi-Variable';
-            font-weight: 500;
-            font-size: 14px;
-            color: #FFAA00;
-        }
-
-        /* Divider */
-        .pg-card-divider {
-            height: 1px;
-            background: rgba(255,255,255,0.12);
-            margin-bottom: 12px;
-        }
-
-        /* Tags */
-        .pg-card-tags {
+        .wg-track {
             display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
+            gap: 32px;
+            padding: 0 24px;
+            will-change: transform;
         }
 
-        .pg-tag {
+        .wg-card {
+            flex: 0 0 auto;
+            width: 420px;
+            aspect-ratio: 3 / 4;
+            border-radius: 28px;
+            padding: 32px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            text-decoration: none;
+            background: var(--wg-card-bg, #222);
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.4s ease;
+        }
+
+        .wg-card:hover {
+            transform: translateY(-8px);
+        }
+
+        .wg-card-index {
             font-family: 'Satoshi-Variable';
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            color: rgba(0, 0, 0, 0.45);
+            text-transform: uppercase;
+        }
+
+        /* Abstract "browser window" placeholder standing in for a real
+           project screenshot — dummy content only, see JS/HTML below. */
+        .wg-card-mockup {
+            flex: 1;
+            margin: 20px 0;
+            border-radius: 16px;
+            background: rgba(255, 255, 255, 0.95);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
+        }
+
+        .wg-card-mockup-bar {
+            display: flex;
+            gap: 6px;
+            padding: 12px 14px;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+            flex-shrink: 0;
+        }
+
+        .wg-card-mockup-bar span {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: rgba(0, 0, 0, 0.15);
+        }
+
+        .wg-card-mockup-body {
+            flex: 1;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            min-height: 0;
+        }
+
+        .wg-card-mockup-hero {
+            flex: 1;
+            border-radius: 10px;
+            background: rgba(0, 0, 0, 0.08);
+        }
+
+        .wg-card-mockup-line {
+            height: 8px;
+            border-radius: 4px;
+            background: rgba(0, 0, 0, 0.1);
+            width: 70%;
+            flex-shrink: 0;
+        }
+
+        .wg-card-mockup-line--short {
+            width: 40%;
+        }
+
+        .wg-card-info {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            gap: 12px;
+        }
+
+        .wg-card-title {
+            display: block;
+            font-family: 'Satoshi-Variable';
+            font-weight: 800;
+            font-size: 20px;
+            color: #000;
+        }
+
+        .wg-card-cat {
+            display: block;
+            font-family: 'Satoshi-Variable';
+            font-weight: 600;
             font-size: 12px;
-            font-weight: 500;
-            color: rgba(255,255,255,0.7);
-            border: 1px solid rgba(255,255,255,0.2);
-            border-radius: 999px;
-            padding: 4px 14px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: rgba(0, 0, 0, 0.5);
+            margin-top: 4px;
+        }
+
+        .wg-card-cta {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: #000;
+            color: #fff;
+            font-size: 18px;
+            flex-shrink: 0;
+            transform: rotate(-45deg);
+            transition: transform 0.3s ease, background 0.3s ease;
+        }
+
+        .wg-card:hover .wg-card-cta {
+            transform: rotate(0deg);
+            background: #1a1a1a;
         }
 
         /* =========================================
@@ -236,9 +330,7 @@
         @media (max-width: 1200px) {
             .work-hero-headline h1 { font-size: 64px; }
 
-            .pg-pair { gap: 5%; }
-            .pg-card--left { flex: 0 0 54%; }
-            .pg-card--sm   { flex: 0 0 38%; }
+            .wg-card { width: 360px; }
         }
 
         /* ── Tablet portrait (≤991px) ── */
@@ -254,17 +346,34 @@
             .work-hero-headline { padding: 40px 30px 60px; }
             .work-hero-headline h1 { font-size: 52px; }
 
-            /* Portfolio grid — stack pairs, equal width */
-            .portfolio-grid-inner { gap: 60px; }
-            .pg-pair {
-                flex-direction: column;
-                gap: 40px;
+            .wg-eyebrow-title { font-size: 36px; }
+
+            /* Below this breakpoint the gallery drops the scroll-jack
+               entirely (JS also skips creating the ScrollTrigger — see
+               the matchMedia gate in the script) and becomes a plain
+               native horizontally-scrollable, snap-to-card strip. Real
+               touch input driving a scroll-jacked horizontal track is
+               exactly the class of bug this project spent real effort
+               chasing down elsewhere (see the hero value-card fix) —
+               native overflow-x scroll sidesteps that entirely instead
+               of trying to extend the desktop mechanism to touch. */
+            .wg-scroll-space { height: auto !important; }
+            .wg-sticky {
+                position: static;
+                height: auto;
+                overflow: visible;
             }
-            .pg-card--left,
-            .pg-card--sm {
-                flex: 0 0 100%;
-                width: 100%;
-                margin-top: 0;
+            .wg-track {
+                overflow-x: auto;
+                scroll-snap-type: x proximity;
+                -webkit-overflow-scrolling: touch;
+                transform: none !important;
+                padding: 0 16px;
+                gap: 20px;
+            }
+            .wg-card {
+                scroll-snap-align: start;
+                width: 300px;
             }
         }
 
@@ -274,20 +383,17 @@
             .work-hero-headline h1  { font-size: clamp(36px, 10vw, 52px); }
             .work-hero-headline     { padding: 0 16px 50px; }
 
-            .portfolio-grid-section { padding: 40px 0 80px; }
-            .portfolio-grid-inner   { gap: 48px; padding: 0 16px; }
-            .pg-card-title          { font-size: 18px; }
-            .pg-card-cat            { font-size: 13px; }
-            .pg-tag                 { font-size: 12px; padding: 5px 12px; }
+            .work-gallery-section { padding: 60px 0 40px; }
+            .wg-eyebrow      { padding: 0 16px; margin-bottom: 32px; }
+            .wg-eyebrow-title { font-size: 28px; }
         }
 
         /* ── Mobile small (≤480px) ── */
         @media (max-width: 480px) {
             .work-hero-headline h1 { font-size: clamp(28px, 9vw, 40px); }
 
-            .portfolio-grid-inner { gap: 40px; padding: 0 12px; }
-            .pg-card-tags         { gap: 6px; }
-            .pg-tag               { font-size: 11px; padding: 4px 10px; }
+            .wg-card { width: 260px; padding: 24px; }
+            .wg-card-title { font-size: 17px; }
         }
     </style>
 </head>
@@ -439,166 +545,176 @@
 
     </section>
 
-    <!-- ========================= Portfolio Grid Section ========================= -->
-    <section class="portfolio-grid-section">
-        <div class="portfolio-grid-inner">
+    <!-- ========================= Work Gallery Section =========================
+         Horizontal scroll-jacked card row, UI/UX inspired by madrepunk.com's
+         pinned project gallery. Dummy placeholder cards for now — swap the
+         --wg-card-bg colors, .wg-card-title/.wg-card-cat text, and href per
+         card for real projects when they're ready; the mockup box is a plain
+         CSS placeholder, not a real screenshot. -->
+    <section class="work-gallery-section">
+        <div class="wg-eyebrow">
+            <span class="wg-eyebrow-label">Selected Work</span>
+            <h2 class="wg-eyebrow-title">Projects We're <span class="accent">Proud</span> Of</h2>
+        </div>
 
-            <!-- Pair 1 -->
-            <div class="pg-pair">
-                <div class="pg-card pg-card--left">
-                    <div class="pg-card-meta">
-                        <span class="pg-card-title">Web design for a food brand</span>
-                        <span class="pg-card-cat">Web Design</span>
-                    </div>
-                    <div class="pg-card-divider"></div>
-                    <div class="pg-card-tags">
-                        <span class="pg-tag">Web Design</span>
-                        <span class="pg-tag">UI/UX Design</span>
-                    </div>
-                </div>
-                <div class="pg-card pg-card--sm">
-                    <div class="pg-card-meta">
-                        <span class="pg-card-title">Web design for a Vegan drug bands</span>
-                        <span class="pg-card-cat">Web Design</span>
-                    </div>
-                    <div class="pg-card-divider"></div>
-                    <div class="pg-card-tags">
-                        <span class="pg-tag">Web Design</span>
-                        <span class="pg-tag">UI/UX Design</span>
-                    </div>
+        <div class="wg-scroll-space">
+            <div class="wg-sticky">
+                <div class="wg-track">
+
+                    <a href="#" class="wg-card" style="--wg-card-bg:#FF6B81;">
+                        <span class="wg-card-index">01</span>
+                        <div class="wg-card-mockup">
+                            <div class="wg-card-mockup-bar"><span></span><span></span><span></span></div>
+                            <div class="wg-card-mockup-body">
+                                <div class="wg-card-mockup-hero"></div>
+                                <div class="wg-card-mockup-line"></div>
+                                <div class="wg-card-mockup-line wg-card-mockup-line--short"></div>
+                            </div>
+                        </div>
+                        <div class="wg-card-info">
+                            <span>
+                                <span class="wg-card-title">Aurora Beauty</span>
+                                <span class="wg-card-cat">E-Commerce</span>
+                            </span>
+                            <span class="wg-card-cta"><i class="ri-arrow-right-up-line"></i></span>
+                        </div>
+                    </a>
+
+                    <a href="#" class="wg-card" style="--wg-card-bg:#3D5AFE;">
+                        <span class="wg-card-index">02</span>
+                        <div class="wg-card-mockup">
+                            <div class="wg-card-mockup-bar"><span></span><span></span><span></span></div>
+                            <div class="wg-card-mockup-body">
+                                <div class="wg-card-mockup-hero"></div>
+                                <div class="wg-card-mockup-line"></div>
+                                <div class="wg-card-mockup-line wg-card-mockup-line--short"></div>
+                            </div>
+                        </div>
+                        <div class="wg-card-info">
+                            <span>
+                                <span class="wg-card-title">Nova Finance</span>
+                                <span class="wg-card-cat">Web App</span>
+                            </span>
+                            <span class="wg-card-cta"><i class="ri-arrow-right-up-line"></i></span>
+                        </div>
+                    </a>
+
+                    <a href="#" class="wg-card" style="--wg-card-bg:#B2DF48;">
+                        <span class="wg-card-index">03</span>
+                        <div class="wg-card-mockup">
+                            <div class="wg-card-mockup-bar"><span></span><span></span><span></span></div>
+                            <div class="wg-card-mockup-body">
+                                <div class="wg-card-mockup-hero"></div>
+                                <div class="wg-card-mockup-line"></div>
+                                <div class="wg-card-mockup-line wg-card-mockup-line--short"></div>
+                            </div>
+                        </div>
+                        <div class="wg-card-info">
+                            <span>
+                                <span class="wg-card-title">Verdant Foods</span>
+                                <span class="wg-card-cat">Branding</span>
+                            </span>
+                            <span class="wg-card-cta"><i class="ri-arrow-right-up-line"></i></span>
+                        </div>
+                    </a>
+
+                    <a href="#" class="wg-card" style="--wg-card-bg:#FF7A00;">
+                        <span class="wg-card-index">04</span>
+                        <div class="wg-card-mockup">
+                            <div class="wg-card-mockup-bar"><span></span><span></span><span></span></div>
+                            <div class="wg-card-mockup-body">
+                                <div class="wg-card-mockup-hero"></div>
+                                <div class="wg-card-mockup-line"></div>
+                                <div class="wg-card-mockup-line wg-card-mockup-line--short"></div>
+                            </div>
+                        </div>
+                        <div class="wg-card-info">
+                            <span>
+                                <span class="wg-card-title">Pulse Fitness</span>
+                                <span class="wg-card-cat">Mobile App</span>
+                            </span>
+                            <span class="wg-card-cta"><i class="ri-arrow-right-up-line"></i></span>
+                        </div>
+                    </a>
+
+                    <a href="#" class="wg-card" style="--wg-card-bg:#8B5CF6;">
+                        <span class="wg-card-index">05</span>
+                        <div class="wg-card-mockup">
+                            <div class="wg-card-mockup-bar"><span></span><span></span><span></span></div>
+                            <div class="wg-card-mockup-body">
+                                <div class="wg-card-mockup-hero"></div>
+                                <div class="wg-card-mockup-line"></div>
+                                <div class="wg-card-mockup-line wg-card-mockup-line--short"></div>
+                            </div>
+                        </div>
+                        <div class="wg-card-info">
+                            <span>
+                                <span class="wg-card-title">Lumen Studio</span>
+                                <span class="wg-card-cat">Portfolio</span>
+                            </span>
+                            <span class="wg-card-cta"><i class="ri-arrow-right-up-line"></i></span>
+                        </div>
+                    </a>
+
+                    <a href="#" class="wg-card" style="--wg-card-bg:#06B6D4;">
+                        <span class="wg-card-index">06</span>
+                        <div class="wg-card-mockup">
+                            <div class="wg-card-mockup-bar"><span></span><span></span><span></span></div>
+                            <div class="wg-card-mockup-body">
+                                <div class="wg-card-mockup-hero"></div>
+                                <div class="wg-card-mockup-line"></div>
+                                <div class="wg-card-mockup-line wg-card-mockup-line--short"></div>
+                            </div>
+                        </div>
+                        <div class="wg-card-info">
+                            <span>
+                                <span class="wg-card-title">Drift Travel</span>
+                                <span class="wg-card-cat">Website</span>
+                            </span>
+                            <span class="wg-card-cta"><i class="ri-arrow-right-up-line"></i></span>
+                        </div>
+                    </a>
+
+                    <a href="#" class="wg-card" style="--wg-card-bg:#FFC107;">
+                        <span class="wg-card-index">07</span>
+                        <div class="wg-card-mockup">
+                            <div class="wg-card-mockup-bar"><span></span><span></span><span></span></div>
+                            <div class="wg-card-mockup-body">
+                                <div class="wg-card-mockup-hero"></div>
+                                <div class="wg-card-mockup-line"></div>
+                                <div class="wg-card-mockup-line wg-card-mockup-line--short"></div>
+                            </div>
+                        </div>
+                        <div class="wg-card-info">
+                            <span>
+                                <span class="wg-card-title">Forge Agency</span>
+                                <span class="wg-card-cat">Web Design</span>
+                            </span>
+                            <span class="wg-card-cta"><i class="ri-arrow-right-up-line"></i></span>
+                        </div>
+                    </a>
+
+                    <a href="#" class="wg-card" style="--wg-card-bg:#FF5252;">
+                        <span class="wg-card-index">08</span>
+                        <div class="wg-card-mockup">
+                            <div class="wg-card-mockup-bar"><span></span><span></span><span></span></div>
+                            <div class="wg-card-mockup-body">
+                                <div class="wg-card-mockup-hero"></div>
+                                <div class="wg-card-mockup-line"></div>
+                                <div class="wg-card-mockup-line wg-card-mockup-line--short"></div>
+                            </div>
+                        </div>
+                        <div class="wg-card-info">
+                            <span>
+                                <span class="wg-card-title">Echo Music</span>
+                                <span class="wg-card-cat">Branding</span>
+                            </span>
+                            <span class="wg-card-cta"><i class="ri-arrow-right-up-line"></i></span>
+                        </div>
+                    </a>
+
                 </div>
             </div>
-
-            <!-- Pair 2 -->
-            <div class="pg-pair">
-                <div class="pg-card pg-card--left">
-                    <div class="pg-card-meta">
-                        <span class="pg-card-title">Web design for a game news company</span>
-                        <span class="pg-card-cat">Web Design</span>
-                    </div>
-                    <div class="pg-card-divider"></div>
-                    <div class="pg-card-tags">
-                        <span class="pg-tag">Web Design</span>
-                        <span class="pg-tag">UI/UX Design</span>
-                    </div>
-                </div>
-                <div class="pg-card pg-card--sm">
-                    <div class="pg-card-meta">
-                        <span class="pg-card-title">Web design for a automated marketing agency</span>
-                        <span class="pg-card-cat">Web Design</span>
-                    </div>
-                    <div class="pg-card-divider"></div>
-                    <div class="pg-card-tags">
-                        <span class="pg-tag">Web Design</span>
-                        <span class="pg-tag">UI/UX Design</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Pair 3 -->
-            <div class="pg-pair">
-                <div class="pg-card pg-card--left">
-                    <div class="pg-card-meta">
-                        <span class="pg-card-title">Web design for a real estate investment company</span>
-                        <span class="pg-card-cat">Web Design</span>
-                    </div>
-                    <div class="pg-card-divider"></div>
-                    <div class="pg-card-tags">
-                        <span class="pg-tag">Web Design</span>
-                        <span class="pg-tag">UI/UX Design</span>
-                    </div>
-                </div>
-                <div class="pg-card pg-card--sm">
-                    <div class="pg-card-meta">
-                        <span class="pg-card-title">Web design for a tea brand</span>
-                        <span class="pg-card-cat">Web Design</span>
-                    </div>
-                    <div class="pg-card-divider"></div>
-                    <div class="pg-card-tags">
-                        <span class="pg-tag">Web Design</span>
-                        <span class="pg-tag">UI/UX Design</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Pair 4 -->
-            <div class="pg-pair">
-                <div class="pg-card pg-card--left">
-                    <div class="pg-card-meta">
-                        <span class="pg-card-title">Web design for a supplement brand</span>
-                        <span class="pg-card-cat">Web Design</span>
-                    </div>
-                    <div class="pg-card-divider"></div>
-                    <div class="pg-card-tags">
-                        <span class="pg-tag">Web Design</span>
-                        <span class="pg-tag">UI/UX Design</span>
-                    </div>
-                </div>
-                <div class="pg-card pg-card--sm">
-                    <div class="pg-card-meta">
-                        <span class="pg-card-title">Web design for a drinks brand</span>
-                        <span class="pg-card-cat">Web Design</span>
-                    </div>
-                    <div class="pg-card-divider"></div>
-                    <div class="pg-card-tags">
-                        <span class="pg-tag">Web Design</span>
-                        <span class="pg-tag">UI/UX Design</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Pair 5 -->
-            <div class="pg-pair">
-                <div class="pg-card pg-card--left">
-                    <div class="pg-card-meta">
-                        <span class="pg-card-title">Web design for a network brand</span>
-                        <span class="pg-card-cat">Web Design</span>
-                    </div>
-                    <div class="pg-card-divider"></div>
-                    <div class="pg-card-tags">
-                        <span class="pg-tag">Web Design</span>
-                        <span class="pg-tag">UI/UX Design</span>
-                    </div>
-                </div>
-                <div class="pg-card pg-card--sm">
-                    <div class="pg-card-meta">
-                        <span class="pg-card-title">Website for a digital marketing company</span>
-                        <span class="pg-card-cat">Web Design</span>
-                    </div>
-                    <div class="pg-card-divider"></div>
-                    <div class="pg-card-tags">
-                        <span class="pg-tag">Web Design</span>
-                        <span class="pg-tag">UI/UX Design</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Pair 6 -->
-            <div class="pg-pair">
-                <div class="pg-card pg-card--left">
-                    <div class="pg-card-meta">
-                        <span class="pg-card-title">Website for a pizza company</span>
-                        <span class="pg-card-cat">Web Design</span>
-                    </div>
-                    <div class="pg-card-divider"></div>
-                    <div class="pg-card-tags">
-                        <span class="pg-tag">Web Design</span>
-                        <span class="pg-tag">UI/UX Design</span>
-                    </div>
-                </div>
-                <div class="pg-card pg-card--sm">
-                    <div class="pg-card-meta">
-                        <span class="pg-card-title">Web design for a travel company</span>
-                        <span class="pg-card-cat">Web Design</span>
-                    </div>
-                    <div class="pg-card-divider"></div>
-                    <div class="pg-card-tags">
-                        <span class="pg-tag">Web Design</span>
-                        <span class="pg-tag">UI/UX Design</span>
-                    </div>
-                </div>
-            </div>
-
         </div>
     </section>
 
@@ -651,6 +767,7 @@
     <script src="assets/js/jquery-4.0.0.min.js"></script>
     <script src="assets/js/bootstrap.bundle.min.js"></script>
     <script src="assets/js/gsap.min.js"></script>
+    <script src="assets/js/ScrollTrigger.min.js"></script>
     <script src="assets/js/logo-animation.js?v=1"></script>
     <script src="assets/js/popup.js?v=4"></script>
 
@@ -707,6 +824,66 @@
                 btn.style.setProperty('--my', `${e.clientY - r.top}px`);
             });
         });
+
+        // Work gallery — horizontal scroll-jacked card row, ≥992px only.
+        // .wg-sticky is pinned via native CSS position:sticky (not a
+        // JS-driven pin — see index.html's hero for why that's the more
+        // reliable choice), and GSAP ScrollTrigger scrubs .wg-track's
+        // translateX in sync with vertical scroll across the extra height
+        // .wg-scroll-space gets below. That extra height is computed here
+        // from the track's actual measured scroll distance rather than a
+        // hardcoded guess, so it stays correct if cards are added/removed
+        // or resized later. Below 992px this entire thing is skipped —
+        // gsap.matchMedia's cleanup function reverses it if the viewport
+        // crosses back and forth across that boundary — and .wg-track
+        // becomes a plain native horizontally-scrollable strip instead
+        // (see the ≤991px CSS block).
+        (() => {
+            const scrollSpace = document.querySelector('.wg-scroll-space');
+            const sticky = document.querySelector('.wg-sticky');
+            const track = document.querySelector('.wg-track');
+            if (!scrollSpace || !sticky || !track || typeof gsap === 'undefined') return;
+
+            gsap.registerPlugin(ScrollTrigger);
+
+            const mm = gsap.matchMedia();
+            mm.add('(min-width: 992px)', () => {
+                const scrollAmount = track.scrollWidth - sticky.clientWidth;
+                if (scrollAmount <= 0) return;
+
+                // A bit more scroll distance than the raw pixel travel so
+                // the drive doesn't feel rushed — same reasoning as the
+                // hero text reveal's own scrub tuning.
+                const driveLength = scrollAmount * 1.15;
+                scrollSpace.style.height = `calc(100vh + ${driveLength}px)`;
+
+                const tween = gsap.fromTo(track,
+                    { x: 0 },
+                    {
+                        x: -scrollAmount,
+                        ease: 'none',
+                        scrollTrigger: {
+                            trigger: sticky,
+                            start: 'top top',
+                            end: '+=' + driveLength,
+                            scrub: true,
+                        }
+                    }
+                );
+
+                // gsap.matchMedia's own cleanup: kills the tween/trigger
+                // and clears the inline styles it set if the viewport
+                // crosses back below 992px.
+                return () => {
+                    tween.scrollTrigger.kill();
+                    tween.kill();
+                    gsap.set(track, { clearProps: 'transform' });
+                    scrollSpace.style.height = '';
+                };
+            });
+
+            window.addEventListener('load', () => ScrollTrigger.refresh());
+        })();
 
     </script>
 
