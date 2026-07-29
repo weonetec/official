@@ -730,11 +730,23 @@
         // Header: bg on scroll + hide on scroll-down / reveal on scroll-back-up
         (function () {
             const siteHeader = document.querySelector('.site-header');
+            const gallerySection = document.querySelector('.work-gallery-section');
             let lastScroll = window.scrollY;
+
+            // The hero is short enough that it flows straight into the card
+            // gallery, so the header's hide-on-scroll-down would otherwise
+            // kick in during that transition or mid-slide. Keep the header
+            // stuck/visible for the entire hero + gallery run; hide-on-
+            // scroll-down only resumes once the user is past the gallery.
+            function inGalleryZone(y) {
+                if (!gallerySection) return false;
+                return y <= gallerySection.offsetTop + gallerySection.offsetHeight;
+            }
+
             window.addEventListener('scroll', () => {
                 const current = window.scrollY;
                 siteHeader.classList.toggle('scrolled', current > 50);
-                if (current <= 80) {
+                if (current <= 80 || inGalleryZone(current)) {
                     siteHeader.classList.remove('header-hidden');
                 } else if (Math.abs(current - lastScroll) >= 6) {
                     siteHeader.classList.toggle('header-hidden', current > lastScroll);
