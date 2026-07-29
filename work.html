@@ -64,34 +64,13 @@
             opacity: 0.55;
         }
 
-        /* Top-right green glow */
-        .work-hero-glow {
-            position: absolute;
-            top: -80px;
-            right: -60px;
-            width: 420px;
-            height: 420px;
-            background: radial-gradient(ellipse at center, rgba(178, 223, 72, 0.22) 0%, rgba(178, 223, 72, 0.06) 50%, transparent 75%);
-            border-radius: 50%;
-            z-index: 1;
-            pointer-events: none;
-        }
-
-        /* ---- Hero content wrapper (cards removed) ---- */
-        .work-hero-cards {
-            position: relative;
-            z-index: 2;
-            flex: 1;
-            padding: 110px 0 0;
-        }
-
         /* ---- Hero Headline ---- */
         .work-hero-headline {
             position: relative;
             z-index: 2;
             max-width: 1400px;
             margin: 0 auto;
-            padding: 60px 24px 80px;
+            padding: 110px 24px 80px;
             width: 100%;
         }
 
@@ -132,41 +111,6 @@
         .work-gallery-section {
             background: #000;
             padding: 100px 0 60px;
-        }
-
-        .wg-eyebrow {
-            max-width: 1400px;
-            margin: 0 auto 60px;
-            padding: 0 24px;
-        }
-
-        .wg-eyebrow-label {
-            display: inline-block;
-            font-family: 'Satoshi-Variable';
-            font-size: 13px;
-            font-weight: 700;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            color: #B2DF48;
-            margin-bottom: 14px;
-        }
-
-        .wg-eyebrow-title {
-            font-family: 'Satoshi-Variable';
-            font-weight: 800;
-            font-size: 48px;
-            line-height: 1.1;
-            color: #fff;
-            text-transform: uppercase;
-            margin: 0;
-        }
-
-        .wg-eyebrow-title .accent {
-            font-family: 'Morganite';
-            font-weight: 600;
-            font-style: italic;
-            color: #B2DF48;
-            text-transform: none;
         }
 
         /* Tall spacer — its extra height (beyond 100vh) is set by JS,
@@ -343,10 +287,8 @@
                visible viewport instead; vh stays first as a fallback. */
             .work-hero { min-height: 100vh; min-height: 100dvh; }
 
-            .work-hero-headline { padding: 40px 30px 60px; }
+            .work-hero-headline { padding: 100px 30px 60px; }
             .work-hero-headline h1 { font-size: 52px; }
-
-            .wg-eyebrow-title { font-size: 36px; }
 
             /* Below this breakpoint the gallery drops the scroll-jack
                entirely (JS also skips creating the ScrollTrigger — see
@@ -379,13 +321,10 @@
 
         /* ── Mobile large (≤767px) ── */
         @media (max-width: 767px) {
-            .work-hero-cards { padding: 60px 0 0; }
             .work-hero-headline h1  { font-size: clamp(36px, 10vw, 52px); }
-            .work-hero-headline     { padding: 0 16px 50px; }
+            .work-hero-headline     { padding: 90px 16px 50px; }
 
             .work-gallery-section { padding: 60px 0 40px; }
-            .wg-eyebrow      { padding: 0 16px; margin-bottom: 32px; }
-            .wg-eyebrow-title { font-size: 28px; }
         }
 
         /* ── Mobile small (≤480px) ── */
@@ -530,11 +469,6 @@
             <img src="assets/images/banner-lines.svg" alt="">
         </div>
 
-        <!-- Top-right green glow -->
-        <div class="work-hero-glow"></div>
-
-        <div class="work-hero-cards"></div>
-
         <!-- Headline -->
         <div class="work-hero-headline">
             <h1>
@@ -552,11 +486,6 @@
          card for real projects when they're ready; the mockup box is a plain
          CSS placeholder, not a real screenshot. -->
     <section class="work-gallery-section">
-        <div class="wg-eyebrow">
-            <span class="wg-eyebrow-label">Selected Work</span>
-            <h2 class="wg-eyebrow-title">Projects We're <span class="accent">Proud</span> Of</h2>
-        </div>
-
         <div class="wg-scroll-space">
             <div class="wg-sticky">
                 <div class="wg-track">
