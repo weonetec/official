@@ -77,101 +77,12 @@
             pointer-events: none;
         }
 
-        /* ---- Cards Stage ---- */
+        /* ---- Hero content wrapper (cards removed) ---- */
         .work-hero-cards {
             position: relative;
             z-index: 2;
             flex: 1;
             padding: 110px 0 0;
-        }
-
-        .cards-stage {
-            position: relative;
-            width: 100%;
-            max-width: 1400px;
-            margin: 0 auto;
-            height: 420px;
-            padding: 0 24px;
-        }
-
-        /* Base card style */
-        .work-card {
-            position: absolute;
-            width: calc(33.333% - 70px);
-            height: 300px;
-            border-radius: 24px;
-            overflow: hidden;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow:
-                0 12px 50px rgba(0, 0, 0, 0.7),
-                inset 0 1px 0 rgba(255, 255, 255, 0.06);
-            transition: box-shadow 0.4s ease;
-            cursor: pointer;
-        }
-
-        .work-card img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            display: block;
-            transition: transform 0.5s ease;
-        }
-
-        .work-card:hover img {
-            transform: scale(1.04);
-        }
-
-        .work-card::after {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(180deg, transparent 50%, rgba(0, 0, 0, 0.45) 100%);
-        }
-
-        /* Staggered cross positions — card 1 highest, card 3 lowest */
-        .work-card:nth-child(1) {
-            left: 24px;
-            top: 20px;
-            z-index: 1;
-            animation: floatCard1 4.5s ease-in-out infinite;
-        }
-
-        .work-card:nth-child(2) {
-            left: 50%;
-            transform: translateX(-50%);
-            top: 70px;
-            z-index: 2;
-            animation: floatCard2 5s ease-in-out infinite;
-        }
-
-        .work-card:nth-child(3) {
-            right: 24px;
-            top: 120px;
-            z-index: 1;
-            animation: floatCard3 5.5s ease-in-out infinite;
-        }
-
-        /* Float animations — staggered so they don't sync */
-        @keyframes floatCard1 {
-            0%,  100% { transform: translateY(0px);  }
-            50%        { transform: translateY(-16px); }
-        }
-
-        @keyframes floatCard2 {
-            0%,  100% { transform: translateX(-50%) translateY(0px);  }
-            50%        { transform: translateX(-50%) translateY(-12px); }
-        }
-
-        @keyframes floatCard3 {
-            0%,  100% { transform: translateY(0px);  }
-            50%        { transform: translateY(-20px); }
-        }
-
-        .work-card:hover {
-            box-shadow:
-                0 24px 70px rgba(0, 0, 0, 0.8),
-                0 0 40px rgba(178, 223, 72, 0.1);
-            z-index: 10 !important;
         }
 
         /* ---- Hero Headline ---- */
@@ -233,7 +144,6 @@
         .pg-card {
             width: 100%;
             animation: pgFloat 5s ease-in-out infinite;
-            cursor: pointer;
         }
 
         /* Left card in pair — bigger */
@@ -267,33 +177,6 @@
             50%        { transform: translateY(-10px); }
         }
 
-
-        /* Wrapper injected by JS — holds the cursor-tracking border */
-        .pg-card-img-wrap {
-            position: relative;
-            border-radius: 22px;
-            padding: 3px;
-            margin-bottom: 20px;
-            background: transparent;
-        }
-
-        /* Image box */
-        .pg-card-img {
-            width: 100%;
-            aspect-ratio: 1 / 1;
-            max-height: 520px;
-            border-radius: 18px;
-            overflow: hidden;
-            background: #0d0d0d;
-            position: relative;
-        }
-
-        .pg-card-img img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            display: block;
-        }
 
         /* Title row */
         .pg-card-meta {
@@ -346,139 +229,11 @@
         }
 
         /* =========================================
-           PROJECT LIGHTBOX — full case-study image, opened by clicking
-           a .pg-card. The image itself is very tall (a single long
-           website-mockup composition, straight from Behance), so the
-           lightbox scrolls internally rather than trying to fit it to
-           one screen.
-        ========================================= */
-        .pg-lightbox {
-            display: none;
-            position: fixed;
-            inset: 0;
-            z-index: 2000;
-            background: rgba(0, 0, 0, 0.92);
-            backdrop-filter: blur(6px);
-        }
-
-        .pg-lightbox.is-open {
-            display: block;
-        }
-
-        .pg-lightbox-scroll {
-            width: 100%;
-            height: 100%;
-            overflow-y: auto;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 90px 24px 60px;
-            box-sizing: border-box;
-        }
-
-        .pg-lightbox-title {
-            color: #fff;
-            font-family: 'Satoshi-Variable';
-            font-weight: 700;
-            font-size: 20px;
-            margin-bottom: 20px;
-            text-align: center;
-        }
-
-        .pg-lightbox-img {
-            width: 100%;
-            max-width: 900px;
-            height: auto;
-            display: block;
-            border-radius: 12px;
-            box-shadow: 0 24px 70px rgba(0, 0, 0, 0.6);
-        }
-
-        .pg-lightbox-close {
-            position: fixed;
-            top: 24px;
-            right: 24px;
-            z-index: 2001;
-            width: 48px;
-            height: 48px;
-            border-radius: 50%;
-            border: 1px solid rgba(255,255,255,0.2);
-            background: rgba(255,255,255,0.06);
-            color: #fff;
-            font-size: 28px;
-            line-height: 1;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: background 0.2s ease, border-color 0.2s ease;
-        }
-
-        .pg-lightbox-close:hover {
-            background: rgba(255,255,255,0.14);
-            border-color: rgba(255,255,255,0.4);
-        }
-
-        /* =========================================
            RESPONSIVE
         ========================================= */
-        /* ── Mobile stacked card slider ── */
-        .cards-mobile {
-            display: none;
-            position: relative;
-            width: 100%;
-            height: 320px;
-            padding-top: 24px;
-        }
-
-        .mc-card {
-            position: absolute;
-            width: 62%;
-            aspect-ratio: 3 / 4;
-            border-radius: 20px;
-            overflow: hidden;
-            left: 50%;
-        }
-
-        .mc-card img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            display: block;
-        }
-
-        .mc-back {
-            transform: translateX(-50%) translateY(20px) scale(0.88) rotate(4deg);
-            z-index: 1;
-            filter: brightness(0.7);
-            transition: transform 0.5s ease, filter 0.5s ease;
-        }
-
-        .mc-front {
-            transform: translateX(-50%) translateY(0px) scale(1) rotate(-2deg);
-            z-index: 2;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.6);
-            transition: transform 0.5s ease, opacity 0.4s ease;
-        }
-
-        /* Float the images independently so transform on card doesn't conflict */
-        .mc-front img {
-            animation: mcFloat 3s ease-in-out infinite;
-        }
-
-        .mc-back img {
-            animation: mcFloat 3.6s ease-in-out infinite 0.6s;
-        }
-
-        @keyframes mcFloat {
-            0%, 100% { transform: translateY(0px); }
-            50%       { transform: translateY(-10px); }
-        }
 
         /* ── Tablet landscape (≤1200px) ── */
         @media (max-width: 1200px) {
-            .work-card { height: 440px; }
-            .cards-stage { height: 520px; }
             .work-hero-headline h1 { font-size: 64px; }
 
             .pg-pair { gap: 5%; }
@@ -496,10 +251,6 @@
                visible viewport instead; vh stays first as a fallback. */
             .work-hero { min-height: 100vh; min-height: 100dvh; }
 
-            .cards-stage { height: 400px; padding: 0 30px; }
-            .work-card   { height: 340px; }
-            .work-card:nth-child(1) { left: 30px; top: 0; }
-            .work-card:nth-child(3) { right: 30px; top: 90px; }
             .work-hero-headline { padding: 40px 30px 60px; }
             .work-hero-headline h1 { font-size: 52px; }
 
@@ -520,15 +271,6 @@
         /* ── Mobile large (≤767px) ── */
         @media (max-width: 767px) {
             .work-hero-cards { padding: 60px 0 0; }
-            .cards-stage { display: none; }
-            .cards-mobile { display: block; }
-            .work-card {
-                width: 200px;
-                height: 260px;
-                border-radius: 20px;
-            }
-            .work-card:nth-child(1) { left: 2%; top: -10px; }
-            .work-card:nth-child(3) { right: 2%; top: 80px; }
             .work-hero-headline h1  { font-size: clamp(36px, 10vw, 52px); }
             .work-hero-headline     { padding: 0 16px 50px; }
 
@@ -541,8 +283,6 @@
 
         /* ── Mobile small (≤480px) ── */
         @media (max-width: 480px) {
-            .cards-stage { height: 260px; }
-            .work-card   { width: 170px; height: 220px; }
             .work-hero-headline h1 { font-size: clamp(28px, 9vw, 40px); }
 
             .portfolio-grid-inner { gap: 40px; padding: 0 12px; }
@@ -687,34 +427,7 @@
         <!-- Top-right green glow -->
         <div class="work-hero-glow"></div>
 
-        <!-- Three staggered floating cards (desktop/tablet) -->
-        <div class="work-hero-cards">
-            <div class="cards-stage">
-
-                <div class="work-card">
-                    <img src="assets/images/work/work-travel-company.jpg" alt="Web design for a travel company">
-                </div>
-
-                <div class="work-card">
-                    <img src="assets/images/work/work-food-brand.jpg" alt="Web design for a food brand">
-                </div>
-
-                <div class="work-card">
-                    <img src="assets/images/work/work-pizza-company.jpg" alt="Website for a pizza company">
-                </div>
-
-            </div>
-
-            <!-- Mobile-only stacked 2-card slider -->
-            <div class="cards-mobile">
-                <div class="mc-card mc-back">
-                    <img src="assets/images/work/work-food-brand.jpg" alt="Web design for a food brand">
-                </div>
-                <div class="mc-card mc-front">
-                    <img src="assets/images/work/work-travel-company.jpg" alt="Web design for a travel company">
-                </div>
-            </div>
-        </div>
+        <div class="work-hero-cards"></div>
 
         <!-- Headline -->
         <div class="work-hero-headline">
@@ -732,10 +445,7 @@
 
             <!-- Pair 1 -->
             <div class="pg-pair">
-                <div class="pg-card pg-card--left" data-full="assets/images/work/full/work-food-brand-full.webp" data-title="Web design for a food brand">
-                    <div class="pg-card-img">
-                        <img src="assets/images/work/work-food-brand.jpg" alt="Web design for a food brand">
-                    </div>
+                <div class="pg-card pg-card--left">
                     <div class="pg-card-meta">
                         <span class="pg-card-title">Web design for a food brand</span>
                         <span class="pg-card-cat">Web Design</span>
@@ -746,10 +456,7 @@
                         <span class="pg-tag">UI/UX Design</span>
                     </div>
                 </div>
-                <div class="pg-card pg-card--sm" data-full="assets/images/work/full/work-vegan-drug-bands-full.webp" data-title="Web design for a Vegan drug bands">
-                    <div class="pg-card-img">
-                        <img src="assets/images/work/work-vegan-drug-bands.jpg" alt="Web design for a Vegan drug bands">
-                    </div>
+                <div class="pg-card pg-card--sm">
                     <div class="pg-card-meta">
                         <span class="pg-card-title">Web design for a Vegan drug bands</span>
                         <span class="pg-card-cat">Web Design</span>
@@ -764,10 +471,7 @@
 
             <!-- Pair 2 -->
             <div class="pg-pair">
-                <div class="pg-card pg-card--left" data-full="assets/images/work/full/work-game-news-company-full.webp" data-title="Web design for a game news company">
-                    <div class="pg-card-img">
-                        <img src="assets/images/work/work-game-news-company.jpg" alt="Web design for a game news company">
-                    </div>
+                <div class="pg-card pg-card--left">
                     <div class="pg-card-meta">
                         <span class="pg-card-title">Web design for a game news company</span>
                         <span class="pg-card-cat">Web Design</span>
@@ -778,10 +482,7 @@
                         <span class="pg-tag">UI/UX Design</span>
                     </div>
                 </div>
-                <div class="pg-card pg-card--sm" data-full="assets/images/work/full/work-automated-marketing-agency-full.webp" data-title="Web design for a automated marketing agency">
-                    <div class="pg-card-img">
-                        <img src="assets/images/work/work-automated-marketing-agency.jpg" alt="Web design for a automated marketing agency">
-                    </div>
+                <div class="pg-card pg-card--sm">
                     <div class="pg-card-meta">
                         <span class="pg-card-title">Web design for a automated marketing agency</span>
                         <span class="pg-card-cat">Web Design</span>
@@ -796,10 +497,7 @@
 
             <!-- Pair 3 -->
             <div class="pg-pair">
-                <div class="pg-card pg-card--left" data-full="assets/images/work/full/work-real-estate-investment-company-full.webp" data-title="Web design for a real estate investment company">
-                    <div class="pg-card-img">
-                        <img src="assets/images/work/work-real-estate-investment-company.jpg" alt="Web design for a real estate investment company">
-                    </div>
+                <div class="pg-card pg-card--left">
                     <div class="pg-card-meta">
                         <span class="pg-card-title">Web design for a real estate investment company</span>
                         <span class="pg-card-cat">Web Design</span>
@@ -810,10 +508,7 @@
                         <span class="pg-tag">UI/UX Design</span>
                     </div>
                 </div>
-                <div class="pg-card pg-card--sm" data-full="assets/images/work/full/work-tea-brand-full.webp" data-title="Web design for a tea brand">
-                    <div class="pg-card-img">
-                        <img src="assets/images/work/work-tea-brand.jpg" alt="Web design for a tea brand">
-                    </div>
+                <div class="pg-card pg-card--sm">
                     <div class="pg-card-meta">
                         <span class="pg-card-title">Web design for a tea brand</span>
                         <span class="pg-card-cat">Web Design</span>
@@ -828,10 +523,7 @@
 
             <!-- Pair 4 -->
             <div class="pg-pair">
-                <div class="pg-card pg-card--left" data-full="assets/images/work/full/work-supplement-brand-full.webp" data-title="Web design for a supplement brand">
-                    <div class="pg-card-img">
-                        <img src="assets/images/work/work-supplement-brand.jpg" alt="Web design for a supplement brand">
-                    </div>
+                <div class="pg-card pg-card--left">
                     <div class="pg-card-meta">
                         <span class="pg-card-title">Web design for a supplement brand</span>
                         <span class="pg-card-cat">Web Design</span>
@@ -842,10 +534,7 @@
                         <span class="pg-tag">UI/UX Design</span>
                     </div>
                 </div>
-                <div class="pg-card pg-card--sm" data-full="assets/images/work/full/work-drinks-brand-full.webp" data-title="Web design for a drinks brand">
-                    <div class="pg-card-img">
-                        <img src="assets/images/work/work-drinks-brand.jpg" alt="Web design for a drinks brand">
-                    </div>
+                <div class="pg-card pg-card--sm">
                     <div class="pg-card-meta">
                         <span class="pg-card-title">Web design for a drinks brand</span>
                         <span class="pg-card-cat">Web Design</span>
@@ -860,10 +549,7 @@
 
             <!-- Pair 5 -->
             <div class="pg-pair">
-                <div class="pg-card pg-card--left" data-full="assets/images/work/full/work-network-brand-full.webp" data-title="Web design for a network brand">
-                    <div class="pg-card-img">
-                        <img src="assets/images/work/work-network-brand.jpg" alt="Web design for a network brand">
-                    </div>
+                <div class="pg-card pg-card--left">
                     <div class="pg-card-meta">
                         <span class="pg-card-title">Web design for a network brand</span>
                         <span class="pg-card-cat">Web Design</span>
@@ -874,10 +560,7 @@
                         <span class="pg-tag">UI/UX Design</span>
                     </div>
                 </div>
-                <div class="pg-card pg-card--sm" data-full="assets/images/work/full/work-digital-marketing-company-full.webp" data-title="Website for a digital marketing company">
-                    <div class="pg-card-img">
-                        <img src="assets/images/work/work-digital-marketing-company.jpg" alt="Website for a digital marketing company">
-                    </div>
+                <div class="pg-card pg-card--sm">
                     <div class="pg-card-meta">
                         <span class="pg-card-title">Website for a digital marketing company</span>
                         <span class="pg-card-cat">Web Design</span>
@@ -892,10 +575,7 @@
 
             <!-- Pair 6 -->
             <div class="pg-pair">
-                <div class="pg-card pg-card--left" data-full="assets/images/work/full/work-pizza-company-full.webp" data-title="Website for a pizza company">
-                    <div class="pg-card-img">
-                        <img src="assets/images/work/work-pizza-company.jpg" alt="Website for a pizza company">
-                    </div>
+                <div class="pg-card pg-card--left">
                     <div class="pg-card-meta">
                         <span class="pg-card-title">Website for a pizza company</span>
                         <span class="pg-card-cat">Web Design</span>
@@ -906,10 +586,7 @@
                         <span class="pg-tag">UI/UX Design</span>
                     </div>
                 </div>
-                <div class="pg-card pg-card--sm" data-full="assets/images/work/full/work-travel-company-full.webp" data-title="Web design for a travel company">
-                    <div class="pg-card-img">
-                        <img src="assets/images/work/work-travel-company.jpg" alt="Web design for a travel company">
-                    </div>
+                <div class="pg-card pg-card--sm">
                     <div class="pg-card-meta">
                         <span class="pg-card-title">Web design for a travel company</span>
                         <span class="pg-card-cat">Web Design</span>
@@ -924,16 +601,6 @@
 
         </div>
     </section>
-
-    <!-- Full-project lightbox — opens on .pg-card click, shows the project's
-         full case-study image (see script below), no navigation involved -->
-    <div class="pg-lightbox" id="pgLightbox" aria-hidden="true">
-        <button class="pg-lightbox-close" id="pgLightboxClose" aria-label="Close">&times;</button>
-        <div class="pg-lightbox-scroll">
-            <span class="pg-lightbox-title" id="pgLightboxTitle"></span>
-            <img class="pg-lightbox-img" id="pgLightboxImg" src="" alt="">
-        </div>
-    </div>
 
     <!-- ========================= Site Footer Start ========================= -->
     <footer class="site-footer">
@@ -1041,135 +708,6 @@
             });
         });
 
-        // Mobile stacked card slider
-        (() => {
-            const imgs = [
-                'assets/images/work/work-travel-company.jpg',
-                'assets/images/work/work-food-brand.jpg',
-                'assets/images/work/work-pizza-company.jpg',
-                'assets/images/work/work-vegan-drug-bands.jpg',
-                'assets/images/work/work-game-news-company.jpg',
-                'assets/images/work/work-automated-marketing-agency.jpg',
-                'assets/images/work/work-real-estate-investment-company.jpg',
-                'assets/images/work/work-tea-brand.jpg',
-                'assets/images/work/work-supplement-brand.jpg',
-                'assets/images/work/work-drinks-brand.jpg',
-                'assets/images/work/work-network-brand.jpg',
-                'assets/images/work/work-digital-marketing-company.jpg',
-            ];
-            const el0 = document.querySelector('.mc-front');
-            const el1 = document.querySelector('.mc-back');
-            if (!el0 || !el1) return;
-
-            const FRONT = 'translateX(-50%) scale(1) rotate(-2deg)';
-            const BACK  = 'translateX(-50%) translateY(20px) scale(0.88) rotate(4deg)';
-            const EXIT  = 'translateX(-160%) scale(0.9) rotate(-10deg)';
-
-            // cards[0] = visual front, cards[1] = visual back — we swap this array each round
-            let cards = [el0, el1];
-            let cur   = 0;
-
-            cards[0].querySelector('img').src = imgs[0];
-            cards[1].querySelector('img').src = imgs[1];
-            cards[0].style.cssText += ';z-index:2;transform:' + FRONT + ';filter:brightness(1)';
-            cards[1].style.cssText += ';z-index:1;transform:' + BACK  + ';filter:brightness(0.7)';
-
-            function slide() {
-                const [f, b] = cards;
-                const nextCur      = (cur + 1) % imgs.length;
-                const afterNextCur = (cur + 2) % imgs.length;
-
-                // Front exits left
-                f.style.transition = 'transform 0.45s ease, opacity 0.4s ease';
-                f.style.transform  = EXIT;
-                f.style.opacity    = '0';
-
-                // Back animates to front position
-                b.style.transition = 'transform 0.45s ease, filter 0.45s ease';
-                b.style.transform  = FRONT;
-                b.style.filter     = 'brightness(1)';
-                b.style.zIndex     = '2';
-
-                setTimeout(() => {
-                    // Snap old-front to back position with new image
-                    f.style.transition = 'none';
-                    f.style.transform  = BACK;
-                    f.style.opacity    = '1';
-                    f.style.filter     = 'brightness(0.7)';
-                    f.style.zIndex     = '1';
-                    f.querySelector('img').src = imgs[afterNextCur];
-
-                    // Swap so next round uses correct front/back
-                    cards = [b, f];
-                    cur   = nextCur;
-                }, 480);
-            }
-
-            setInterval(slide, 2800);
-        })();
-
-        // Portfolio card — cursor-tracking gradient border via wrapper padding
-        document.querySelectorAll('.pg-card-img').forEach(card => {
-            const wrap = document.createElement('div');
-            wrap.className = 'pg-card-img-wrap';
-            card.parentNode.insertBefore(wrap, card);
-            wrap.appendChild(card);
-
-            wrap.addEventListener('mousemove', e => {
-                const r = wrap.getBoundingClientRect();
-                const x = ((e.clientX - r.left) / r.width * 100).toFixed(1);
-                const y = ((e.clientY - r.top) / r.height * 100).toFixed(1);
-                const radius = Math.round(r.width * 0.5);
-                wrap.style.background = `radial-gradient(circle ${radius}px at ${x}% ${y}%, rgba(178,223,72,0.9), transparent 70%)`;
-            });
-
-            wrap.addEventListener('mouseleave', () => {
-                wrap.style.background = 'transparent';
-            });
-        });
-
-        // Project lightbox — click a card to see that project's full
-        // case-study image (not just its cropped cover). Display only,
-        // no navigation.
-        (() => {
-            const lightbox  = document.getElementById('pgLightbox');
-            const closeBtn  = document.getElementById('pgLightboxClose');
-            const imgEl     = document.getElementById('pgLightboxImg');
-            const titleEl   = document.getElementById('pgLightboxTitle');
-            if (!lightbox || !closeBtn || !imgEl || !titleEl) return;
-
-            function openLightbox(card) {
-                const full  = card.getAttribute('data-full');
-                const title = card.getAttribute('data-title') || '';
-                if (!full) return;
-                imgEl.src = full;
-                imgEl.alt = title;
-                titleEl.textContent = title;
-                lightbox.classList.add('is-open');
-                lightbox.setAttribute('aria-hidden', 'false');
-                lightbox.querySelector('.pg-lightbox-scroll').scrollTop = 0;
-                document.body.style.overflow = 'hidden';
-            }
-
-            function closeLightbox() {
-                lightbox.classList.remove('is-open');
-                lightbox.setAttribute('aria-hidden', 'true');
-                imgEl.src = '';
-                document.body.style.overflow = '';
-            }
-
-            document.querySelectorAll('.pg-card[data-full]').forEach(card => {
-                card.addEventListener('click', () => openLightbox(card));
-            });
-
-            closeBtn.addEventListener('click', closeLightbox);
-            lightbox.addEventListener('click', e => {
-                if (e.target === lightbox) closeLightbox();
-            });
-            document.addEventListener('keydown', e => {
-                if (e.key === 'Escape' && lightbox.classList.contains('is-open')) closeLightbox();
-            });
-        })();
     </script>
 
 </body>
