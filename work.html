@@ -304,6 +304,10 @@
                 overflow-x: auto;
                 scroll-snap-type: x proximity;
                 -webkit-overflow-scrolling: touch;
+                /* Locks touch dragging to the horizontal axis only, so
+                   swiping through the cards can't also drag the page
+                   itself vertically at the same time. */
+                touch-action: pan-x;
                 transform: none !important;
                 padding: 0 16px;
                 gap: 20px;
