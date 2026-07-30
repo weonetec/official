@@ -34,6 +34,20 @@
            WORK PAGE – HERO SECTION
         ========================================= */
 
+        /* This page drives the card gallery off the browser's native
+           scroll (no Lenis here, unlike most other pages — see the JS
+           below). Bootstrap's site-wide `scroll-behavior: smooth` is
+           normally neutralized by main.css's `.lenis.lenis-smooth`
+           override, but that class only gets added by Lenis, so on this
+           page it was never actually countered. Left on, each mouse-
+           wheel notch becomes a browser-animated smooth-scroll, and
+           reversing direction mid-animation gets ignored until it
+           finishes — exactly the "scrolling up does nothing" feel.
+           Force it back to instant native scrolling here. */
+        html {
+            scroll-behavior: auto !important;
+        }
+
         body {
             background: #000;
             overflow-x: hidden;
