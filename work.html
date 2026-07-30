@@ -54,12 +54,14 @@
         }
 
         /* ---- Hero Wrapper ---- */
+        /* Just a decorative strip now — the headline itself lives inside
+           .wg-sticky below, so it stays on screen together with the
+           sliding cards instead of scrolling away before the pin. */
         .work-hero {
             position: relative;
+            height: 90px;
             background: #000;
             overflow: hidden;
-            display: flex;
-            flex-direction: column;
         }
 
         /* Vertical lines background */
@@ -79,11 +81,10 @@
 
         /* ---- Hero Headline ---- */
         .work-hero-headline {
-            position: relative;
-            z-index: 2;
+            flex: 0 0 auto;
             max-width: 1400px;
             margin: 0 auto;
-            padding: 130px 24px 40px;
+            padding: 130px 24px 24px;
             width: 100%;
         }
 
@@ -133,21 +134,25 @@
             position: relative;
         }
 
-        /* flex-start (not center) so the card row sits right at the top
-           of the pinned viewport box — i.e. right below the h1 — instead
-           of vertically centered with a big empty gap above it. */
+        /* Column layout: the headline (flex: 0 0 auto, natural height)
+           stacks above .wg-track (flex: 1 1 auto, fills whatever's left)
+           inside the SAME pinned box, so the h1 stays on screen together
+           with the cards for the whole slide instead of scrolling away
+           before the pin engages. */
         .wg-sticky {
             position: sticky;
             top: 0;
             height: 100vh;
             display: flex;
-            align-items: flex-start;
-            padding-top: 24px;
+            flex-direction: column;
             overflow: hidden;
         }
 
         .wg-track {
+            flex: 1 1 auto;
+            min-height: 0;
             display: flex;
+            align-items: center;
             gap: 32px;
             padding: 0 24px;
             will-change: transform;
@@ -155,7 +160,11 @@
 
         .wg-card {
             flex: 0 0 auto;
-            width: 420px;
+            /* Height-driven (not width-driven) so the card shrinks to
+               whatever room is actually left under the headline instead
+               of risking overflow/clipping on shorter viewports; 560px
+               is just the desktop cap. Width follows via aspect-ratio. */
+            height: min(560px, 100%);
             aspect-ratio: 3 / 4;
             border-radius: 28px;
             padding: 32px;
@@ -290,8 +299,6 @@
         /* ── Tablet landscape (≤1200px) ── */
         @media (max-width: 1200px) {
             .work-hero-headline h1 { font-size: 64px; }
-
-            .wg-card { width: 360px; }
         }
 
         /* ── Tablet portrait (≤991px) ── */
@@ -328,6 +335,7 @@
             }
             .wg-card {
                 scroll-snap-align: start;
+                height: auto;
                 width: 300px;
             }
         }
@@ -474,22 +482,13 @@
         </a>
     </div>
 
-    <!-- ========================= Hero Section ========================= -->
+    <!-- ========================= Hero Section =========================
+         Just a decorative strip now — the headline lives inside .wg-sticky
+         below so it stays on screen together with the sliding cards. -->
     <section class="work-hero">
-
-        <!-- Vertical lines bg -->
         <div class="work-hero-lines">
             <img src="assets/images/banner-lines.svg" alt="">
         </div>
-
-        <!-- Headline -->
-        <div class="work-hero-headline">
-            <h1>
-                Where <span class="accent">Creativity</span> Meets<br>
-                <span class="accent">Success</span> In Our Work
-            </h1>
-        </div>
-
     </section>
 
     <!-- ========================= Work Gallery Section =========================
@@ -501,6 +500,14 @@
     <section class="work-gallery-section">
         <div class="wg-scroll-space">
             <div class="wg-sticky">
+                <!-- Headline -->
+                <div class="work-hero-headline">
+                    <h1>
+                        Where <span class="accent">Creativity</span> Meets<br>
+                        <span class="accent">Success</span> In Our Work
+                    </h1>
+                </div>
+
                 <div class="wg-track">
 
                     <a href="#" class="wg-card" style="--wg-card-bg:#FF6B81;">
