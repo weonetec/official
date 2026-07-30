@@ -53,18 +53,11 @@
             overflow-x: hidden;
         }
 
-        /* ---- Hero Wrapper ---- */
-        /* Just a decorative strip now — the headline itself lives inside
-           .wg-sticky below, so it stays on screen together with the
-           sliding cards instead of scrolling away before the pin. */
-        .work-hero {
-            position: relative;
-            height: 90px;
-            background: #000;
-            overflow: hidden;
-        }
-
-        /* Vertical lines background */
+        /* Vertical lines background — same banner-lines.svg treatment as
+           the home page's hero-banner, spanning the whole pinned hero+
+           gallery box (not just the headline) so it shows behind the
+           sliding cards too, matching how prominent it is on the home
+           hero instead of being squeezed into a thin strip. */
         .work-hero-lines {
             position: absolute;
             inset: 0;
@@ -81,6 +74,8 @@
 
         /* ---- Hero Headline ---- */
         .work-hero-headline {
+            position: relative;
+            z-index: 1;
             flex: 0 0 auto;
             max-width: 1400px;
             margin: 0 auto;
@@ -149,6 +144,8 @@
         }
 
         .wg-track {
+            position: relative;
+            z-index: 1;
             flex: 1 1 auto;
             min-height: 0;
             display: flex;
@@ -482,15 +479,6 @@
         </a>
     </div>
 
-    <!-- ========================= Hero Section =========================
-         Just a decorative strip now — the headline lives inside .wg-sticky
-         below so it stays on screen together with the sliding cards. -->
-    <section class="work-hero">
-        <div class="work-hero-lines">
-            <img src="assets/images/banner-lines.svg" alt="">
-        </div>
-    </section>
-
     <!-- ========================= Work Gallery Section =========================
          Horizontal scroll-jacked card row, UI/UX inspired by madrepunk.com's
          pinned project gallery. Dummy placeholder cards for now — swap the
@@ -500,6 +488,12 @@
     <section class="work-gallery-section">
         <div class="wg-scroll-space">
             <div class="wg-sticky">
+                <!-- Vertical lines bg — same treatment as the home page's
+                     hero-banner, spanning the whole pinned box -->
+                <div class="work-hero-lines">
+                    <img src="assets/images/banner-lines.svg" alt="">
+                </div>
+
                 <!-- Headline -->
                 <div class="work-hero-headline">
                     <h1>
