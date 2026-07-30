@@ -69,13 +69,12 @@
         '      <div class="pp-row">' +
         '        <div class="pp-field">' +
         '          <label>Project Budget</label>' +
-        '          <select name="budget">' +
-        '            <option value="" disabled selected>Select a range</option>' +
-        '            <option>Under ₹50,000</option>' +
-        '            <option>₹50,000 – ₹1,00,000</option>' +
-        '            <option>₹1,00,000 – ₹3,00,000</option>' +
-        '            <option>₹3,00,000+</option>' +
-        '          </select>' +
+        '          <div class="pp-slider-wrap">' +
+        '            <div class="pp-slider-value" id="ppBudgetValue"></div>' +
+        '            <input type="range" class="pp-slider" id="ppBudgetSlider" min="0" max="3" step="1" value="0" aria-label="Project budget range">' +
+        '            <div class="pp-slider-labels"><span>Under 50K</span><span>50K–1L</span><span>1L–3L</span><span>3L+</span></div>' +
+        '          </div>' +
+        '          <input type="hidden" name="budget">' +
         '        </div>' +
         '        <div class="pp-field">' +
         '          <label>Timeline</label>' +
@@ -122,6 +121,29 @@
         var submitLabel = submitBtn.querySelector('.pp-submit-label');
         var serviceGrid = form.querySelector('.pp-service-grid');
 
+        // ---- Budget slider ----
+        // Native range input (real keyboard/touch/drag support for free)
+        // styled to match the rest of the form, stepping through the same
+        // four brackets the old <select> offered. The slider's own value
+        // is just an index (0-3) — the actual bracket label it maps to is
+        // what's written to the hidden "budget" input that submits with
+        // the form, so the backend still gets a plain, human-readable
+        // string exactly like before.
+        var BUDGET_LABELS = ['Under ₹50,000', '₹50,000 – ₹1,00,000', '₹1,00,000 – ₹3,00,000', '₹3,00,000+'];
+        var budgetSlider = form.querySelector('#ppBudgetSlider');
+        var budgetValue = form.querySelector('#ppBudgetValue');
+        var budgetInput = form.querySelector('[name="budget"]');
+
+        function syncBudgetSlider() {
+            var label = BUDGET_LABELS[budgetSlider.value];
+            budgetValue.textContent = label;
+            budgetInput.value = label;
+            var pct = (budgetSlider.value / (budgetSlider.max - budgetSlider.min)) * 100;
+            budgetSlider.style.setProperty('--pp-slider-pct', pct + '%');
+        }
+        budgetSlider.addEventListener('input', syncBudgetSlider);
+        syncBudgetSlider();
+
         // On pages that run Lenis (index.html), it drives scrolling itself
         // via intercepted wheel/touch events, so body.style.overflow alone
         // doesn't stop the page behind the popup from scrolling — it has to
@@ -156,6 +178,7 @@
             form.reset();
             clearErrors();
             resetVerification();
+            syncBudgetSlider();
         }
 
         // Delegated on document, not the buttons themselves — works for
