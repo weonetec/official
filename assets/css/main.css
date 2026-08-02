@@ -1102,7 +1102,14 @@ li {
     font-weight: bold;
     font-family: 'Satoshi-Variable';
     text-transform: uppercase;
-    line-height: 77px;
+    /* Every other breakpoint already uses line-height:1 for this generic
+       class (only .designFuture's own scoped copy uses a fixed px value)
+       — this desktop rule was the one leftover with the old fixed 77px,
+       smaller than its own 96px font-size, which crams wrapped lines
+       together on any multi-line heading using plain .wetitle (e.g.
+       about.html's hero) instead of the airier spacing the home page's
+       .designFuture heading gets. */
+    line-height: 1;
 
 }
 
