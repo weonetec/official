@@ -326,6 +326,11 @@
 .mob-nav-drawer .cta-btn {
     margin-top: 28px;
     z-index: 3;
+    /* .mob-nav-drawer's column flex stretches this link to the drawer's
+       full width, but .cta-btn's own inline-flex has no justify-content,
+       so without this the label+icon group just cluster at the left,
+       leaving the icon stranded mid-button instead of at the right edge. */
+    justify-content: space-between;
 }
 
 
