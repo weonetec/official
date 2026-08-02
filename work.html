@@ -68,14 +68,13 @@
         .work-hero-lines img {
             width: 100%;
             height: 100%;
-            /* fill (not cover), and no extra opacity dimming — matches
-               the home page's .bg-line img exactly. cover was cropping
-               out the SVG's own bright band (it fades from black to
-               white and back to black vertically), and the added
-               opacity:0.55 was compounding with the SVG's already-low
-               internal alpha, leaving it essentially invisible once
-               spread across this much larger area. */
+            /* fill (not cover) — cover was cropping out the SVG's own
+               bright band (it fades from black to white and back to
+               black vertically). opacity:0.5 dials the whole pattern
+               back to a subtler presence than the SVG's own boosted
+               internal opacity renders at full strength. */
             object-fit: fill;
+            opacity: 0.5;
         }
 
         /* ---- Hero Headline ---- */
