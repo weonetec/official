@@ -193,8 +193,7 @@
             text-transform: uppercase;
         }
 
-        /* Abstract "browser window" placeholder standing in for a real
-           project screenshot — dummy content only, see JS/HTML below. */
+        /* "Browser window" frame around each real project screenshot. */
         .wg-card-mockup {
             flex: 1;
             margin: 20px 0;
@@ -221,31 +220,13 @@
             background: rgba(0, 0, 0, 0.15);
         }
 
-        .wg-card-mockup-body {
+        .wg-card-mockup-img {
             flex: 1;
-            padding: 16px;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
+            width: 100%;
             min-height: 0;
-        }
-
-        .wg-card-mockup-hero {
-            flex: 1;
-            border-radius: 10px;
-            background: rgba(0, 0, 0, 0.08);
-        }
-
-        .wg-card-mockup-line {
-            height: 8px;
-            border-radius: 4px;
-            background: rgba(0, 0, 0, 0.1);
-            width: 70%;
-            flex-shrink: 0;
-        }
-
-        .wg-card-mockup-line--short {
-            width: 40%;
+            object-fit: cover;
+            object-position: top;
+            display: block;
         }
 
         .wg-card-info {
@@ -486,10 +467,10 @@
 
     <!-- ========================= Work Gallery Section =========================
          Horizontal scroll-jacked card row, UI/UX inspired by madrepunk.com's
-         pinned project gallery. Dummy placeholder cards for now — swap the
-         --wg-card-bg colors, .wg-card-title/.wg-card-cat text, and href per
-         card for real projects when they're ready; the mockup box is a plain
-         CSS placeholder, not a real screenshot. -->
+         pinned project gallery. Screenshots live at assets/images/work/*-card.jpg
+         (cropped to the card's 3:4 ratio and compressed for web already) — swap
+         the --wg-card-bg colors, .wg-card-title/.wg-card-cat text, and href when
+         real destination links are ready. -->
     <section class="work-gallery-section">
         <div class="wg-scroll-space">
             <div class="wg-sticky">
@@ -513,16 +494,12 @@
                         <span class="wg-card-index">01</span>
                         <div class="wg-card-mockup">
                             <div class="wg-card-mockup-bar"><span></span><span></span><span></span></div>
-                            <div class="wg-card-mockup-body">
-                                <div class="wg-card-mockup-hero"></div>
-                                <div class="wg-card-mockup-line"></div>
-                                <div class="wg-card-mockup-line wg-card-mockup-line--short"></div>
-                            </div>
+                            <img class="wg-card-mockup-img" src="assets/images/work/crypto-card.jpg" alt="Crypto Exchange project screenshot">
                         </div>
                         <div class="wg-card-info">
                             <span>
-                                <span class="wg-card-title">Aurora Beauty</span>
-                                <span class="wg-card-cat">E-Commerce</span>
+                                <span class="wg-card-title">Crypto Exchange</span>
+                                <span class="wg-card-cat">Web3 &amp; Crypto</span>
                             </span>
                             <span class="wg-card-cta"><i class="ri-arrow-right-up-line"></i></span>
                         </div>
@@ -532,16 +509,12 @@
                         <span class="wg-card-index">02</span>
                         <div class="wg-card-mockup">
                             <div class="wg-card-mockup-bar"><span></span><span></span><span></span></div>
-                            <div class="wg-card-mockup-body">
-                                <div class="wg-card-mockup-hero"></div>
-                                <div class="wg-card-mockup-line"></div>
-                                <div class="wg-card-mockup-line wg-card-mockup-line--short"></div>
-                            </div>
+                            <img class="wg-card-mockup-img" src="assets/images/work/dog-food-card.jpg" alt="Dog Food Brand project screenshot">
                         </div>
                         <div class="wg-card-info">
                             <span>
-                                <span class="wg-card-title">Nova Finance</span>
-                                <span class="wg-card-cat">Web App</span>
+                                <span class="wg-card-title">Dog Food Brand</span>
+                                <span class="wg-card-cat">E-Commerce</span>
                             </span>
                             <span class="wg-card-cta"><i class="ri-arrow-right-up-line"></i></span>
                         </div>
@@ -551,16 +524,12 @@
                         <span class="wg-card-index">03</span>
                         <div class="wg-card-mockup">
                             <div class="wg-card-mockup-bar"><span></span><span></span><span></span></div>
-                            <div class="wg-card-mockup-body">
-                                <div class="wg-card-mockup-hero"></div>
-                                <div class="wg-card-mockup-line"></div>
-                                <div class="wg-card-mockup-line wg-card-mockup-line--short"></div>
-                            </div>
+                            <img class="wg-card-mockup-img" src="assets/images/work/home-loan-card.jpg" alt="Home Loan Portal project screenshot">
                         </div>
                         <div class="wg-card-info">
                             <span>
-                                <span class="wg-card-title">Verdant Foods</span>
-                                <span class="wg-card-cat">Branding</span>
+                                <span class="wg-card-title">Home Loan Portal</span>
+                                <span class="wg-card-cat">FinTech</span>
                             </span>
                             <span class="wg-card-cta"><i class="ri-arrow-right-up-line"></i></span>
                         </div>
@@ -570,16 +539,12 @@
                         <span class="wg-card-index">04</span>
                         <div class="wg-card-mockup">
                             <div class="wg-card-mockup-bar"><span></span><span></span><span></span></div>
-                            <div class="wg-card-mockup-body">
-                                <div class="wg-card-mockup-hero"></div>
-                                <div class="wg-card-mockup-line"></div>
-                                <div class="wg-card-mockup-line wg-card-mockup-line--short"></div>
-                            </div>
+                            <img class="wg-card-mockup-img" src="assets/images/work/nft-card.jpg" alt="NFT Marketplace project screenshot">
                         </div>
                         <div class="wg-card-info">
                             <span>
-                                <span class="wg-card-title">Pulse Fitness</span>
-                                <span class="wg-card-cat">Mobile App</span>
+                                <span class="wg-card-title">NFT Marketplace</span>
+                                <span class="wg-card-cat">Web3 &amp; Crypto</span>
                             </span>
                             <span class="wg-card-cta"><i class="ri-arrow-right-up-line"></i></span>
                         </div>
@@ -589,73 +554,12 @@
                         <span class="wg-card-index">05</span>
                         <div class="wg-card-mockup">
                             <div class="wg-card-mockup-bar"><span></span><span></span><span></span></div>
-                            <div class="wg-card-mockup-body">
-                                <div class="wg-card-mockup-hero"></div>
-                                <div class="wg-card-mockup-line"></div>
-                                <div class="wg-card-mockup-line wg-card-mockup-line--short"></div>
-                            </div>
+                            <img class="wg-card-mockup-img" src="assets/images/work/real-estate-card.jpg" alt="Real Estate Platform project screenshot">
                         </div>
                         <div class="wg-card-info">
                             <span>
-                                <span class="wg-card-title">Lumen Studio</span>
-                                <span class="wg-card-cat">Portfolio</span>
-                            </span>
-                            <span class="wg-card-cta"><i class="ri-arrow-right-up-line"></i></span>
-                        </div>
-                    </a>
-
-                    <a href="#" class="wg-card" style="--wg-card-bg:#06B6D4;">
-                        <span class="wg-card-index">06</span>
-                        <div class="wg-card-mockup">
-                            <div class="wg-card-mockup-bar"><span></span><span></span><span></span></div>
-                            <div class="wg-card-mockup-body">
-                                <div class="wg-card-mockup-hero"></div>
-                                <div class="wg-card-mockup-line"></div>
-                                <div class="wg-card-mockup-line wg-card-mockup-line--short"></div>
-                            </div>
-                        </div>
-                        <div class="wg-card-info">
-                            <span>
-                                <span class="wg-card-title">Drift Travel</span>
-                                <span class="wg-card-cat">Website</span>
-                            </span>
-                            <span class="wg-card-cta"><i class="ri-arrow-right-up-line"></i></span>
-                        </div>
-                    </a>
-
-                    <a href="#" class="wg-card" style="--wg-card-bg:#FFC107;">
-                        <span class="wg-card-index">07</span>
-                        <div class="wg-card-mockup">
-                            <div class="wg-card-mockup-bar"><span></span><span></span><span></span></div>
-                            <div class="wg-card-mockup-body">
-                                <div class="wg-card-mockup-hero"></div>
-                                <div class="wg-card-mockup-line"></div>
-                                <div class="wg-card-mockup-line wg-card-mockup-line--short"></div>
-                            </div>
-                        </div>
-                        <div class="wg-card-info">
-                            <span>
-                                <span class="wg-card-title">Forge Agency</span>
-                                <span class="wg-card-cat">Web Design</span>
-                            </span>
-                            <span class="wg-card-cta"><i class="ri-arrow-right-up-line"></i></span>
-                        </div>
-                    </a>
-
-                    <a href="#" class="wg-card" style="--wg-card-bg:#FF5252;">
-                        <span class="wg-card-index">08</span>
-                        <div class="wg-card-mockup">
-                            <div class="wg-card-mockup-bar"><span></span><span></span><span></span></div>
-                            <div class="wg-card-mockup-body">
-                                <div class="wg-card-mockup-hero"></div>
-                                <div class="wg-card-mockup-line"></div>
-                                <div class="wg-card-mockup-line wg-card-mockup-line--short"></div>
-                            </div>
-                        </div>
-                        <div class="wg-card-info">
-                            <span>
-                                <span class="wg-card-title">Echo Music</span>
-                                <span class="wg-card-cat">Branding</span>
+                                <span class="wg-card-title">Real Estate Platform</span>
+                                <span class="wg-card-cat">Property</span>
                             </span>
                             <span class="wg-card-cta"><i class="ri-arrow-right-up-line"></i></span>
                         </div>
