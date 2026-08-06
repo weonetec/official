@@ -180,10 +180,6 @@
             transition: transform 0.4s ease;
         }
 
-        .wg-card:hover {
-            transform: translateY(-8px);
-        }
-
         .wg-card-index {
             font-family: 'Satoshi-Variable';
             font-size: 13px;
@@ -193,7 +189,7 @@
             text-transform: uppercase;
         }
 
-        /* "Browser window" frame around each real project screenshot. */
+        /* "Browser window" frame around each card's mockup content. */
         .wg-card-mockup {
             flex: 1;
             margin: 20px 0;
@@ -220,13 +216,52 @@
             background: rgba(0, 0, 0, 0.15);
         }
 
-        .wg-card-mockup-img {
+        /* Dummy "page" content, taller than the visible window under the
+           browser-chrome bar — hovering the card pans it upward via
+           translateY (see .wg-card:hover below), mimicking a real
+           page-scroll preview. Swap for a real screenshot per card when
+           one's ready; the transform still works the same way as long
+           as its content stays taller than the visible window. */
+        .wg-card-mockup-body {
             flex: 1;
-            width: 100%;
             min-height: 0;
-            object-fit: cover;
-            object-position: top;
-            display: block;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .wg-card-mockup-page {
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            transition: transform 1.6s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+
+        .wg-card-mockup-hero {
+            height: 100px;
+            border-radius: 10px;
+            background: rgba(0, 0, 0, 0.08);
+            flex-shrink: 0;
+        }
+
+        .wg-card-mockup-line {
+            height: 8px;
+            border-radius: 4px;
+            background: rgba(0, 0, 0, 0.1);
+            width: 70%;
+            flex-shrink: 0;
+        }
+
+        .wg-card-mockup-line--short {
+            width: 40%;
+        }
+
+        .wg-card-mockup-block {
+            height: 80px;
+            border-radius: 8px;
+            background: rgba(0, 0, 0, 0.06);
+            flex-shrink: 0;
         }
 
         .wg-card-info {
@@ -270,9 +305,24 @@
             transition: transform 0.3s ease, background 0.3s ease;
         }
 
-        .wg-card:hover .wg-card-cta {
-            transform: rotate(0deg);
-            background: #1a1a1a;
+        /* Touch devices synthesize a stuck :hover state on tap that never
+           clears until something else is tapped — this exact class of bug
+           already bit the hero value-cards elsewhere on the site. Scoping
+           every :hover effect here to real hover-capable pointers avoids
+           it for the card lift, the mockup page pan, and the CTA rotate. */
+        @media (hover: hover) and (pointer: fine) {
+            .wg-card:hover {
+                transform: translateY(-8px);
+            }
+
+            .wg-card:hover .wg-card-mockup-page {
+                transform: translateY(-52%);
+            }
+
+            .wg-card:hover .wg-card-cta {
+                transform: rotate(0deg);
+                background: #1a1a1a;
+            }
         }
 
         /* =========================================
@@ -494,7 +544,25 @@
                         <span class="wg-card-index">01</span>
                         <div class="wg-card-mockup">
                             <div class="wg-card-mockup-bar"><span></span><span></span><span></span></div>
-                            <img class="wg-card-mockup-img" src="assets/images/work/crypto-card.jpg" alt="Crypto Exchange project screenshot">
+                            <div class="wg-card-mockup-body">
+                                <div class="wg-card-mockup-page">
+                                    <div class="wg-card-mockup-hero"></div>
+                                    <div class="wg-card-mockup-line"></div>
+                                    <div class="wg-card-mockup-line wg-card-mockup-line--short"></div>
+                                    <div class="wg-card-mockup-block"></div>
+                                    <div class="wg-card-mockup-line"></div>
+                                    <div class="wg-card-mockup-line wg-card-mockup-line--short"></div>
+                                    <div class="wg-card-mockup-block"></div>
+                                    <div class="wg-card-mockup-line"></div>
+                                    <div class="wg-card-mockup-line wg-card-mockup-line--short"></div>
+                                    <div class="wg-card-mockup-block"></div>
+                                    <div class="wg-card-mockup-line"></div>
+                                    <div class="wg-card-mockup-line wg-card-mockup-line--short"></div>
+                                    <div class="wg-card-mockup-block"></div>
+                                    <div class="wg-card-mockup-line"></div>
+                                    <div class="wg-card-mockup-line wg-card-mockup-line--short"></div>
+                                </div>
+                            </div>
                         </div>
                         <div class="wg-card-info">
                             <span>
@@ -509,7 +577,25 @@
                         <span class="wg-card-index">02</span>
                         <div class="wg-card-mockup">
                             <div class="wg-card-mockup-bar"><span></span><span></span><span></span></div>
-                            <img class="wg-card-mockup-img" src="assets/images/work/dog-food-card.jpg" alt="Dog Food Brand project screenshot">
+                            <div class="wg-card-mockup-body">
+                                <div class="wg-card-mockup-page">
+                                    <div class="wg-card-mockup-hero"></div>
+                                    <div class="wg-card-mockup-line"></div>
+                                    <div class="wg-card-mockup-line wg-card-mockup-line--short"></div>
+                                    <div class="wg-card-mockup-block"></div>
+                                    <div class="wg-card-mockup-line"></div>
+                                    <div class="wg-card-mockup-line wg-card-mockup-line--short"></div>
+                                    <div class="wg-card-mockup-block"></div>
+                                    <div class="wg-card-mockup-line"></div>
+                                    <div class="wg-card-mockup-line wg-card-mockup-line--short"></div>
+                                    <div class="wg-card-mockup-block"></div>
+                                    <div class="wg-card-mockup-line"></div>
+                                    <div class="wg-card-mockup-line wg-card-mockup-line--short"></div>
+                                    <div class="wg-card-mockup-block"></div>
+                                    <div class="wg-card-mockup-line"></div>
+                                    <div class="wg-card-mockup-line wg-card-mockup-line--short"></div>
+                                </div>
+                            </div>
                         </div>
                         <div class="wg-card-info">
                             <span>
@@ -524,7 +610,25 @@
                         <span class="wg-card-index">03</span>
                         <div class="wg-card-mockup">
                             <div class="wg-card-mockup-bar"><span></span><span></span><span></span></div>
-                            <img class="wg-card-mockup-img" src="assets/images/work/home-loan-card.jpg" alt="Home Loan Portal project screenshot">
+                            <div class="wg-card-mockup-body">
+                                <div class="wg-card-mockup-page">
+                                    <div class="wg-card-mockup-hero"></div>
+                                    <div class="wg-card-mockup-line"></div>
+                                    <div class="wg-card-mockup-line wg-card-mockup-line--short"></div>
+                                    <div class="wg-card-mockup-block"></div>
+                                    <div class="wg-card-mockup-line"></div>
+                                    <div class="wg-card-mockup-line wg-card-mockup-line--short"></div>
+                                    <div class="wg-card-mockup-block"></div>
+                                    <div class="wg-card-mockup-line"></div>
+                                    <div class="wg-card-mockup-line wg-card-mockup-line--short"></div>
+                                    <div class="wg-card-mockup-block"></div>
+                                    <div class="wg-card-mockup-line"></div>
+                                    <div class="wg-card-mockup-line wg-card-mockup-line--short"></div>
+                                    <div class="wg-card-mockup-block"></div>
+                                    <div class="wg-card-mockup-line"></div>
+                                    <div class="wg-card-mockup-line wg-card-mockup-line--short"></div>
+                                </div>
+                            </div>
                         </div>
                         <div class="wg-card-info">
                             <span>
@@ -539,7 +643,25 @@
                         <span class="wg-card-index">04</span>
                         <div class="wg-card-mockup">
                             <div class="wg-card-mockup-bar"><span></span><span></span><span></span></div>
-                            <img class="wg-card-mockup-img" src="assets/images/work/nft-card.jpg" alt="NFT Marketplace project screenshot">
+                            <div class="wg-card-mockup-body">
+                                <div class="wg-card-mockup-page">
+                                    <div class="wg-card-mockup-hero"></div>
+                                    <div class="wg-card-mockup-line"></div>
+                                    <div class="wg-card-mockup-line wg-card-mockup-line--short"></div>
+                                    <div class="wg-card-mockup-block"></div>
+                                    <div class="wg-card-mockup-line"></div>
+                                    <div class="wg-card-mockup-line wg-card-mockup-line--short"></div>
+                                    <div class="wg-card-mockup-block"></div>
+                                    <div class="wg-card-mockup-line"></div>
+                                    <div class="wg-card-mockup-line wg-card-mockup-line--short"></div>
+                                    <div class="wg-card-mockup-block"></div>
+                                    <div class="wg-card-mockup-line"></div>
+                                    <div class="wg-card-mockup-line wg-card-mockup-line--short"></div>
+                                    <div class="wg-card-mockup-block"></div>
+                                    <div class="wg-card-mockup-line"></div>
+                                    <div class="wg-card-mockup-line wg-card-mockup-line--short"></div>
+                                </div>
+                            </div>
                         </div>
                         <div class="wg-card-info">
                             <span>
@@ -554,7 +676,25 @@
                         <span class="wg-card-index">05</span>
                         <div class="wg-card-mockup">
                             <div class="wg-card-mockup-bar"><span></span><span></span><span></span></div>
-                            <img class="wg-card-mockup-img" src="assets/images/work/real-estate-card.jpg" alt="Real Estate Platform project screenshot">
+                            <div class="wg-card-mockup-body">
+                                <div class="wg-card-mockup-page">
+                                    <div class="wg-card-mockup-hero"></div>
+                                    <div class="wg-card-mockup-line"></div>
+                                    <div class="wg-card-mockup-line wg-card-mockup-line--short"></div>
+                                    <div class="wg-card-mockup-block"></div>
+                                    <div class="wg-card-mockup-line"></div>
+                                    <div class="wg-card-mockup-line wg-card-mockup-line--short"></div>
+                                    <div class="wg-card-mockup-block"></div>
+                                    <div class="wg-card-mockup-line"></div>
+                                    <div class="wg-card-mockup-line wg-card-mockup-line--short"></div>
+                                    <div class="wg-card-mockup-block"></div>
+                                    <div class="wg-card-mockup-line"></div>
+                                    <div class="wg-card-mockup-line wg-card-mockup-line--short"></div>
+                                    <div class="wg-card-mockup-block"></div>
+                                    <div class="wg-card-mockup-line"></div>
+                                    <div class="wg-card-mockup-line wg-card-mockup-line--short"></div>
+                                </div>
+                            </div>
                         </div>
                         <div class="wg-card-info">
                             <span>
