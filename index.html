@@ -171,6 +171,20 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
     <!-- RemixIcon -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css">
+
+    <style>
+        /* .blog-card's base colors (main.css) are dark-on-light (#000
+           text etc.) for use on a white section background — this page
+           is dark throughout, so it needs the same light-on-dark
+           override blog-detail.html's .related-section already uses. */
+        .blog-section .card-title-text { color:#fff; }
+        .blog-section .blog-card:hover .card-title-text { color:#B2DF48; }
+        .blog-section .badge-tag { color:rgba(255,255,255,0.5); }
+        .blog-section .read-time { color:rgba(255,255,255,0.5); }
+        .blog-section .divider { color:rgba(255,255,255,0.2); }
+        .blog-section .author-label { color:rgba(255,255,255,0.5); }
+        .blog-section .post-date { color:rgba(255,255,255,0.4); }
+    </style>
 </head>
 
 <body>
