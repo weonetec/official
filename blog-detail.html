@@ -67,15 +67,54 @@
         .detail-meta .author-avatar { width:40px; height:40px; border-radius:50%; background:#B2DF48; flex-shrink:0; }
         .detail-meta .meta-author { color:#fff; font-size:14px; }
         .detail-meta .meta-date, .detail-meta .meta-read { color:rgba(255,255,255,0.4); font-size:13px; }
-        .detail-featured-img { width:100%; max-height:500px; object-fit:cover; border-radius:20px; margin-bottom:60px; }
-        .article-body { background:#fff; border-radius:20px; padding:48px; }
-        .article-body h2 { font-family:'Satoshi-Variable'; font-weight:800; font-size:30px; color:#111; margin:36px 0 16px; }
-        .article-body h3 { font-family:'Satoshi-Variable'; font-weight:700; font-size:22px; color:#111; margin:28px 0 12px; }
-        .article-body p { font-size:17px; color:#333; line-height:1.75; margin-bottom:20px; }
+        .detail-featured-img { width:100%; max-height:500px; object-fit:cover; border-radius:20px; margin-bottom:40px; }
+
+        /* Share row — sits right below the meta row, same icon-in-circle
+           language as the footer socials pill. */
+        .article-share { display:flex; align-items:center; gap:12px; margin-bottom:40px; }
+        .article-share span { color:rgba(255,255,255,0.4); font-size:13px; letter-spacing:1px; text-transform:uppercase; font-family:'Satoshi-Variable'; }
+        .article-share a { width:36px; height:36px; border-radius:50%; border:1px solid rgba(255,255,255,0.15); display:inline-flex; align-items:center; justify-content:center; color:rgba(255,255,255,0.6); text-decoration:none; transition:all 0.2s; }
+        .article-share a:hover { border-color:#B2DF48; color:#B2DF48; }
+
+        .article-body { background:#0a0a0a; border:1px solid rgba(255,255,255,0.06); border-radius:20px; padding:48px; }
+        .article-body h2 { font-family:'Satoshi-Variable'; font-weight:800; font-size:30px; color:#fff; margin:36px 0 16px; }
+        .article-body h2:first-child { margin-top:0; }
+        .article-body h3 { font-family:'Satoshi-Variable'; font-weight:700; font-size:22px; color:#fff; margin:28px 0 12px; }
+        .article-body p { font-size:17px; color:rgba(255,255,255,0.7); line-height:1.75; margin-bottom:20px; }
         .article-body ul { padding-left:24px; margin-bottom:20px; }
-        .article-body ul li { font-size:17px; color:#333; line-height:1.75; margin-bottom:8px; }
-        .article-body blockquote { border-left:4px solid #B2DF48; padding:16px 24px; margin:32px 0; background:#f8f8f8; border-radius:0 12px 12px 0; }
-        .article-body blockquote p { color:#444; font-style:italic; margin:0; }
+        .article-body ul li { font-size:17px; color:rgba(255,255,255,0.7); line-height:1.75; margin-bottom:8px; }
+        .article-body blockquote { border-left:4px solid #B2DF48; padding:16px 24px; margin:32px 0; background:rgba(255,255,255,0.03); border-radius:0 12px 12px 0; }
+        .article-body blockquote p { color:rgba(255,255,255,0.6); font-style:italic; margin:0; }
+
+        /* Key takeaways callout — right after the intro, mirrors the
+           lime-tinted highlight boxes used elsewhere on the site. */
+        .key-takeaways { background:rgba(178,223,72,0.06); border:1px solid rgba(178,223,72,0.25); border-radius:16px; padding:28px 32px; margin:8px 0 36px; }
+        .key-takeaways h4 { color:#B2DF48; font-size:13px; letter-spacing:2px; text-transform:uppercase; margin-bottom:16px; font-weight:700; font-family:'Satoshi-Variable'; }
+        .key-takeaways ul { list-style:none; padding:0; margin:0; }
+        .key-takeaways li { position:relative; padding-left:24px; color:rgba(255,255,255,0.8); font-size:16px; line-height:1.6; margin-bottom:12px; }
+        .key-takeaways li:last-child { margin-bottom:0; }
+        .key-takeaways li::before { content:''; position:absolute; left:0; top:8px; width:7px; height:7px; border-radius:50%; background:#B2DF48; }
+
+        /* Mid-article CTA banner — same gradient card treatment as the
+           popup form modal, scaled down for an inline placement. */
+        .article-cta-banner { background:linear-gradient(160deg, #0d0d0d 0%, #111800 100%); border:1px solid rgba(178,223,72,0.18); border-radius:20px; padding:36px; margin:40px 0; text-align:center; }
+        .article-cta-banner h4 { color:#fff; font-size:22px; font-weight:800; margin-bottom:8px; font-family:'Satoshi-Variable'; }
+        .article-cta-banner p { color:rgba(255,255,255,0.5); font-size:15px; margin-bottom:20px; }
+        .article-cta-banner .cta-btn { display:inline-flex; }
+
+        /* Tables — for content types like a cost/comparison breakdown.
+           Wrapped in .table-scroll so a wider table scrolls horizontally
+           on narrow screens instead of cramming its columns. */
+        .table-scroll { overflow-x:auto; margin:32px 0; }
+        .table-scroll table { width:100%; min-width:480px; border-collapse:collapse; margin:0; }
+        .article-body table th, .article-body table td { padding:14px 16px; text-align:left; border-bottom:1px solid rgba(255,255,255,0.1); color:rgba(255,255,255,0.7); font-size:15px; }
+        .article-body table th { color:#fff; font-weight:700; font-family:'Satoshi-Variable'; background:rgba(255,255,255,0.03); }
+
+        /* FAQ — reuses the exact accordion the home page's FAQ section
+           uses (.custom-accord, main.css), just without that section's
+           own 180px top padding since this sits mid-page, not as a hero. */
+        .article-faq { padding:20px 0 0; }
+        .article-faq .wetitle { color:#fff; margin-bottom:32px; }
         .sidebar { position:sticky; top:100px; }
         .toc-card { background:#111; border-radius:16px; padding:28px; margin-bottom:24px; }
         .toc-card h4 { color:#fff; font-size:14px; letter-spacing:2px; text-transform:uppercase; margin-bottom:20px; }
@@ -256,6 +295,15 @@
                 <span class="meta-read">17 min read</span>
             </div>
 
+            <!-- Share row -->
+            <div class="article-share">
+                <span>Share</span>
+                <a href="https://www.facebook.com/sharer/sharer.php?u=https://weone.tech/blog-detail" target="_blank" rel="noopener noreferrer" aria-label="Share on Facebook"><i class="ri-facebook-fill"></i></a>
+                <a href="https://twitter.com/intent/tweet?url=https://weone.tech/blog-detail" target="_blank" rel="noopener noreferrer" aria-label="Share on Twitter"><i class="ri-twitter-x-fill"></i></a>
+                <a href="https://www.linkedin.com/sharing/share-offsite/?url=https://weone.tech/blog-detail" target="_blank" rel="noopener noreferrer" aria-label="Share on LinkedIn"><i class="ri-linkedin-fill"></i></a>
+                <a href="mailto:?subject=Worth a read&body=https://weone.tech/blog-detail" aria-label="Share by email"><i class="ri-mail-line"></i></a>
+            </div>
+
             <!-- Featured image -->
             <img src="assets/images/blog-1.jpg" alt="Top 10 SaaS Website Design Agencies" class="detail-featured-img">
 
@@ -269,6 +317,16 @@
                         <h2 id="section-intro">Why SaaS Website Design Matters More Than Ever</h2>
                         <p>In the hyper-competitive SaaS landscape, your website is not just a digital brochure — it is your first sales rep, your conversion engine, and the single most powerful trust signal you have. Visitors decide within seconds whether they belong on your platform or not. A poorly designed site sends them elsewhere; a beautifully crafted one turns curiosity into qualified leads.</p>
                         <p>Over the past two years, a new breed of design agencies has emerged — ones that understand the unique demands of SaaS products: communicating complex value in simple language, reducing cognitive load during onboarding flows, and building design systems that scale as the product evolves. Below, we have ranked the top ten agencies that are raising the bar in 2025.</p>
+
+                        <div class="key-takeaways">
+                            <h4>Key Takeaways</h4>
+                            <ul>
+                                <li>The best SaaS design agencies treat the website as a conversion engine, not a brochure — measurable impact matters as much as visual polish.</li>
+                                <li>Design systems that scale with the product are now a baseline expectation, not a nice-to-have.</li>
+                                <li>Retainer engagements tend to outperform one-off launches for early-stage SaaS, since they allow for ongoing iteration.</li>
+                                <li>Ask any shortlisted agency for before-and-after conversion data, not just a portfolio of screenshots.</li>
+                            </ul>
+                        </div>
 
                         <blockquote>
                             <p>"Design is not just what it looks like and feels like. Design is how it works — and for SaaS, how it converts." — inspired by the best studios in the field.</p>
@@ -295,6 +353,46 @@
 
                         <h3>3. Clay Agency</h3>
                         <p>Clay are the go-to studio for Series A and Series B SaaS companies that need a complete redesign before their next fundraise. Their process is rigorously research-led, and their motion design work is some of the most sophisticated in the industry. Pricing reflects their premium positioning, but the ROI is consistently documented.</p>
+
+                        <div class="table-scroll">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Agency</th>
+                                        <th>Best For</th>
+                                        <th>Notable Clients</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>WeOne Studio</td>
+                                        <td>Conversion-first design, strategy-to-dev under one roof</td>
+                                        <td>KiteWorks, Meebits, Delphora</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Ramotion</td>
+                                        <td>Brand-first identity and UI</td>
+                                        <td>Series A–C SaaS teams</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Clay Agency</td>
+                                        <td>Pre-fundraise redesigns, motion design</td>
+                                        <td>Series A/B SaaS companies</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="article-cta-banner">
+                            <h4>Not sure which direction is right for your SaaS site?</h4>
+                            <p>Tell us where you're stuck and we'll map out a design strategy that actually moves conversion numbers.</p>
+                            <a href="#" class="cta-btn js-open-popup">
+                                Get A Call Back
+                                <span class="cta-icon"><svg width="20" height="20" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg"><g clip-path="url(#clip0_acb)"><path d="M6.99999 13.4178C7.52032 13.4178 8.03482 13.4085 8.54232 13.391C11.172 13.2982 13.2977 11.1726 13.3904 8.54292C13.4085 8.03542 13.4172 7.52092 13.4172 7.00058C13.4172 6.48025 13.4079 5.96575 13.3904 5.45825C13.2977 2.82858 11.172 0.702914 8.54232 0.610165C8.03482 0.592081 7.52032 0.583331 6.99999 0.583331C6.47965 0.583331 5.96515 0.592665 5.45765 0.610165C2.8274 0.702914 0.701737 2.82858 0.608987 5.45883C0.590903 5.96633 0.582153 6.48083 0.582153 7.00116C0.582153 7.5215 0.591487 8.036 0.608987 8.5435C0.701737 11.1726 2.8274 13.2982 5.45765 13.3904C5.96515 13.4085 6.47965 13.4178 6.99999 13.4178ZM4.30499 9.49725C4.07515 9.24933 4.08974 8.86142 4.33824 8.63217L7.87557 5.35442L5.76099 5.138C5.60699 5.12225 5.47165 5.0505 5.37424 4.94491C5.25874 4.82067 5.19515 4.64858 5.2144 4.466C5.24882 4.13 5.54924 3.885 5.88582 3.92L9.15132 4.256C9.36015 4.26242 9.55324 4.34991 9.69499 4.50333C9.83615 4.65558 9.90907 4.8545 9.90032 5.02075L9.98607 8.34575C9.9954 8.68408 9.72765 8.96525 9.39049 8.974C9.20674 8.97866 9.04049 8.90225 8.92499 8.778C8.82757 8.673 8.76632 8.533 8.76224 8.37783L8.70857 6.25275L5.17065 9.5305C4.92274 9.76033 4.53482 9.74517 4.30499 9.49725Z" fill="#B2DF48"/></g><defs><clipPath id="clip0_acb"><rect width="14" height="14" fill="white" transform="translate(0 14) rotate(-90)"/></clipPath></defs></svg></span>
+                                <span class="btn-glow-layer"></span>
+                                <div class="btn-inner-shadow mini"></div>
+                            </a>
+                        </div>
 
                         <h2 id="section-rising">Rising Studios to Watch</h2>
                         <p>Beyond the established names, 2025 has seen an exciting crop of smaller, more nimble studios gaining serious traction in the SaaS design space. These are the agencies punching above their weight:</p>
@@ -327,6 +425,7 @@
                                 <li><a href="#section-top5">The Top Five Agencies</a></li>
                                 <li><a href="#section-rising">Rising Studios to Watch</a></li>
                                 <li><a href="#section-choose">How to Choose the Right Agency</a></li>
+                                <li><a href="#section-faq">FAQs</a></li>
                             </ul>
                         </div>
 
@@ -356,6 +455,83 @@
         </div>
     </section>
     <!-- ========================= Detail Hero End ========================= -->
+
+    <!-- ========================= Article FAQ =========================
+         Reuses the exact accordion the home page's FAQ section uses
+         (.custom-accord, styled in main.css) rather than a new component. -->
+    <section class="article-faq" id="section-faq">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <h2 class="wetitle">FAQs</h2>
+                    <div class="accordion custom-accord z-2 position-relative" id="accordionBlogFaq">
+
+                        <div class="accordion-item">
+                            <div class="accordian-wrapper">
+                                <h2 class="accordion-header" id="blogFaqHeadingOne">
+                                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#blogFaqCollapseOne" aria-expanded="true" aria-controls="blogFaqCollapseOne">
+                                        How much does it cost to redesign a SaaS website?
+                                    </button>
+                                </h2>
+                                <div id="blogFaqCollapseOne" class="accordion-collapse collapse show" aria-labelledby="blogFaqHeadingOne" data-bs-parent="#accordionBlogFaq">
+                                    <div class="accordion-body">
+                                        <p>It depends heavily on scope, but most of the agencies on this list run projects between $15,000 and $80,000 for a full site redesign. Retainer engagements typically start lower per month but run for 3–6 months or longer.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="accordion-item">
+                            <div class="accordian-wrapper">
+                                <h2 class="accordion-header" id="blogFaqHeadingTwo">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#blogFaqCollapseTwo" aria-expanded="false" aria-controls="blogFaqCollapseTwo">
+                                        How long does a typical SaaS website redesign take?
+                                    </button>
+                                </h2>
+                                <div id="blogFaqCollapseTwo" class="accordion-collapse collapse" aria-labelledby="blogFaqHeadingTwo" data-bs-parent="#accordionBlogFaq">
+                                    <div class="accordion-body">
+                                        <p>A focused marketing site redesign usually takes 4–8 weeks. Larger projects involving a new design system, multiple product pages, or a CMS migration can run 3–4 months.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="accordion-item">
+                            <div class="accordian-wrapper">
+                                <h2 class="accordion-header" id="blogFaqHeadingThree">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#blogFaqCollapseThree" aria-expanded="false" aria-controls="blogFaqCollapseThree">
+                                        Should we hire an agency or build an in-house design team?
+                                    </button>
+                                </h2>
+                                <div id="blogFaqCollapseThree" class="accordion-collapse collapse" aria-labelledby="blogFaqHeadingThree" data-bs-parent="#accordionBlogFaq">
+                                    <div class="accordion-body">
+                                        <p>For most early-stage SaaS teams, an agency is faster to ship with and cheaper than hiring a full in-house team. In-house makes more sense once you have enough ongoing design work to keep 2+ designers busy full-time.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="accordion-item">
+                            <div class="accordian-wrapper">
+                                <h2 class="accordion-header" id="blogFaqHeadingFour">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#blogFaqCollapseFour" aria-expanded="false" aria-controls="blogFaqCollapseFour">
+                                        What should we prepare before reaching out to an agency?
+                                    </button>
+                                </h2>
+                                <div id="blogFaqCollapseFour" class="accordion-collapse collapse" aria-labelledby="blogFaqHeadingFour" data-bs-parent="#accordionBlogFaq">
+                                    <div class="accordion-body">
+                                        <p>A rough budget range, a timeline, and 3–5 reference sites you like (and why) go a long way. Analytics on your current site's conversion funnel helps too, if you have it.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- ========================= Article FAQ End ========================= -->
 
     <!-- ========================= Related Posts ========================= -->
     <section class="related-section">
