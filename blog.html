@@ -39,15 +39,16 @@
         .category-filters a:hover, .category-filters a.active { border-color:#B2DF48; color:#B2DF48; }
         .blog-listing-section { background:#000; padding:80px 0; }
         .blog-listing-section .blog-card { cursor:pointer; }
-        .blog-listing-section .card-title-text { color:#fff; }
-        .blog-listing-section .blog-card:hover .card-title-text { color:#B2DF48; }
-        .blog-listing-section .badge-tag { color:rgba(255,255,255,0.5); }
-        .blog-listing-section .read-time { color:rgba(255,255,255,0.5); }
-        .blog-listing-section .divider { color:rgba(255,255,255,0.2); }
-        .blog-listing-section .author-label { color:rgba(255,255,255,0.5); }
-        .blog-listing-section .post-date { color:rgba(255,255,255,0.4); }
         .blog-listing-section .blog-padding { --bs-gutter-x:2rem; row-gap:3rem; }
-        .load-more-wrap { text-align:center; margin-top:60px; }
+
+        /* Dedicated title/subtext classes for this page's cards — kept
+           independent of the shared .card-title-text/.badge-tag etc.
+           (also used on the home page and blog-detail's related posts
+           with different colors) so a change to one page can't bleed
+           into another. */
+        .bloglist-title { color:#fff; }
+        .blog-listing-section .blog-card:hover .bloglist-title { color:#B2DF48; }
+        .bloglist-subtext { color:rgba(255,255,255,0.5); }
     </style>
 </head>
 
@@ -197,17 +198,17 @@
                                 <img src="assets/images/blog-1.jpg" alt="Top 10 SaaS Website Design Agencies">
                             </div>
                             <div class="card-meta">
-                                <span class="badge-tag">SaaS</span>
-                                <span class="divider">|</span>
-                                <span class="read-time">17 Minutes</span>
+                                <span class="badge-tag bloglist-subtext">SaaS</span>
+                                <span class="divider bloglist-subtext">|</span>
+                                <span class="read-time bloglist-subtext">17 Minutes</span>
                             </div>
-                            <h2 class="card-title-text">Top 10 SaaS Website Design Agencies to Watch in 2025</h2>
+                            <h2 class="bloglist-title">Top 10 SaaS Website Design Agencies to Watch in 2025</h2>
                             <div class="author-row">
                                 <div class="author-info">
                                     <div class="author-avatar"></div>
-                                    <span class="author-label">by <strong>WeOne Intercom</strong></span>
+                                    <span class="author-label bloglist-subtext">by <strong>WeOne Intercom</strong></span>
                                 </div>
-                                <span class="post-date">3 July, 2025</span>
+                                <span class="post-date bloglist-subtext">3 July, 2025</span>
                             </div>
                         </div>
                     </a>
@@ -221,17 +222,17 @@
                                 <img src="assets/images/blog-2.jpg" alt="UI/UX Trends in 2025">
                             </div>
                             <div class="card-meta">
-                                <span class="badge-tag">UI/UX</span>
-                                <span class="divider">|</span>
-                                <span class="read-time">12 Minutes</span>
+                                <span class="badge-tag bloglist-subtext">UI/UX</span>
+                                <span class="divider bloglist-subtext">|</span>
+                                <span class="read-time bloglist-subtext">12 Minutes</span>
                             </div>
-                            <h2 class="card-title-text">The Biggest UI/UX Design Trends Shaping Products in 2025</h2>
+                            <h2 class="bloglist-title">The Biggest UI/UX Design Trends Shaping Products in 2025</h2>
                             <div class="author-row">
                                 <div class="author-info">
                                     <div class="author-avatar"></div>
-                                    <span class="author-label">by <strong>WeOne Intercom</strong></span>
+                                    <span class="author-label bloglist-subtext">by <strong>WeOne Intercom</strong></span>
                                 </div>
-                                <span class="post-date">18 June, 2025</span>
+                                <span class="post-date bloglist-subtext">18 June, 2025</span>
                             </div>
                         </div>
                     </a>
@@ -245,176 +246,22 @@
                                 <img src="assets/images/blog-3.jpg" alt="Brand Identity Guide">
                             </div>
                             <div class="card-meta">
-                                <span class="badge-tag">Branding</span>
-                                <span class="divider">|</span>
-                                <span class="read-time">9 Minutes</span>
+                                <span class="badge-tag bloglist-subtext">Branding</span>
+                                <span class="divider bloglist-subtext">|</span>
+                                <span class="read-time bloglist-subtext">9 Minutes</span>
                             </div>
-                            <h2 class="card-title-text">How to Build a Brand Identity That Actually Sticks</h2>
+                            <h2 class="bloglist-title">How to Build a Brand Identity That Actually Sticks</h2>
                             <div class="author-row">
                                 <div class="author-info">
                                     <div class="author-avatar"></div>
-                                    <span class="author-label">by <strong>WeOne Intercom</strong></span>
+                                    <span class="author-label bloglist-subtext">by <strong>WeOne Intercom</strong></span>
                                 </div>
-                                <span class="post-date">10 June, 2025</span>
+                                <span class="post-date bloglist-subtext">10 June, 2025</span>
                             </div>
                         </div>
                     </a>
                 </div>
 
-                <!-- Card 4 -->
-                <div class="col-lg-4 col-md-6 col-12">
-                    <a href="blog-detail" style="text-decoration:none;">
-                        <div class="blog-card">
-                            <div class="thumb-wrap thumb-1">
-                                <img src="assets/images/blog-1.jpg" alt="Web Design Strategy">
-                            </div>
-                            <div class="card-meta">
-                                <span class="badge-tag">Web Design</span>
-                                <span class="divider">|</span>
-                                <span class="read-time">14 Minutes</span>
-                            </div>
-                            <h2 class="card-title-text">Web Design Strategy: Why First Impressions Win or Lose Clients</h2>
-                            <div class="author-row">
-                                <div class="author-info">
-                                    <div class="author-avatar"></div>
-                                    <span class="author-label">by <strong>WeOne Intercom</strong></span>
-                                </div>
-                                <span class="post-date">28 May, 2025</span>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-
-                <!-- Card 5 -->
-                <div class="col-lg-4 col-md-6 col-12">
-                    <a href="blog-detail" style="text-decoration:none;">
-                        <div class="blog-card">
-                            <div class="thumb-wrap thumb-2">
-                                <img src="assets/images/blog-2.jpg" alt="Motion Design">
-                            </div>
-                            <div class="card-meta">
-                                <span class="badge-tag">Motion</span>
-                                <span class="divider">|</span>
-                                <span class="read-time">8 Minutes</span>
-                            </div>
-                            <h2 class="card-title-text">Motion Design 101: How Animation Elevates Digital Experiences</h2>
-                            <div class="author-row">
-                                <div class="author-info">
-                                    <div class="author-avatar"></div>
-                                    <span class="author-label">by <strong>WeOne Intercom</strong></span>
-                                </div>
-                                <span class="post-date">14 May, 2025</span>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-
-                <!-- Card 6 -->
-                <div class="col-lg-4 col-md-6 col-12">
-                    <a href="blog-detail" style="text-decoration:none;">
-                        <div class="blog-card">
-                            <div class="thumb-wrap thumb-3">
-                                <img src="assets/images/blog-3.jpg" alt="Growth Strategy">
-                            </div>
-                            <div class="card-meta">
-                                <span class="badge-tag">Strategy</span>
-                                <span class="divider">|</span>
-                                <span class="read-time">11 Minutes</span>
-                            </div>
-                            <h2 class="card-title-text">Design-Led Growth: Why Aesthetics Are Now a Business Strategy</h2>
-                            <div class="author-row">
-                                <div class="author-info">
-                                    <div class="author-avatar"></div>
-                                    <span class="author-label">by <strong>WeOne Intercom</strong></span>
-                                </div>
-                                <span class="post-date">2 May, 2025</span>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-
-                <!-- Card 7 -->
-                <div class="col-lg-4 col-md-6 col-12">
-                    <a href="blog-detail" style="text-decoration:none;">
-                        <div class="blog-card">
-                            <div class="thumb-wrap thumb-1">
-                                <img src="assets/images/blog-1.jpg" alt="SaaS Onboarding UX">
-                            </div>
-                            <div class="card-meta">
-                                <span class="badge-tag">SaaS</span>
-                                <span class="divider">|</span>
-                                <span class="read-time">13 Minutes</span>
-                            </div>
-                            <h2 class="card-title-text">Perfecting SaaS Onboarding: The UX Decisions That Drive Retention</h2>
-                            <div class="author-row">
-                                <div class="author-info">
-                                    <div class="author-avatar"></div>
-                                    <span class="author-label">by <strong>WeOne Intercom</strong></span>
-                                </div>
-                                <span class="post-date">20 April, 2025</span>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-
-                <!-- Card 8 -->
-                <div class="col-lg-4 col-md-6 col-12">
-                    <a href="blog-detail" style="text-decoration:none;">
-                        <div class="blog-card">
-                            <div class="thumb-wrap thumb-2">
-                                <img src="assets/images/blog-2.jpg" alt="Design Systems">
-                            </div>
-                            <div class="card-meta">
-                                <span class="badge-tag">UI/UX</span>
-                                <span class="divider">|</span>
-                                <span class="read-time">16 Minutes</span>
-                            </div>
-                            <h2 class="card-title-text">Design Systems: Why Every Serious Product Team Needs One</h2>
-                            <div class="author-row">
-                                <div class="author-info">
-                                    <div class="author-avatar"></div>
-                                    <span class="author-label">by <strong>WeOne Intercom</strong></span>
-                                </div>
-                                <span class="post-date">7 April, 2025</span>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-
-                <!-- Card 9 -->
-                <div class="col-lg-4 col-md-6 col-12">
-                    <a href="blog-detail" style="text-decoration:none;">
-                        <div class="blog-card">
-                            <div class="thumb-wrap thumb-3">
-                                <img src="assets/images/blog-3.jpg" alt="Branding for Startups">
-                            </div>
-                            <div class="card-meta">
-                                <span class="badge-tag">Branding</span>
-                                <span class="divider">|</span>
-                                <span class="read-time">10 Minutes</span>
-                            </div>
-                            <h2 class="card-title-text">Startup Branding Mistakes That Cost You Customers Before You Launch</h2>
-                            <div class="author-row">
-                                <div class="author-info">
-                                    <div class="author-avatar"></div>
-                                    <span class="author-label">by <strong>WeOne Intercom</strong></span>
-                                </div>
-                                <span class="post-date">25 March, 2025</span>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-
-            </div>
-
-            <!-- Load More -->
-            <div class="load-more-wrap">
-                <a href="#" class="cta-btn">
-                    Load More Articles
-                    <span class="cta-icon"><svg width="20" height="20" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg"><g clip-path="url(#clip0_lm)"><path d="M6.99999 13.4178C7.52032 13.4178 8.03482 13.4085 8.54232 13.391C11.172 13.2982 13.2977 11.1726 13.3904 8.54292C13.4085 8.03542 13.4172 7.52092 13.4172 7.00058C13.4172 6.48025 13.4079 5.96575 13.3904 5.45825C13.2977 2.82858 11.172 0.702914 8.54232 0.610165C8.03482 0.592081 7.52032 0.583331 6.99999 0.583331C6.47965 0.583331 5.96515 0.592665 5.45765 0.610165C2.8274 0.702914 0.701737 2.82858 0.608987 5.45883C0.590903 5.96633 0.582153 6.48083 0.582153 7.00116C0.582153 7.5215 0.591487 8.036 0.608987 8.5435C0.701737 11.1726 2.8274 13.2982 5.45765 13.3904C5.96515 13.4085 6.47965 13.4178 6.99999 13.4178ZM4.30499 9.49725C4.07515 9.24933 4.08974 8.86142 4.33824 8.63217L7.87557 5.35442L5.76099 5.138C5.60699 5.12225 5.47165 5.0505 5.37424 4.94491C5.25874 4.82067 5.19515 4.64858 5.2144 4.466C5.24882 4.13 5.54924 3.885 5.88582 3.92L9.15132 4.256C9.36015 4.26242 9.55324 4.34991 9.69499 4.50333C9.83615 4.65558 9.90907 4.8545 9.90032 5.02075L9.98607 8.34575C9.9954 8.68408 9.72765 8.96525 9.39049 8.974C9.20674 8.97866 9.04049 8.90225 8.92499 8.778C8.82757 8.673 8.76632 8.533 8.76224 8.37783L8.70857 6.25275L5.17065 9.5305C4.92274 9.76033 4.53482 9.74517 4.30499 9.49725Z" fill="#B2DF48"/></g><defs><clipPath id="clip0_lm"><rect width="14" height="14" fill="white" transform="translate(0 14) rotate(-90)"/></clipPath></defs></svg></span>
-                    <span class="btn-glow-layer"></span>
-                    <div class="btn-inner-shadow mini"></div>
-                </a>
             </div>
 
         </div>

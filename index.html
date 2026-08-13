@@ -173,17 +173,21 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css">
 
     <style>
-        /* .blog-card's base colors (main.css) are dark-on-light (#000
-           text etc.) for use on a white section background — this page
-           is dark throughout, so it needs the same light-on-dark
-           override blog-detail.html's .related-section already uses. */
-        .blog-section .card-title-text { color:#fff; }
+        /* "Knowledge." accent in the section heading — brand green. */
+        .blog-section .blog-heading .italicTitle { color:#B2DF48; }
+
+        /* Cards sit as white boxes against the page's dark background —
+           .blog-card's base is transparent (main.css), so this section
+           gets its own white backing plus dark-on-light text to match,
+           instead of the light-on-dark treatment used elsewhere. */
+        .blog-section .blog-card { background:#fff; border-radius:20px; padding:24px; }
+        .blog-section .card-title-text { color:#000; }
         .blog-section .blog-card:hover .card-title-text { color:#B2DF48; }
-        .blog-section .badge-tag { color:rgba(255,255,255,0.5); }
-        .blog-section .read-time { color:rgba(255,255,255,0.5); }
-        .blog-section .divider { color:rgba(255,255,255,0.2); }
-        .blog-section .author-label { color:rgba(255,255,255,0.5); }
-        .blog-section .post-date { color:rgba(255,255,255,0.4); }
+        .blog-section .badge-tag { color:rgba(0,0,0,0.5); }
+        .blog-section .read-time { color:rgba(0,0,0,0.5); }
+        .blog-section .divider { color:rgba(0,0,0,0.2); }
+        .blog-section .author-label { color:rgba(0,0,0,0.6); }
+        .blog-section .post-date { color:rgba(0,0,0,0.4); }
     </style>
 </head>
 
