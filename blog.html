@@ -37,18 +37,19 @@
         .category-filters { display:flex; flex-wrap:wrap; gap:12px; justify-content:center; margin-top:32px; }
         .category-filters a { padding:8px 20px; border-radius:100px; border:1px solid rgba(255,255,255,0.2); color:rgba(255,255,255,0.6); font-size:14px; text-decoration:none; transition:all 0.2s; }
         .category-filters a:hover, .category-filters a.active { border-color:#B2DF48; color:#B2DF48; }
+        .category-filters a:hover { animation: category-shake 0.5s ease; }
         .blog-listing-section { background:#000; padding:80px 0; }
-        .blog-listing-section .blog-card { cursor:pointer; }
+        .blog-listing-section .blog-card { background:#fff; border-radius:20px; padding:24px; cursor:pointer; }
         .blog-listing-section .blog-padding { --bs-gutter-x:2rem; row-gap:3rem; }
 
         /* Dedicated title/subtext classes for this page's cards — kept
            independent of the shared .card-title-text/.badge-tag etc.
            (also used on the home page and blog-detail's related posts
            with different colors) so a change to one page can't bleed
-           into another. */
-        .bloglist-title { color:#fff; }
-        .blog-listing-section .blog-card:hover .bloglist-title { color:#B2DF48; }
-        .bloglist-subtext { color:rgba(255,255,255,0.5); }
+           into another. Colors match the home page's blog-section
+           treatment (white card, black text). */
+        .bloglist-title { color:#000; }
+        .blog-listing-section .bloglist-subtext { color:rgba(0,0,0,0.5); }
     </style>
 </head>
 
