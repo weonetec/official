@@ -766,6 +766,16 @@
     .value-swiper .value-title { font-size: 22px; margin-bottom: 10px; }
     .value-swiper .value-text { font-size: 15px; line-height: 1.55; }
 
+    /* Explore Our Work — portfolio video overlay text. .work-heading falls
+       through to .wone_portfolio h4 (main.css), which is a fixed 30px with
+       no responsive step of its own — same gap the file-header note above
+       flags for .work-heading, except here it's a compound selector that
+       out-specifies the global h1-h4 floor too, so that floor never even
+       applied as a fallback. The video boxes shrink at this width but the
+       overlay text didn't, making it dwarf the card it sits on. */
+    .wone_portfolio h4 { font-size: 20px; line-height: 1.3; margin-bottom: 8px; }
+    .work-details      { padding: 4% 8%; }
+
     /* Studio banner */
     .studio-banner        { min-height: 100vh; min-height: 100dvh; }
     .title-block .txt-intro { font-size: 64px; }
@@ -931,6 +941,10 @@
     .tool-pill-cta { padding: 7px 12px; font-size: 13px; gap: 8px; }
     .tool-pill-cta .fist { font-size: 20px; }
 
+    /* Explore Our Work — portfolio video overlay text (see ≤991px note) */
+    .wone_portfolio h4 { font-size: 15px; line-height: 1.3; margin-bottom: 6px; }
+    .work-details      { padding: 4% 8%; }
+
     /* Studio banner */
     .title-block .txt-intro { font-size: 48px; }
     .title-block .txt-bold  { font-size: 42px; line-height: 1; }
@@ -1088,6 +1102,10 @@
     .tool-icon.js svg { width: 15px; height: 15px; }
     .tool-pill-cta { padding: 5px 12px; font-size: 11px; gap: 5px; }
     .tool-pill-cta .fist { font-size: 15px; }
+
+    /* Explore Our Work — portfolio video overlay text (see ≤991px note) */
+    .wone_portfolio h4 { font-size: 13px; line-height: 1.3; margin-bottom: 4px; }
+    .work-details      { padding: 4% 6%; }
 
     /* Studio banner – single column on phones */
     section.studio-banner { grid-template-columns: 1fr; padding: 60px 16px; gap: 14px; }
