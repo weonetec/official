@@ -193,13 +193,14 @@
         /* Explore More button — black border/text/icon on a white pill
            (base .cta-btn is a transparent/green pill meant for dark
            backgrounds; this section needs the opposite treatment, same
-           reasoning as the white cards above). Hover glow/shadow layers
-           recolored from green to black so they stay consistent instead
-           of flashing the brand green on an otherwise black/white button. */
-        .blog-section .explore-more-wrap .cta-btn { background:#fff; border-color:#000; color:#000; }
-        .blog-section .explore-more-wrap .cta-btn:hover { border-color:#000; color:#000; }
+           reasoning as the white cards above). On hover it inverts to a
+           solid black fill so the text/icon can flip to white and stay
+           readable. Glow/shadow layers recolored from green to black so
+           they stay consistent instead of flashing the brand green. */
+        .blog-section .explore-more-wrap .cta-btn { background:#fff; border-color:#000; color:#000; transition: transform 0.3s ease, border-color 0.3s ease, background-color 0.3s ease, color 0.3s ease; }
+        .blog-section .explore-more-wrap .cta-btn:hover { background:#000; border-color:#000; color:#fff; }
         .blog-section .explore-more-wrap .cta-icon svg path { fill:#000; }
-        .blog-section .explore-more-wrap .cta-btn:hover .cta-icon svg path { fill:#000; }
+        .blog-section .explore-more-wrap .cta-btn:hover .cta-icon svg path { fill:#fff; }
         .blog-section .explore-more-wrap .btn-glow-layer { background: radial-gradient(120px 120px at var(--x, 50%) var(--y, 50%), rgba(0,0,0,0.35), rgba(0,0,0,0.15), transparent 60%); }
         .blog-section .explore-more-wrap .btn-inner-shadow.mini { box-shadow: inset 0 4px 22px rgba(0,0,0,0.25); }
         .blog-section .explore-more-wrap .cta-btn:hover .btn-inner-shadow.mini { box-shadow: inset 0 0 22px rgba(0,0,0,0.35), inset 0 0 48px rgba(0,0,0,0.2), inset 0 0 90px rgba(0,0,0,0.12); }
