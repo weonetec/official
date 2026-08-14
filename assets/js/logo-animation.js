@@ -39,7 +39,11 @@
         var n = root.querySelector('.logo-n');
         var e2 = root.querySelector('.logo-e2');
 
-        if (!eye || !ball || !w || !maskEl || !maskRect || !emark || !o || !n || !e2) return null;
+        // o/n/e2 ("one") are optional — the avatar-sized copy of this logo
+        // omits them on purpose (see .avatar-logo), so it plays the W-reveal
+        // + "We" settle + idle blink/glance loop and simply skips the "one"
+        // slide-in beats below instead of bailing out entirely.
+        if (!eye || !ball || !w || !maskEl || !maskRect || !emark) return null;
 
         instanceCounter++;
         var maskId = 'wl-w-reveal-' + instanceCounter;
@@ -74,8 +78,8 @@
                 .set(eye, { scaleY: 1 }, 0)
                 .set(w, { opacity: 1 }, 0)
                 .set(maskRect, { attr: { width: 0 } }, 0)
-                .set(emark, { opacity: 0, x: 0, y: 0 }, 0)
-                .set([o, n, e2], { opacity: 0, x: -18 }, 0);
+                .set(emark, { opacity: 0, x: 0, y: 0 }, 0);
+            if (o && n && e2) tl.set([o, n, e2], { opacity: 0, x: -18 }, 0);
 
             // Hop 1: fall into the first valley — the mask wipes open to match,
             // so the ball's motion is what "draws" the W into view.
@@ -109,10 +113,13 @@
             // "We" completes: the e-mark lands on the settled ball.
             tl.to(emark, { opacity: 1, duration: 0.3, ease: 'power1.out' }, 2.05);
 
-            // "one" slides in left to right, letter by letter.
-            tl.to(o, { opacity: 1, x: 0, duration: 0.4, ease: 'back.out(1.8)' }, 2.35)
-                .to(n, { opacity: 1, x: 0, duration: 0.4, ease: 'back.out(1.8)' }, 2.5)
-                .to(e2, { opacity: 1, x: 0, duration: 0.4, ease: 'back.out(1.8)' }, 2.65);
+            // "one" slides in left to right, letter by letter — only when
+            // present (see the optional-elements note above).
+            if (o && n && e2) {
+                tl.to(o, { opacity: 1, x: 0, duration: 0.4, ease: 'back.out(1.8)' }, 2.35)
+                    .to(n, { opacity: 1, x: 0, duration: 0.4, ease: 'back.out(1.8)' }, 2.5)
+                    .to(e2, { opacity: 1, x: 0, duration: 0.4, ease: 'back.out(1.8)' }, 2.65);
+            }
 
             return tl;
         }
@@ -157,7 +164,7 @@
         function playCycle() {
             buildIntro().eventCallback('onComplete', function () {
                 buildIdle().eventCallback('onComplete', function () {
-                    gsap.to([w, ball, emark, o, n, e2], {
+                    gsap.to([w, ball, emark, o, n, e2].filter(Boolean), {
                         opacity: 0,
                         duration: 0.4,
                         ease: 'power1.in',

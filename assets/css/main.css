@@ -1861,6 +1861,20 @@ li {
     border-radius: 50%;
     background: linear-gradient(135deg, #ccc, #999);
     flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+/* Mini "We" mark (the animated header logo, minus the "one" letters — see
+   logo-animation.js) standing in for a plain avatar. The gradient circle
+   above stays as its backdrop so the white/green/black logo fill keeps
+   contrast regardless of the card's own light or dark background. */
+.avatar-logo {
+    width: 68%;
+    height: auto;
+    flex-shrink: 0;
 }
 
 .author-label {
