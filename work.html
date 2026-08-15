@@ -442,20 +442,31 @@
                 padding: 0 16px;
                 gap: 20px;
             }
+            /* Height-driven (not a fixed width) so the card scales with
+               the actual device's screen height instead of jumping
+               between a couple of fixed pixel widths — a short phone and
+               a tall tablet both get a proportionally sized card. Width
+               follows via .wg-card's aspect-ratio below, so the 3rd
+               min() term caps HEIGHT itself by the same aspect ratio
+               (4/3) applied to the available viewport-width budget —
+               capping width directly (e.g. a plain max-width on this
+               element) doesn't work here, since the child's
+               aspect-ratio-derived width is computed independently of
+               this element's own width/max-width and just overflows past
+               it instead of being constrained by it (caught by actually
+               measuring a narrow phone width, not just reading the CSS
+               back). */
             .wg-card-wrap {
                 scroll-snap-align: start;
-                height: auto;
-                width: 300px;
                 flex: 0 0 auto;
+                width: auto;
+                height: min(520px, 55vh, calc((100vw - 48px) * 4 / 3));
             }
             .wg-card {
                 flex: 0 0 auto;
-                height: auto;
-                /* Desktop derives height from flex:1 sharing the wrap's
-                   height budget with .wg-card-info; below this breakpoint
-                   .wg-card-wrap is width-driven with height:auto instead,
-                   so the box needs its own ratio back to size sensibly
-                   from that fixed width. */
+                height: 100%;
+                width: auto;
+                align-self: center;
                 aspect-ratio: 3 / 4;
             }
         }
@@ -472,7 +483,6 @@
         @media (max-width: 480px) {
             .work-hero-headline h1 { font-size: clamp(28px, 9vw, 40px); }
 
-            .wg-card-wrap { width: 260px; }
             .wg-card { padding: 24px; }
             .wg-card-title { font-size: 17px; }
         }
