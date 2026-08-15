@@ -160,19 +160,29 @@
             will-change: transform;
         }
 
-        .wg-card {
+        /* Flex item actually placed in .wg-track now — holds the colored
+           box (.wg-card) and its caption (.wg-card-info) stacked together
+           so the two travel and lift as one unit, even though the caption
+           itself sits outside the box's own background/padding. */
+        .wg-card-wrap {
             flex: 0 0 auto;
             /* Height-driven (not width-driven) so the card shrinks to
                whatever room is actually left under the headline instead
                of risking overflow/clipping on shorter viewports; 560px
                is just the desktop cap. Width follows via aspect-ratio. */
             height: min(560px, 100%);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .wg-card {
+            flex: 1;
+            min-height: 0;
             aspect-ratio: 3 / 4;
             border-radius: 28px;
             padding: 32px;
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
             text-decoration: none;
             background: var(--wg-card-bg, #222);
             position: relative;
@@ -218,7 +228,7 @@
 
         /* Dummy "page" content, taller than the visible window under the
            browser-chrome bar — hovering the card pans it upward via
-           translateY (see .wg-card:hover below), mimicking a real
+           translateY (see .wg-card-wrap:hover below), mimicking a real
            page-scroll preview. Swap for a real screenshot per card when
            one's ready; the transform still works the same way as long
            as its content stays taller than the visible window. */
@@ -254,11 +264,15 @@
             height: auto;
         }
 
+        /* Sits below .wg-card now, outside the box, directly on the
+           section's black background. */
         .wg-card-info {
             display: flex;
             align-items: flex-end;
             justify-content: space-between;
             gap: 12px;
+            flex: 0 0 auto;
+            margin-top: 16px;
         }
 
         .wg-card-title {
@@ -266,7 +280,7 @@
             font-family: 'Satoshi-Variable';
             font-weight: 800;
             font-size: 20px;
-            color: #000;
+            color: #B2DF48;
         }
 
         .wg-card-cat {
@@ -276,7 +290,7 @@
             font-size: 12px;
             letter-spacing: 1px;
             text-transform: uppercase;
-            color: rgba(0, 0, 0, 0.5);
+            color: #fff;
             margin-top: 4px;
         }
 
@@ -287,8 +301,8 @@
             width: 44px;
             height: 44px;
             border-radius: 50%;
-            background: #000;
-            color: #fff;
+            background: rgba(178, 223, 72, 0.15);
+            color: #B2DF48;
             font-size: 18px;
             flex-shrink: 0;
             transform: rotate(-45deg);
@@ -301,17 +315,17 @@
            every :hover effect here to real hover-capable pointers avoids
            it for the card lift, the mockup page pan, and the CTA rotate. */
         @media (hover: hover) and (pointer: fine) {
-            .wg-card:hover {
+            .wg-card-wrap:hover .wg-card {
                 transform: translateY(-8px);
             }
 
-            .wg-card:hover .wg-card-mockup-page {
+            .wg-card-wrap:hover .wg-card-mockup-page {
                 transform: translateY(-52%);
             }
 
-            .wg-card:hover .wg-card-cta {
+            .wg-card-wrap:hover .wg-card-cta {
                 transform: rotate(0deg);
-                background: #1a1a1a;
+                background: rgba(178, 223, 72, 0.32);
             }
         }
 
@@ -422,10 +436,15 @@
                 padding: 0 16px;
                 gap: 20px;
             }
-            .wg-card {
+            .wg-card-wrap {
                 scroll-snap-align: start;
                 height: auto;
                 width: 300px;
+                flex: 0 0 auto;
+            }
+            .wg-card {
+                flex: 0 0 auto;
+                height: auto;
             }
         }
 
@@ -441,7 +460,8 @@
         @media (max-width: 480px) {
             .work-hero-headline h1 { font-size: clamp(28px, 9vw, 40px); }
 
-            .wg-card { width: 260px; padding: 24px; }
+            .wg-card-wrap { width: 260px; }
+            .wg-card { padding: 24px; }
             .wg-card-title { font-size: 17px; }
         }
     </style>
@@ -598,16 +618,18 @@
 
                 <div class="wg-track">
 
-                    <a href="#" class="wg-card" style="--wg-card-bg:#06B6D4;">
-                        <span class="wg-card-index">01</span>
-                        <div class="wg-card-mockup">
-                            <div class="wg-card-mockup-bar"><span></span><span></span><span></span></div>
-                            <div class="wg-card-mockup-body">
-                                <div class="wg-card-mockup-page has-img">
-                                    <img src="assets/images/work/gallery/001.jpg" alt="Meme Token Exchange project screenshot" loading="lazy" decoding="async">
+                    <div class="wg-card-wrap">
+                        <a href="#" class="wg-card" style="--wg-card-bg:#06B6D4;">
+                            <span class="wg-card-index">01</span>
+                            <div class="wg-card-mockup">
+                                <div class="wg-card-mockup-bar"><span></span><span></span><span></span></div>
+                                <div class="wg-card-mockup-body">
+                                    <div class="wg-card-mockup-page has-img">
+                                        <img src="assets/images/work/gallery/001.jpg" alt="Meme Token Exchange project screenshot" loading="lazy" decoding="async">
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        </a>
                         <div class="wg-card-info">
                             <span>
                                 <span class="wg-card-title">Meme Token Exchange</span>
@@ -615,17 +637,19 @@
                             </span>
                             <span class="wg-card-cta"><i class="ri-arrow-right-up-line"></i></span>
                         </div>
-                    </a>
-                    <a href="#" class="wg-card" style="--wg-card-bg:#F472B6;">
-                        <span class="wg-card-index">02</span>
-                        <div class="wg-card-mockup">
-                            <div class="wg-card-mockup-bar"><span></span><span></span><span></span></div>
-                            <div class="wg-card-mockup-body">
-                                <div class="wg-card-mockup-page has-img">
-                                    <img src="assets/images/work/gallery/002.jpg" alt="Canine Nutrition Co project screenshot" loading="lazy" decoding="async">
+                    </div>
+                    <div class="wg-card-wrap">
+                        <a href="#" class="wg-card" style="--wg-card-bg:#F472B6;">
+                            <span class="wg-card-index">02</span>
+                            <div class="wg-card-mockup">
+                                <div class="wg-card-mockup-bar"><span></span><span></span><span></span></div>
+                                <div class="wg-card-mockup-body">
+                                    <div class="wg-card-mockup-page has-img">
+                                        <img src="assets/images/work/gallery/002.jpg" alt="Canine Nutrition Co project screenshot" loading="lazy" decoding="async">
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        </a>
                         <div class="wg-card-info">
                             <span>
                                 <span class="wg-card-title">Canine Nutrition Co</span>
@@ -633,17 +657,19 @@
                             </span>
                             <span class="wg-card-cta"><i class="ri-arrow-right-up-line"></i></span>
                         </div>
-                    </a>
-                    <a href="#" class="wg-card" style="--wg-card-bg:#FBBF24;">
-                        <span class="wg-card-index">03</span>
-                        <div class="wg-card-mockup">
-                            <div class="wg-card-mockup-bar"><span></span><span></span><span></span></div>
-                            <div class="wg-card-mockup-body">
-                                <div class="wg-card-mockup-page has-img">
-                                    <img src="assets/images/work/gallery/003.jpg" alt="Marketing Automation Hub project screenshot" loading="lazy" decoding="async">
+                    </div>
+                    <div class="wg-card-wrap">
+                        <a href="#" class="wg-card" style="--wg-card-bg:#FBBF24;">
+                            <span class="wg-card-index">03</span>
+                            <div class="wg-card-mockup">
+                                <div class="wg-card-mockup-bar"><span></span><span></span><span></span></div>
+                                <div class="wg-card-mockup-body">
+                                    <div class="wg-card-mockup-page has-img">
+                                        <img src="assets/images/work/gallery/003.jpg" alt="Marketing Automation Hub project screenshot" loading="lazy" decoding="async">
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        </a>
                         <div class="wg-card-info">
                             <span>
                                 <span class="wg-card-title">Marketing Automation Hub</span>
@@ -651,17 +677,19 @@
                             </span>
                             <span class="wg-card-cta"><i class="ri-arrow-right-up-line"></i></span>
                         </div>
-                    </a>
-                    <a href="#" class="wg-card" style="--wg-card-bg:#34D399;">
-                        <span class="wg-card-index">04</span>
-                        <div class="wg-card-mockup">
-                            <div class="wg-card-mockup-bar"><span></span><span></span><span></span></div>
-                            <div class="wg-card-mockup-body">
-                                <div class="wg-card-mockup-page has-img">
-                                    <img src="assets/images/work/gallery/004.jpg" alt="Game News Network project screenshot" loading="lazy" decoding="async">
+                    </div>
+                    <div class="wg-card-wrap">
+                        <a href="#" class="wg-card" style="--wg-card-bg:#34D399;">
+                            <span class="wg-card-index">04</span>
+                            <div class="wg-card-mockup">
+                                <div class="wg-card-mockup-bar"><span></span><span></span><span></span></div>
+                                <div class="wg-card-mockup-body">
+                                    <div class="wg-card-mockup-page has-img">
+                                        <img src="assets/images/work/gallery/004.jpg" alt="Game News Network project screenshot" loading="lazy" decoding="async">
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        </a>
                         <div class="wg-card-info">
                             <span>
                                 <span class="wg-card-title">Game News Network</span>
@@ -669,17 +697,19 @@
                             </span>
                             <span class="wg-card-cta"><i class="ri-arrow-right-up-line"></i></span>
                         </div>
-                    </a>
-                    <a href="#" class="wg-card" style="--wg-card-bg:#60A5FA;">
-                        <span class="wg-card-index">05</span>
-                        <div class="wg-card-mockup">
-                            <div class="wg-card-mockup-bar"><span></span><span></span><span></span></div>
-                            <div class="wg-card-mockup-body">
-                                <div class="wg-card-mockup-page has-img">
-                                    <img src="assets/images/work/gallery/005.jpg" alt="Realty Advisors project screenshot" loading="lazy" decoding="async">
+                    </div>
+                    <div class="wg-card-wrap">
+                        <a href="#" class="wg-card" style="--wg-card-bg:#60A5FA;">
+                            <span class="wg-card-index">05</span>
+                            <div class="wg-card-mockup">
+                                <div class="wg-card-mockup-bar"><span></span><span></span><span></span></div>
+                                <div class="wg-card-mockup-body">
+                                    <div class="wg-card-mockup-page has-img">
+                                        <img src="assets/images/work/gallery/005.jpg" alt="Realty Advisors project screenshot" loading="lazy" decoding="async">
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        </a>
                         <div class="wg-card-info">
                             <span>
                                 <span class="wg-card-title">Realty Advisors</span>
@@ -687,17 +717,19 @@
                             </span>
                             <span class="wg-card-cta"><i class="ri-arrow-right-up-line"></i></span>
                         </div>
-                    </a>
-                    <a href="#" class="wg-card" style="--wg-card-bg:#A78BFA;">
-                        <span class="wg-card-index">06</span>
-                        <div class="wg-card-mockup">
-                            <div class="wg-card-mockup-bar"><span></span><span></span><span></span></div>
-                            <div class="wg-card-mockup-body">
-                                <div class="wg-card-mockup-page has-img">
-                                    <img src="assets/images/work/gallery/006.jpg" alt="Retail Commerce Hub project screenshot" loading="lazy" decoding="async">
+                    </div>
+                    <div class="wg-card-wrap">
+                        <a href="#" class="wg-card" style="--wg-card-bg:#A78BFA;">
+                            <span class="wg-card-index">06</span>
+                            <div class="wg-card-mockup">
+                                <div class="wg-card-mockup-bar"><span></span><span></span><span></span></div>
+                                <div class="wg-card-mockup-body">
+                                    <div class="wg-card-mockup-page has-img">
+                                        <img src="assets/images/work/gallery/006.jpg" alt="Retail Commerce Hub project screenshot" loading="lazy" decoding="async">
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        </a>
                         <div class="wg-card-info">
                             <span>
                                 <span class="wg-card-title">Retail Commerce Hub</span>
@@ -705,17 +737,19 @@
                             </span>
                             <span class="wg-card-cta"><i class="ri-arrow-right-up-line"></i></span>
                         </div>
-                    </a>
-                    <a href="#" class="wg-card" style="--wg-card-bg:#FB923C;">
-                        <span class="wg-card-index">07</span>
-                        <div class="wg-card-mockup">
-                            <div class="wg-card-mockup-bar"><span></span><span></span><span></span></div>
-                            <div class="wg-card-mockup-body">
-                                <div class="wg-card-mockup-page has-img">
-                                    <img src="assets/images/work/gallery/008.jpg" alt="NFT Vault project screenshot" loading="lazy" decoding="async">
+                    </div>
+                    <div class="wg-card-wrap">
+                        <a href="#" class="wg-card" style="--wg-card-bg:#FB923C;">
+                            <span class="wg-card-index">07</span>
+                            <div class="wg-card-mockup">
+                                <div class="wg-card-mockup-bar"><span></span><span></span><span></span></div>
+                                <div class="wg-card-mockup-body">
+                                    <div class="wg-card-mockup-page has-img">
+                                        <img src="assets/images/work/gallery/008.jpg" alt="NFT Vault project screenshot" loading="lazy" decoding="async">
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        </a>
                         <div class="wg-card-info">
                             <span>
                                 <span class="wg-card-title">NFT Vault</span>
@@ -723,17 +757,19 @@
                             </span>
                             <span class="wg-card-cta"><i class="ri-arrow-right-up-line"></i></span>
                         </div>
-                    </a>
-                    <a href="#" class="wg-card" style="--wg-card-bg:#4ADE80;">
-                        <span class="wg-card-index">08</span>
-                        <div class="wg-card-mockup">
-                            <div class="wg-card-mockup-bar"><span></span><span></span><span></span></div>
-                            <div class="wg-card-mockup-body">
-                                <div class="wg-card-mockup-page has-img">
-                                    <img src="assets/images/work/gallery/009.jpg" alt="Estate Partners project screenshot" loading="lazy" decoding="async">
+                    </div>
+                    <div class="wg-card-wrap">
+                        <a href="#" class="wg-card" style="--wg-card-bg:#4ADE80;">
+                            <span class="wg-card-index">08</span>
+                            <div class="wg-card-mockup">
+                                <div class="wg-card-mockup-bar"><span></span><span></span><span></span></div>
+                                <div class="wg-card-mockup-body">
+                                    <div class="wg-card-mockup-page has-img">
+                                        <img src="assets/images/work/gallery/009.jpg" alt="Estate Partners project screenshot" loading="lazy" decoding="async">
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        </a>
                         <div class="wg-card-info">
                             <span>
                                 <span class="wg-card-title">Estate Partners</span>
@@ -741,17 +777,19 @@
                             </span>
                             <span class="wg-card-cta"><i class="ri-arrow-right-up-line"></i></span>
                         </div>
-                    </a>
-                    <a href="#" class="wg-card" style="--wg-card-bg:#F87171;">
-                        <span class="wg-card-index">09</span>
-                        <div class="wg-card-mockup">
-                            <div class="wg-card-mockup-bar"><span></span><span></span><span></span></div>
-                            <div class="wg-card-mockup-body">
-                                <div class="wg-card-mockup-page has-img">
-                                    <img src="assets/images/work/gallery/010.jpg" alt="Blockchain Protocol project screenshot" loading="lazy" decoding="async">
+                    </div>
+                    <div class="wg-card-wrap">
+                        <a href="#" class="wg-card" style="--wg-card-bg:#F87171;">
+                            <span class="wg-card-index">09</span>
+                            <div class="wg-card-mockup">
+                                <div class="wg-card-mockup-bar"><span></span><span></span><span></span></div>
+                                <div class="wg-card-mockup-body">
+                                    <div class="wg-card-mockup-page has-img">
+                                        <img src="assets/images/work/gallery/010.jpg" alt="Blockchain Protocol project screenshot" loading="lazy" decoding="async">
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        </a>
                         <div class="wg-card-info">
                             <span>
                                 <span class="wg-card-title">Blockchain Protocol</span>
@@ -759,17 +797,19 @@
                             </span>
                             <span class="wg-card-cta"><i class="ri-arrow-right-up-line"></i></span>
                         </div>
-                    </a>
-                    <a href="#" class="wg-card" style="--wg-card-bg:#38BDF8;">
-                        <span class="wg-card-index">10</span>
-                        <div class="wg-card-mockup">
-                            <div class="wg-card-mockup-bar"><span></span><span></span><span></span></div>
-                            <div class="wg-card-mockup-body">
-                                <div class="wg-card-mockup-page has-img">
-                                    <img src="assets/images/work/gallery/011.jpg" alt="Property Capital Group project screenshot" loading="lazy" decoding="async">
+                    </div>
+                    <div class="wg-card-wrap">
+                        <a href="#" class="wg-card" style="--wg-card-bg:#38BDF8;">
+                            <span class="wg-card-index">10</span>
+                            <div class="wg-card-mockup">
+                                <div class="wg-card-mockup-bar"><span></span><span></span><span></span></div>
+                                <div class="wg-card-mockup-body">
+                                    <div class="wg-card-mockup-page has-img">
+                                        <img src="assets/images/work/gallery/011.jpg" alt="Property Capital Group project screenshot" loading="lazy" decoding="async">
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        </a>
                         <div class="wg-card-info">
                             <span>
                                 <span class="wg-card-title">Property Capital Group</span>
@@ -777,17 +817,19 @@
                             </span>
                             <span class="wg-card-cta"><i class="ri-arrow-right-up-line"></i></span>
                         </div>
-                    </a>
-                    <a href="#" class="wg-card" style="--wg-card-bg:#E879F9;">
-                        <span class="wg-card-index">11</span>
-                        <div class="wg-card-mockup">
-                            <div class="wg-card-mockup-bar"><span></span><span></span><span></span></div>
-                            <div class="wg-card-mockup-body">
-                                <div class="wg-card-mockup-page has-img">
-                                    <img src="assets/images/work/gallery/012.jpg" alt="Vegan Remedy Co project screenshot" loading="lazy" decoding="async">
+                    </div>
+                    <div class="wg-card-wrap">
+                        <a href="#" class="wg-card" style="--wg-card-bg:#E879F9;">
+                            <span class="wg-card-index">11</span>
+                            <div class="wg-card-mockup">
+                                <div class="wg-card-mockup-bar"><span></span><span></span><span></span></div>
+                                <div class="wg-card-mockup-body">
+                                    <div class="wg-card-mockup-page has-img">
+                                        <img src="assets/images/work/gallery/012.jpg" alt="Vegan Remedy Co project screenshot" loading="lazy" decoding="async">
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        </a>
                         <div class="wg-card-info">
                             <span>
                                 <span class="wg-card-title">Vegan Remedy Co</span>
@@ -795,17 +837,19 @@
                             </span>
                             <span class="wg-card-cta"><i class="ri-arrow-right-up-line"></i></span>
                         </div>
-                    </a>
-                    <a href="#" class="wg-card" style="--wg-card-bg:#FACC15;">
-                        <span class="wg-card-index">12</span>
-                        <div class="wg-card-mockup">
-                            <div class="wg-card-mockup-bar"><span></span><span></span><span></span></div>
-                            <div class="wg-card-mockup-body">
-                                <div class="wg-card-mockup-page has-img">
-                                    <img src="assets/images/work/gallery/013.jpg" alt="MediTrust Pharma project screenshot" loading="lazy" decoding="async">
+                    </div>
+                    <div class="wg-card-wrap">
+                        <a href="#" class="wg-card" style="--wg-card-bg:#FACC15;">
+                            <span class="wg-card-index">12</span>
+                            <div class="wg-card-mockup">
+                                <div class="wg-card-mockup-bar"><span></span><span></span><span></span></div>
+                                <div class="wg-card-mockup-body">
+                                    <div class="wg-card-mockup-page has-img">
+                                        <img src="assets/images/work/gallery/013.jpg" alt="MediTrust Pharma project screenshot" loading="lazy" decoding="async">
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        </a>
                         <div class="wg-card-info">
                             <span>
                                 <span class="wg-card-title">MediTrust Pharma</span>
@@ -813,17 +857,19 @@
                             </span>
                             <span class="wg-card-cta"><i class="ri-arrow-right-up-line"></i></span>
                         </div>
-                    </a>
-                    <a href="#" class="wg-card" style="--wg-card-bg:#2DD4BF;">
-                        <span class="wg-card-index">13</span>
-                        <div class="wg-card-mockup">
-                            <div class="wg-card-mockup-bar"><span></span><span></span><span></span></div>
-                            <div class="wg-card-mockup-body">
-                                <div class="wg-card-mockup-page has-img">
-                                    <img src="assets/images/work/gallery/014.jpg" alt="Healthy Living Collective project screenshot" loading="lazy" decoding="async">
+                    </div>
+                    <div class="wg-card-wrap">
+                        <a href="#" class="wg-card" style="--wg-card-bg:#2DD4BF;">
+                            <span class="wg-card-index">13</span>
+                            <div class="wg-card-mockup">
+                                <div class="wg-card-mockup-bar"><span></span><span></span><span></span></div>
+                                <div class="wg-card-mockup-body">
+                                    <div class="wg-card-mockup-page has-img">
+                                        <img src="assets/images/work/gallery/014.jpg" alt="Healthy Living Collective project screenshot" loading="lazy" decoding="async">
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        </a>
                         <div class="wg-card-info">
                             <span>
                                 <span class="wg-card-title">Healthy Living Collective</span>
@@ -831,17 +877,19 @@
                             </span>
                             <span class="wg-card-cta"><i class="ri-arrow-right-up-line"></i></span>
                         </div>
-                    </a>
-                    <a href="#" class="wg-card" style="--wg-card-bg:#FF6B81;">
-                        <span class="wg-card-index">14</span>
-                        <div class="wg-card-mockup">
-                            <div class="wg-card-mockup-bar"><span></span><span></span><span></span></div>
-                            <div class="wg-card-mockup-body">
-                                <div class="wg-card-mockup-page has-img">
-                                    <img src="assets/images/work/gallery/015.jpg" alt="Health Learning Hub project screenshot" loading="lazy" decoding="async">
+                    </div>
+                    <div class="wg-card-wrap">
+                        <a href="#" class="wg-card" style="--wg-card-bg:#FF6B81;">
+                            <span class="wg-card-index">14</span>
+                            <div class="wg-card-mockup">
+                                <div class="wg-card-mockup-bar"><span></span><span></span><span></span></div>
+                                <div class="wg-card-mockup-body">
+                                    <div class="wg-card-mockup-page has-img">
+                                        <img src="assets/images/work/gallery/015.jpg" alt="Health Learning Hub project screenshot" loading="lazy" decoding="async">
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        </a>
                         <div class="wg-card-info">
                             <span>
                                 <span class="wg-card-title">Health Learning Hub</span>
@@ -849,17 +897,19 @@
                             </span>
                             <span class="wg-card-cta"><i class="ri-arrow-right-up-line"></i></span>
                         </div>
-                    </a>
-                    <a href="#" class="wg-card" style="--wg-card-bg:#3D5AFE;">
-                        <span class="wg-card-index">15</span>
-                        <div class="wg-card-mockup">
-                            <div class="wg-card-mockup-bar"><span></span><span></span><span></span></div>
-                            <div class="wg-card-mockup-body">
-                                <div class="wg-card-mockup-page has-img">
-                                    <img src="assets/images/work/gallery/016.jpg" alt="Climate Comfort Co project screenshot" loading="lazy" decoding="async">
+                    </div>
+                    <div class="wg-card-wrap">
+                        <a href="#" class="wg-card" style="--wg-card-bg:#3D5AFE;">
+                            <span class="wg-card-index">15</span>
+                            <div class="wg-card-mockup">
+                                <div class="wg-card-mockup-bar"><span></span><span></span><span></span></div>
+                                <div class="wg-card-mockup-body">
+                                    <div class="wg-card-mockup-page has-img">
+                                        <img src="assets/images/work/gallery/016.jpg" alt="Climate Comfort Co project screenshot" loading="lazy" decoding="async">
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        </a>
                         <div class="wg-card-info">
                             <span>
                                 <span class="wg-card-title">Climate Comfort Co</span>
@@ -867,17 +917,19 @@
                             </span>
                             <span class="wg-card-cta"><i class="ri-arrow-right-up-line"></i></span>
                         </div>
-                    </a>
-                    <a href="#" class="wg-card" style="--wg-card-bg:#B2DF48;">
-                        <span class="wg-card-index">16</span>
-                        <div class="wg-card-mockup">
-                            <div class="wg-card-mockup-bar"><span></span><span></span><span></span></div>
-                            <div class="wg-card-mockup-body">
-                                <div class="wg-card-mockup-page has-img">
-                                    <img src="assets/images/work/gallery/017.jpg" alt="Auto Tint Pro project screenshot" loading="lazy" decoding="async">
+                    </div>
+                    <div class="wg-card-wrap">
+                        <a href="#" class="wg-card" style="--wg-card-bg:#B2DF48;">
+                            <span class="wg-card-index">16</span>
+                            <div class="wg-card-mockup">
+                                <div class="wg-card-mockup-bar"><span></span><span></span><span></span></div>
+                                <div class="wg-card-mockup-body">
+                                    <div class="wg-card-mockup-page has-img">
+                                        <img src="assets/images/work/gallery/017.jpg" alt="Auto Tint Pro project screenshot" loading="lazy" decoding="async">
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        </a>
                         <div class="wg-card-info">
                             <span>
                                 <span class="wg-card-title">Auto Tint Pro</span>
@@ -885,17 +937,19 @@
                             </span>
                             <span class="wg-card-cta"><i class="ri-arrow-right-up-line"></i></span>
                         </div>
-                    </a>
-                    <a href="#" class="wg-card" style="--wg-card-bg:#FF7A00;">
-                        <span class="wg-card-index">17</span>
-                        <div class="wg-card-mockup">
-                            <div class="wg-card-mockup-bar"><span></span><span></span><span></span></div>
-                            <div class="wg-card-mockup-body">
-                                <div class="wg-card-mockup-page has-img">
-                                    <img src="assets/images/work/gallery/019.jpg" alt="Digital Marketing Hub project screenshot" loading="lazy" decoding="async">
+                    </div>
+                    <div class="wg-card-wrap">
+                        <a href="#" class="wg-card" style="--wg-card-bg:#FF7A00;">
+                            <span class="wg-card-index">17</span>
+                            <div class="wg-card-mockup">
+                                <div class="wg-card-mockup-bar"><span></span><span></span><span></span></div>
+                                <div class="wg-card-mockup-body">
+                                    <div class="wg-card-mockup-page has-img">
+                                        <img src="assets/images/work/gallery/019.jpg" alt="Digital Marketing Hub project screenshot" loading="lazy" decoding="async">
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        </a>
                         <div class="wg-card-info">
                             <span>
                                 <span class="wg-card-title">Digital Marketing Hub</span>
@@ -903,17 +957,19 @@
                             </span>
                             <span class="wg-card-cta"><i class="ri-arrow-right-up-line"></i></span>
                         </div>
-                    </a>
-                    <a href="#" class="wg-card" style="--wg-card-bg:#8B5CF6;">
-                        <span class="wg-card-index">18</span>
-                        <div class="wg-card-mockup">
-                            <div class="wg-card-mockup-bar"><span></span><span></span><span></span></div>
-                            <div class="wg-card-mockup-body">
-                                <div class="wg-card-mockup-page has-img">
-                                    <img src="assets/images/work/gallery/020.jpg" alt="Justice Law Group project screenshot" loading="lazy" decoding="async">
+                    </div>
+                    <div class="wg-card-wrap">
+                        <a href="#" class="wg-card" style="--wg-card-bg:#8B5CF6;">
+                            <span class="wg-card-index">18</span>
+                            <div class="wg-card-mockup">
+                                <div class="wg-card-mockup-bar"><span></span><span></span><span></span></div>
+                                <div class="wg-card-mockup-body">
+                                    <div class="wg-card-mockup-page has-img">
+                                        <img src="assets/images/work/gallery/020.jpg" alt="Justice Law Group project screenshot" loading="lazy" decoding="async">
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        </a>
                         <div class="wg-card-info">
                             <span>
                                 <span class="wg-card-title">Justice Law Group</span>
@@ -921,17 +977,19 @@
                             </span>
                             <span class="wg-card-cta"><i class="ri-arrow-right-up-line"></i></span>
                         </div>
-                    </a>
-                    <a href="#" class="wg-card" style="--wg-card-bg:#06B6D4;">
-                        <span class="wg-card-index">19</span>
-                        <div class="wg-card-mockup">
-                            <div class="wg-card-mockup-bar"><span></span><span></span><span></span></div>
-                            <div class="wg-card-mockup-body">
-                                <div class="wg-card-mockup-page has-img">
-                                    <img src="assets/images/work/gallery/021.jpg" alt="Zen Wellness Brand project screenshot" loading="lazy" decoding="async">
+                    </div>
+                    <div class="wg-card-wrap">
+                        <a href="#" class="wg-card" style="--wg-card-bg:#06B6D4;">
+                            <span class="wg-card-index">19</span>
+                            <div class="wg-card-mockup">
+                                <div class="wg-card-mockup-bar"><span></span><span></span><span></span></div>
+                                <div class="wg-card-mockup-body">
+                                    <div class="wg-card-mockup-page has-img">
+                                        <img src="assets/images/work/gallery/021.jpg" alt="Zen Wellness Brand project screenshot" loading="lazy" decoding="async">
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        </a>
                         <div class="wg-card-info">
                             <span>
                                 <span class="wg-card-title">Zen Wellness Brand</span>
@@ -939,17 +997,19 @@
                             </span>
                             <span class="wg-card-cta"><i class="ri-arrow-right-up-line"></i></span>
                         </div>
-                    </a>
-                    <a href="#" class="wg-card" style="--wg-card-bg:#F472B6;">
-                        <span class="wg-card-index">20</span>
-                        <div class="wg-card-mockup">
-                            <div class="wg-card-mockup-bar"><span></span><span></span><span></span></div>
-                            <div class="wg-card-mockup-body">
-                                <div class="wg-card-mockup-page has-img">
-                                    <img src="assets/images/work/gallery/022.jpg" alt="Dream Pillow Co project screenshot" loading="lazy" decoding="async">
+                    </div>
+                    <div class="wg-card-wrap">
+                        <a href="#" class="wg-card" style="--wg-card-bg:#F472B6;">
+                            <span class="wg-card-index">20</span>
+                            <div class="wg-card-mockup">
+                                <div class="wg-card-mockup-bar"><span></span><span></span><span></span></div>
+                                <div class="wg-card-mockup-body">
+                                    <div class="wg-card-mockup-page has-img">
+                                        <img src="assets/images/work/gallery/022.jpg" alt="Dream Pillow Co project screenshot" loading="lazy" decoding="async">
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        </a>
                         <div class="wg-card-info">
                             <span>
                                 <span class="wg-card-title">Dream Pillow Co</span>
@@ -957,17 +1017,19 @@
                             </span>
                             <span class="wg-card-cta"><i class="ri-arrow-right-up-line"></i></span>
                         </div>
-                    </a>
-                    <a href="#" class="wg-card" style="--wg-card-bg:#FBBF24;">
-                        <span class="wg-card-index">21</span>
-                        <div class="wg-card-mockup">
-                            <div class="wg-card-mockup-bar"><span></span><span></span><span></span></div>
-                            <div class="wg-card-mockup-body">
-                                <div class="wg-card-mockup-page has-img">
-                                    <img src="assets/images/work/gallery/023.jpg" alt="Cloud Software Suite project screenshot" loading="lazy" decoding="async">
+                    </div>
+                    <div class="wg-card-wrap">
+                        <a href="#" class="wg-card" style="--wg-card-bg:#FBBF24;">
+                            <span class="wg-card-index">21</span>
+                            <div class="wg-card-mockup">
+                                <div class="wg-card-mockup-bar"><span></span><span></span><span></span></div>
+                                <div class="wg-card-mockup-body">
+                                    <div class="wg-card-mockup-page has-img">
+                                        <img src="assets/images/work/gallery/023.jpg" alt="Cloud Software Suite project screenshot" loading="lazy" decoding="async">
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        </a>
                         <div class="wg-card-info">
                             <span>
                                 <span class="wg-card-title">Cloud Software Suite</span>
@@ -975,17 +1037,19 @@
                             </span>
                             <span class="wg-card-cta"><i class="ri-arrow-right-up-line"></i></span>
                         </div>
-                    </a>
-                    <a href="#" class="wg-card" style="--wg-card-bg:#34D399;">
-                        <span class="wg-card-index">22</span>
-                        <div class="wg-card-mockup">
-                            <div class="wg-card-mockup-bar"><span></span><span></span><span></span></div>
-                            <div class="wg-card-mockup-body">
-                                <div class="wg-card-mockup-page has-img">
-                                    <img src="assets/images/work/gallery/024.jpg" alt="NextGen Software Co project screenshot" loading="lazy" decoding="async">
+                    </div>
+                    <div class="wg-card-wrap">
+                        <a href="#" class="wg-card" style="--wg-card-bg:#34D399;">
+                            <span class="wg-card-index">22</span>
+                            <div class="wg-card-mockup">
+                                <div class="wg-card-mockup-bar"><span></span><span></span><span></span></div>
+                                <div class="wg-card-mockup-body">
+                                    <div class="wg-card-mockup-page has-img">
+                                        <img src="assets/images/work/gallery/024.jpg" alt="NextGen Software Co project screenshot" loading="lazy" decoding="async">
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        </a>
                         <div class="wg-card-info">
                             <span>
                                 <span class="wg-card-title">NextGen Software Co</span>
@@ -993,17 +1057,19 @@
                             </span>
                             <span class="wg-card-cta"><i class="ri-arrow-right-up-line"></i></span>
                         </div>
-                    </a>
-                    <a href="#" class="wg-card" style="--wg-card-bg:#60A5FA;">
-                        <span class="wg-card-index">23</span>
-                        <div class="wg-card-mockup">
-                            <div class="wg-card-mockup-bar"><span></span><span></span><span></span></div>
-                            <div class="wg-card-mockup-body">
-                                <div class="wg-card-mockup-page has-img">
-                                    <img src="assets/images/work/gallery/025.jpg" alt="Freelance Creative Studio project screenshot" loading="lazy" decoding="async">
+                    </div>
+                    <div class="wg-card-wrap">
+                        <a href="#" class="wg-card" style="--wg-card-bg:#60A5FA;">
+                            <span class="wg-card-index">23</span>
+                            <div class="wg-card-mockup">
+                                <div class="wg-card-mockup-bar"><span></span><span></span><span></span></div>
+                                <div class="wg-card-mockup-body">
+                                    <div class="wg-card-mockup-page has-img">
+                                        <img src="assets/images/work/gallery/025.jpg" alt="Freelance Creative Studio project screenshot" loading="lazy" decoding="async">
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        </a>
                         <div class="wg-card-info">
                             <span>
                                 <span class="wg-card-title">Freelance Creative Studio</span>
@@ -1011,17 +1077,19 @@
                             </span>
                             <span class="wg-card-cta"><i class="ri-arrow-right-up-line"></i></span>
                         </div>
-                    </a>
-                    <a href="#" class="wg-card" style="--wg-card-bg:#A78BFA;">
-                        <span class="wg-card-index">24</span>
-                        <div class="wg-card-mockup">
-                            <div class="wg-card-mockup-bar"><span></span><span></span><span></span></div>
-                            <div class="wg-card-mockup-body">
-                                <div class="wg-card-mockup-page has-img">
-                                    <img src="assets/images/work/gallery/026.jpg" alt="Golden Leaf Tea project screenshot" loading="lazy" decoding="async">
+                    </div>
+                    <div class="wg-card-wrap">
+                        <a href="#" class="wg-card" style="--wg-card-bg:#A78BFA;">
+                            <span class="wg-card-index">24</span>
+                            <div class="wg-card-mockup">
+                                <div class="wg-card-mockup-bar"><span></span><span></span><span></span></div>
+                                <div class="wg-card-mockup-body">
+                                    <div class="wg-card-mockup-page has-img">
+                                        <img src="assets/images/work/gallery/026.jpg" alt="Golden Leaf Tea project screenshot" loading="lazy" decoding="async">
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        </a>
                         <div class="wg-card-info">
                             <span>
                                 <span class="wg-card-title">Golden Leaf Tea</span>
@@ -1029,17 +1097,19 @@
                             </span>
                             <span class="wg-card-cta"><i class="ri-arrow-right-up-line"></i></span>
                         </div>
-                    </a>
-                    <a href="#" class="wg-card" style="--wg-card-bg:#FB923C;">
-                        <span class="wg-card-index">25</span>
-                        <div class="wg-card-mockup">
-                            <div class="wg-card-mockup-bar"><span></span><span></span><span></span></div>
-                            <div class="wg-card-mockup-body">
-                                <div class="wg-card-mockup-page has-img">
-                                    <img src="assets/images/work/gallery/027.jpg" alt="Capital Growth Platform project screenshot" loading="lazy" decoding="async">
+                    </div>
+                    <div class="wg-card-wrap">
+                        <a href="#" class="wg-card" style="--wg-card-bg:#FB923C;">
+                            <span class="wg-card-index">25</span>
+                            <div class="wg-card-mockup">
+                                <div class="wg-card-mockup-bar"><span></span><span></span><span></span></div>
+                                <div class="wg-card-mockup-body">
+                                    <div class="wg-card-mockup-page has-img">
+                                        <img src="assets/images/work/gallery/027.jpg" alt="Capital Growth Platform project screenshot" loading="lazy" decoding="async">
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        </a>
                         <div class="wg-card-info">
                             <span>
                                 <span class="wg-card-title">Capital Growth Platform</span>
@@ -1047,17 +1117,19 @@
                             </span>
                             <span class="wg-card-cta"><i class="ri-arrow-right-up-line"></i></span>
                         </div>
-                    </a>
-                    <a href="#" class="wg-card" style="--wg-card-bg:#4ADE80;">
-                        <span class="wg-card-index">26</span>
-                        <div class="wg-card-mockup">
-                            <div class="wg-card-mockup-bar"><span></span><span></span><span></span></div>
-                            <div class="wg-card-mockup-body">
-                                <div class="wg-card-mockup-page has-img">
-                                    <img src="assets/images/work/gallery/028.jpg" alt="Swift Delivery POS project screenshot" loading="lazy" decoding="async">
+                    </div>
+                    <div class="wg-card-wrap">
+                        <a href="#" class="wg-card" style="--wg-card-bg:#4ADE80;">
+                            <span class="wg-card-index">26</span>
+                            <div class="wg-card-mockup">
+                                <div class="wg-card-mockup-bar"><span></span><span></span><span></span></div>
+                                <div class="wg-card-mockup-body">
+                                    <div class="wg-card-mockup-page has-img">
+                                        <img src="assets/images/work/gallery/028.jpg" alt="Swift Delivery POS project screenshot" loading="lazy" decoding="async">
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        </a>
                         <div class="wg-card-info">
                             <span>
                                 <span class="wg-card-title">Swift Delivery POS</span>
@@ -1065,17 +1137,19 @@
                             </span>
                             <span class="wg-card-cta"><i class="ri-arrow-right-up-line"></i></span>
                         </div>
-                    </a>
-                    <a href="#" class="wg-card" style="--wg-card-bg:#F87171;">
-                        <span class="wg-card-index">27</span>
-                        <div class="wg-card-mockup">
-                            <div class="wg-card-mockup-bar"><span></span><span></span><span></span></div>
-                            <div class="wg-card-mockup-body">
-                                <div class="wg-card-mockup-page has-img">
-                                    <img src="assets/images/work/gallery/029.jpg" alt="Urban Stride Shoes project screenshot" loading="lazy" decoding="async">
+                    </div>
+                    <div class="wg-card-wrap">
+                        <a href="#" class="wg-card" style="--wg-card-bg:#F87171;">
+                            <span class="wg-card-index">27</span>
+                            <div class="wg-card-mockup">
+                                <div class="wg-card-mockup-bar"><span></span><span></span><span></span></div>
+                                <div class="wg-card-mockup-body">
+                                    <div class="wg-card-mockup-page has-img">
+                                        <img src="assets/images/work/gallery/029.jpg" alt="Urban Stride Shoes project screenshot" loading="lazy" decoding="async">
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        </a>
                         <div class="wg-card-info">
                             <span>
                                 <span class="wg-card-title">Urban Stride Shoes</span>
@@ -1083,17 +1157,19 @@
                             </span>
                             <span class="wg-card-cta"><i class="ri-arrow-right-up-line"></i></span>
                         </div>
-                    </a>
-                    <a href="#" class="wg-card" style="--wg-card-bg:#38BDF8;">
-                        <span class="wg-card-index">28</span>
-                        <div class="wg-card-mockup">
-                            <div class="wg-card-mockup-bar"><span></span><span></span><span></span></div>
-                            <div class="wg-card-mockup-body">
-                                <div class="wg-card-mockup-page has-img">
-                                    <img src="assets/images/work/gallery/030.jpg" alt="Community Impact Foundation project screenshot" loading="lazy" decoding="async">
+                    </div>
+                    <div class="wg-card-wrap">
+                        <a href="#" class="wg-card" style="--wg-card-bg:#38BDF8;">
+                            <span class="wg-card-index">28</span>
+                            <div class="wg-card-mockup">
+                                <div class="wg-card-mockup-bar"><span></span><span></span><span></span></div>
+                                <div class="wg-card-mockup-body">
+                                    <div class="wg-card-mockup-page has-img">
+                                        <img src="assets/images/work/gallery/030.jpg" alt="Community Impact Foundation project screenshot" loading="lazy" decoding="async">
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        </a>
                         <div class="wg-card-info">
                             <span>
                                 <span class="wg-card-title">Community Impact Foundation</span>
@@ -1101,17 +1177,19 @@
                             </span>
                             <span class="wg-card-cta"><i class="ri-arrow-right-up-line"></i></span>
                         </div>
-                    </a>
-                    <a href="#" class="wg-card" style="--wg-card-bg:#E879F9;">
-                        <span class="wg-card-index">29</span>
-                        <div class="wg-card-mockup">
-                            <div class="wg-card-mockup-bar"><span></span><span></span><span></span></div>
-                            <div class="wg-card-mockup-body">
-                                <div class="wg-card-mockup-page has-img">
-                                    <img src="assets/images/work/gallery/032.jpg" alt="Vital Supplement Co project screenshot" loading="lazy" decoding="async">
+                    </div>
+                    <div class="wg-card-wrap">
+                        <a href="#" class="wg-card" style="--wg-card-bg:#E879F9;">
+                            <span class="wg-card-index">29</span>
+                            <div class="wg-card-mockup">
+                                <div class="wg-card-mockup-bar"><span></span><span></span><span></span></div>
+                                <div class="wg-card-mockup-body">
+                                    <div class="wg-card-mockup-page has-img">
+                                        <img src="assets/images/work/gallery/032.jpg" alt="Vital Supplement Co project screenshot" loading="lazy" decoding="async">
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        </a>
                         <div class="wg-card-info">
                             <span>
                                 <span class="wg-card-title">Vital Supplement Co</span>
@@ -1119,17 +1197,19 @@
                             </span>
                             <span class="wg-card-cta"><i class="ri-arrow-right-up-line"></i></span>
                         </div>
-                    </a>
-                    <a href="#" class="wg-card" style="--wg-card-bg:#FACC15;">
-                        <span class="wg-card-index">30</span>
-                        <div class="wg-card-mockup">
-                            <div class="wg-card-mockup-bar"><span></span><span></span><span></span></div>
-                            <div class="wg-card-mockup-body">
-                                <div class="wg-card-mockup-page has-img">
-                                    <img src="assets/images/work/gallery/033.jpg" alt="Bright Smile Dental project screenshot" loading="lazy" decoding="async">
+                    </div>
+                    <div class="wg-card-wrap">
+                        <a href="#" class="wg-card" style="--wg-card-bg:#FACC15;">
+                            <span class="wg-card-index">30</span>
+                            <div class="wg-card-mockup">
+                                <div class="wg-card-mockup-bar"><span></span><span></span><span></span></div>
+                                <div class="wg-card-mockup-body">
+                                    <div class="wg-card-mockup-page has-img">
+                                        <img src="assets/images/work/gallery/033.jpg" alt="Bright Smile Dental project screenshot" loading="lazy" decoding="async">
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        </a>
                         <div class="wg-card-info">
                             <span>
                                 <span class="wg-card-title">Bright Smile Dental</span>
@@ -1137,17 +1217,19 @@
                             </span>
                             <span class="wg-card-cta"><i class="ri-arrow-right-up-line"></i></span>
                         </div>
-                    </a>
-                    <a href="#" class="wg-card" style="--wg-card-bg:#2DD4BF;">
-                        <span class="wg-card-index">31</span>
-                        <div class="wg-card-mockup">
-                            <div class="wg-card-mockup-bar"><span></span><span></span><span></span></div>
-                            <div class="wg-card-mockup-body">
-                                <div class="wg-card-mockup-page has-img">
-                                    <img src="assets/images/work/gallery/034.jpg" alt="Artisan Coffee Co project screenshot" loading="lazy" decoding="async">
+                    </div>
+                    <div class="wg-card-wrap">
+                        <a href="#" class="wg-card" style="--wg-card-bg:#2DD4BF;">
+                            <span class="wg-card-index">31</span>
+                            <div class="wg-card-mockup">
+                                <div class="wg-card-mockup-bar"><span></span><span></span><span></span></div>
+                                <div class="wg-card-mockup-body">
+                                    <div class="wg-card-mockup-page has-img">
+                                        <img src="assets/images/work/gallery/034.jpg" alt="Artisan Coffee Co project screenshot" loading="lazy" decoding="async">
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        </a>
                         <div class="wg-card-info">
                             <span>
                                 <span class="wg-card-title">Artisan Coffee Co</span>
@@ -1155,17 +1237,19 @@
                             </span>
                             <span class="wg-card-cta"><i class="ri-arrow-right-up-line"></i></span>
                         </div>
-                    </a>
-                    <a href="#" class="wg-card" style="--wg-card-bg:#FF6B81;">
-                        <span class="wg-card-index">32</span>
-                        <div class="wg-card-mockup">
-                            <div class="wg-card-mockup-bar"><span></span><span></span><span></span></div>
-                            <div class="wg-card-mockup-body">
-                                <div class="wg-card-mockup-page has-img">
-                                    <img src="assets/images/work/gallery/035.jpg" alt="Fresh Fruit Delivery project screenshot" loading="lazy" decoding="async">
+                    </div>
+                    <div class="wg-card-wrap">
+                        <a href="#" class="wg-card" style="--wg-card-bg:#FF6B81;">
+                            <span class="wg-card-index">32</span>
+                            <div class="wg-card-mockup">
+                                <div class="wg-card-mockup-bar"><span></span><span></span><span></span></div>
+                                <div class="wg-card-mockup-body">
+                                    <div class="wg-card-mockup-page has-img">
+                                        <img src="assets/images/work/gallery/035.jpg" alt="Fresh Fruit Delivery project screenshot" loading="lazy" decoding="async">
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        </a>
                         <div class="wg-card-info">
                             <span>
                                 <span class="wg-card-title">Fresh Fruit Delivery</span>
@@ -1173,17 +1257,19 @@
                             </span>
                             <span class="wg-card-cta"><i class="ri-arrow-right-up-line"></i></span>
                         </div>
-                    </a>
-                    <a href="#" class="wg-card" style="--wg-card-bg:#3D5AFE;">
-                        <span class="wg-card-index">33</span>
-                        <div class="wg-card-mockup">
-                            <div class="wg-card-mockup-bar"><span></span><span></span><span></span></div>
-                            <div class="wg-card-mockup-body">
-                                <div class="wg-card-mockup-page has-img">
-                                    <img src="assets/images/work/gallery/036.jpg" alt="Digital Growth Agency project screenshot" loading="lazy" decoding="async">
+                    </div>
+                    <div class="wg-card-wrap">
+                        <a href="#" class="wg-card" style="--wg-card-bg:#3D5AFE;">
+                            <span class="wg-card-index">33</span>
+                            <div class="wg-card-mockup">
+                                <div class="wg-card-mockup-bar"><span></span><span></span><span></span></div>
+                                <div class="wg-card-mockup-body">
+                                    <div class="wg-card-mockup-page has-img">
+                                        <img src="assets/images/work/gallery/036.jpg" alt="Digital Growth Agency project screenshot" loading="lazy" decoding="async">
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        </a>
                         <div class="wg-card-info">
                             <span>
                                 <span class="wg-card-title">Digital Growth Agency</span>
@@ -1191,17 +1277,19 @@
                             </span>
                             <span class="wg-card-cta"><i class="ri-arrow-right-up-line"></i></span>
                         </div>
-                    </a>
-                    <a href="#" class="wg-card" style="--wg-card-bg:#B2DF48;">
-                        <span class="wg-card-index">34</span>
-                        <div class="wg-card-mockup">
-                            <div class="wg-card-mockup-bar"><span></span><span></span><span></span></div>
-                            <div class="wg-card-mockup-body">
-                                <div class="wg-card-mockup-page has-img">
-                                    <img src="assets/images/work/gallery/037.jpg" alt="Digital Fitness Platform project screenshot" loading="lazy" decoding="async">
+                    </div>
+                    <div class="wg-card-wrap">
+                        <a href="#" class="wg-card" style="--wg-card-bg:#B2DF48;">
+                            <span class="wg-card-index">34</span>
+                            <div class="wg-card-mockup">
+                                <div class="wg-card-mockup-bar"><span></span><span></span><span></span></div>
+                                <div class="wg-card-mockup-body">
+                                    <div class="wg-card-mockup-page has-img">
+                                        <img src="assets/images/work/gallery/037.jpg" alt="Digital Fitness Platform project screenshot" loading="lazy" decoding="async">
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        </a>
                         <div class="wg-card-info">
                             <span>
                                 <span class="wg-card-title">Digital Fitness Platform</span>
@@ -1209,17 +1297,19 @@
                             </span>
                             <span class="wg-card-cta"><i class="ri-arrow-right-up-line"></i></span>
                         </div>
-                    </a>
-                    <a href="#" class="wg-card" style="--wg-card-bg:#FF7A00;">
-                        <span class="wg-card-index">35</span>
-                        <div class="wg-card-mockup">
-                            <div class="wg-card-mockup-bar"><span></span><span></span><span></span></div>
-                            <div class="wg-card-mockup-body">
-                                <div class="wg-card-mockup-page has-img">
-                                    <img src="assets/images/work/gallery/038.jpg" alt="Recipe Builder App project screenshot" loading="lazy" decoding="async">
+                    </div>
+                    <div class="wg-card-wrap">
+                        <a href="#" class="wg-card" style="--wg-card-bg:#FF7A00;">
+                            <span class="wg-card-index">35</span>
+                            <div class="wg-card-mockup">
+                                <div class="wg-card-mockup-bar"><span></span><span></span><span></span></div>
+                                <div class="wg-card-mockup-body">
+                                    <div class="wg-card-mockup-page has-img">
+                                        <img src="assets/images/work/gallery/038.jpg" alt="Recipe Builder App project screenshot" loading="lazy" decoding="async">
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        </a>
                         <div class="wg-card-info">
                             <span>
                                 <span class="wg-card-title">Recipe Builder App</span>
@@ -1227,17 +1317,19 @@
                             </span>
                             <span class="wg-card-cta"><i class="ri-arrow-right-up-line"></i></span>
                         </div>
-                    </a>
-                    <a href="#" class="wg-card" style="--wg-card-bg:#8B5CF6;">
-                        <span class="wg-card-index">36</span>
-                        <div class="wg-card-mockup">
-                            <div class="wg-card-mockup-bar"><span></span><span></span><span></span></div>
-                            <div class="wg-card-mockup-body">
-                                <div class="wg-card-mockup-page has-img">
-                                    <img src="assets/images/work/gallery/039.jpg" alt="Travel Booking Platform project screenshot" loading="lazy" decoding="async">
+                    </div>
+                    <div class="wg-card-wrap">
+                        <a href="#" class="wg-card" style="--wg-card-bg:#8B5CF6;">
+                            <span class="wg-card-index">36</span>
+                            <div class="wg-card-mockup">
+                                <div class="wg-card-mockup-bar"><span></span><span></span><span></span></div>
+                                <div class="wg-card-mockup-body">
+                                    <div class="wg-card-mockup-page has-img">
+                                        <img src="assets/images/work/gallery/039.jpg" alt="Travel Booking Platform project screenshot" loading="lazy" decoding="async">
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        </a>
                         <div class="wg-card-info">
                             <span>
                                 <span class="wg-card-title">Travel Booking Platform</span>
@@ -1245,17 +1337,19 @@
                             </span>
                             <span class="wg-card-cta"><i class="ri-arrow-right-up-line"></i></span>
                         </div>
-                    </a>
-                    <a href="#" class="wg-card" style="--wg-card-bg:#06B6D4;">
-                        <span class="wg-card-index">37</span>
-                        <div class="wg-card-mockup">
-                            <div class="wg-card-mockup-bar"><span></span><span></span><span></span></div>
-                            <div class="wg-card-mockup-body">
-                                <div class="wg-card-mockup-page has-img">
-                                    <img src="assets/images/work/gallery/040.jpg" alt="Consultancy Group project screenshot" loading="lazy" decoding="async">
+                    </div>
+                    <div class="wg-card-wrap">
+                        <a href="#" class="wg-card" style="--wg-card-bg:#06B6D4;">
+                            <span class="wg-card-index">37</span>
+                            <div class="wg-card-mockup">
+                                <div class="wg-card-mockup-bar"><span></span><span></span><span></span></div>
+                                <div class="wg-card-mockup-body">
+                                    <div class="wg-card-mockup-page has-img">
+                                        <img src="assets/images/work/gallery/040.jpg" alt="Consultancy Group project screenshot" loading="lazy" decoding="async">
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        </a>
                         <div class="wg-card-info">
                             <span>
                                 <span class="wg-card-title">Consultancy Group</span>
@@ -1263,17 +1357,19 @@
                             </span>
                             <span class="wg-card-cta"><i class="ri-arrow-right-up-line"></i></span>
                         </div>
-                    </a>
-                    <a href="#" class="wg-card" style="--wg-card-bg:#F472B6;">
-                        <span class="wg-card-index">38</span>
-                        <div class="wg-card-mockup">
-                            <div class="wg-card-mockup-bar"><span></span><span></span><span></span></div>
-                            <div class="wg-card-mockup-body">
-                                <div class="wg-card-mockup-page has-img">
-                                    <img src="assets/images/work/gallery/041.jpg" alt="Craft Drinks Co project screenshot" loading="lazy" decoding="async">
+                    </div>
+                    <div class="wg-card-wrap">
+                        <a href="#" class="wg-card" style="--wg-card-bg:#F472B6;">
+                            <span class="wg-card-index">38</span>
+                            <div class="wg-card-mockup">
+                                <div class="wg-card-mockup-bar"><span></span><span></span><span></span></div>
+                                <div class="wg-card-mockup-body">
+                                    <div class="wg-card-mockup-page has-img">
+                                        <img src="assets/images/work/gallery/041.jpg" alt="Craft Drinks Co project screenshot" loading="lazy" decoding="async">
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        </a>
                         <div class="wg-card-info">
                             <span>
                                 <span class="wg-card-title">Craft Drinks Co</span>
@@ -1281,17 +1377,19 @@
                             </span>
                             <span class="wg-card-cta"><i class="ri-arrow-right-up-line"></i></span>
                         </div>
-                    </a>
-                    <a href="#" class="wg-card" style="--wg-card-bg:#FBBF24;">
-                        <span class="wg-card-index">39</span>
-                        <div class="wg-card-mockup">
-                            <div class="wg-card-mockup-bar"><span></span><span></span><span></span></div>
-                            <div class="wg-card-mockup-body">
-                                <div class="wg-card-mockup-page has-img">
-                                    <img src="assets/images/work/gallery/042.jpg" alt="Coffee Roasters Hub project screenshot" loading="lazy" decoding="async">
+                    </div>
+                    <div class="wg-card-wrap">
+                        <a href="#" class="wg-card" style="--wg-card-bg:#FBBF24;">
+                            <span class="wg-card-index">39</span>
+                            <div class="wg-card-mockup">
+                                <div class="wg-card-mockup-bar"><span></span><span></span><span></span></div>
+                                <div class="wg-card-mockup-body">
+                                    <div class="wg-card-mockup-page has-img">
+                                        <img src="assets/images/work/gallery/042.jpg" alt="Coffee Roasters Hub project screenshot" loading="lazy" decoding="async">
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        </a>
                         <div class="wg-card-info">
                             <span>
                                 <span class="wg-card-title">Coffee Roasters Hub</span>
@@ -1299,17 +1397,19 @@
                             </span>
                             <span class="wg-card-cta"><i class="ri-arrow-right-up-line"></i></span>
                         </div>
-                    </a>
-                    <a href="#" class="wg-card" style="--wg-card-bg:#34D399;">
-                        <span class="wg-card-index">40</span>
-                        <div class="wg-card-mockup">
-                            <div class="wg-card-mockup-bar"><span></span><span></span><span></span></div>
-                            <div class="wg-card-mockup-body">
-                                <div class="wg-card-mockup-page has-img">
-                                    <img src="assets/images/work/gallery/043.jpg" alt="News Publishing Hub project screenshot" loading="lazy" decoding="async">
+                    </div>
+                    <div class="wg-card-wrap">
+                        <a href="#" class="wg-card" style="--wg-card-bg:#34D399;">
+                            <span class="wg-card-index">40</span>
+                            <div class="wg-card-mockup">
+                                <div class="wg-card-mockup-bar"><span></span><span></span><span></span></div>
+                                <div class="wg-card-mockup-body">
+                                    <div class="wg-card-mockup-page has-img">
+                                        <img src="assets/images/work/gallery/043.jpg" alt="News Publishing Hub project screenshot" loading="lazy" decoding="async">
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        </a>
                         <div class="wg-card-info">
                             <span>
                                 <span class="wg-card-title">News Publishing Hub</span>
@@ -1317,17 +1417,19 @@
                             </span>
                             <span class="wg-card-cta"><i class="ri-arrow-right-up-line"></i></span>
                         </div>
-                    </a>
-                    <a href="#" class="wg-card" style="--wg-card-bg:#60A5FA;">
-                        <span class="wg-card-index">41</span>
-                        <div class="wg-card-mockup">
-                            <div class="wg-card-mockup-bar"><span></span><span></span><span></span></div>
-                            <div class="wg-card-mockup-body">
-                                <div class="wg-card-mockup-page has-img">
-                                    <img src="assets/images/work/gallery/044.jpg" alt="Network Connect Hub project screenshot" loading="lazy" decoding="async">
+                    </div>
+                    <div class="wg-card-wrap">
+                        <a href="#" class="wg-card" style="--wg-card-bg:#60A5FA;">
+                            <span class="wg-card-index">41</span>
+                            <div class="wg-card-mockup">
+                                <div class="wg-card-mockup-bar"><span></span><span></span><span></span></div>
+                                <div class="wg-card-mockup-body">
+                                    <div class="wg-card-mockup-page has-img">
+                                        <img src="assets/images/work/gallery/044.jpg" alt="Network Connect Hub project screenshot" loading="lazy" decoding="async">
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        </a>
                         <div class="wg-card-info">
                             <span>
                                 <span class="wg-card-title">Network Connect Hub</span>
@@ -1335,17 +1437,19 @@
                             </span>
                             <span class="wg-card-cta"><i class="ri-arrow-right-up-line"></i></span>
                         </div>
-                    </a>
-                    <a href="#" class="wg-card" style="--wg-card-bg:#A78BFA;">
-                        <span class="wg-card-index">42</span>
-                        <div class="wg-card-mockup">
-                            <div class="wg-card-mockup-bar"><span></span><span></span><span></span></div>
-                            <div class="wg-card-mockup-body">
-                                <div class="wg-card-mockup-page has-img">
-                                    <img src="assets/images/work/gallery/045.jpg" alt="Teacher Student Portal project screenshot" loading="lazy" decoding="async">
+                    </div>
+                    <div class="wg-card-wrap">
+                        <a href="#" class="wg-card" style="--wg-card-bg:#A78BFA;">
+                            <span class="wg-card-index">42</span>
+                            <div class="wg-card-mockup">
+                                <div class="wg-card-mockup-bar"><span></span><span></span><span></span></div>
+                                <div class="wg-card-mockup-body">
+                                    <div class="wg-card-mockup-page has-img">
+                                        <img src="assets/images/work/gallery/045.jpg" alt="Teacher Student Portal project screenshot" loading="lazy" decoding="async">
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        </a>
                         <div class="wg-card-info">
                             <span>
                                 <span class="wg-card-title">Teacher Student Portal</span>
@@ -1353,17 +1457,19 @@
                             </span>
                             <span class="wg-card-cta"><i class="ri-arrow-right-up-line"></i></span>
                         </div>
-                    </a>
-                    <a href="#" class="wg-card" style="--wg-card-bg:#FB923C;">
-                        <span class="wg-card-index">43</span>
-                        <div class="wg-card-mockup">
-                            <div class="wg-card-mockup-bar"><span></span><span></span><span></span></div>
-                            <div class="wg-card-mockup-body">
-                                <div class="wg-card-mockup-page has-img">
-                                    <img src="assets/images/work/gallery/046.jpg" alt="Anxiety Checker App project screenshot" loading="lazy" decoding="async">
+                    </div>
+                    <div class="wg-card-wrap">
+                        <a href="#" class="wg-card" style="--wg-card-bg:#FB923C;">
+                            <span class="wg-card-index">43</span>
+                            <div class="wg-card-mockup">
+                                <div class="wg-card-mockup-bar"><span></span><span></span><span></span></div>
+                                <div class="wg-card-mockup-body">
+                                    <div class="wg-card-mockup-page has-img">
+                                        <img src="assets/images/work/gallery/046.jpg" alt="Anxiety Checker App project screenshot" loading="lazy" decoding="async">
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        </a>
                         <div class="wg-card-info">
                             <span>
                                 <span class="wg-card-title">Anxiety Checker App</span>
@@ -1371,17 +1477,19 @@
                             </span>
                             <span class="wg-card-cta"><i class="ri-arrow-right-up-line"></i></span>
                         </div>
-                    </a>
-                    <a href="#" class="wg-card" style="--wg-card-bg:#4ADE80;">
-                        <span class="wg-card-index">44</span>
-                        <div class="wg-card-mockup">
-                            <div class="wg-card-mockup-bar"><span></span><span></span><span></span></div>
-                            <div class="wg-card-mockup-body">
-                                <div class="wg-card-mockup-page has-img">
-                                    <img src="assets/images/work/gallery/047.jpg" alt="Social Connect App project screenshot" loading="lazy" decoding="async">
+                    </div>
+                    <div class="wg-card-wrap">
+                        <a href="#" class="wg-card" style="--wg-card-bg:#4ADE80;">
+                            <span class="wg-card-index">44</span>
+                            <div class="wg-card-mockup">
+                                <div class="wg-card-mockup-bar"><span></span><span></span><span></span></div>
+                                <div class="wg-card-mockup-body">
+                                    <div class="wg-card-mockup-page has-img">
+                                        <img src="assets/images/work/gallery/047.jpg" alt="Social Connect App project screenshot" loading="lazy" decoding="async">
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        </a>
                         <div class="wg-card-info">
                             <span>
                                 <span class="wg-card-title">Social Connect App</span>
@@ -1389,17 +1497,19 @@
                             </span>
                             <span class="wg-card-cta"><i class="ri-arrow-right-up-line"></i></span>
                         </div>
-                    </a>
-                    <a href="#" class="wg-card" style="--wg-card-bg:#F87171;">
-                        <span class="wg-card-index">45</span>
-                        <div class="wg-card-mockup">
-                            <div class="wg-card-mockup-bar"><span></span><span></span><span></span></div>
-                            <div class="wg-card-mockup-body">
-                                <div class="wg-card-mockup-page has-img">
-                                    <img src="assets/images/work/gallery/048.jpg" alt="Kids Coloring Brand project screenshot" loading="lazy" decoding="async">
+                    </div>
+                    <div class="wg-card-wrap">
+                        <a href="#" class="wg-card" style="--wg-card-bg:#F87171;">
+                            <span class="wg-card-index">45</span>
+                            <div class="wg-card-mockup">
+                                <div class="wg-card-mockup-bar"><span></span><span></span><span></span></div>
+                                <div class="wg-card-mockup-body">
+                                    <div class="wg-card-mockup-page has-img">
+                                        <img src="assets/images/work/gallery/048.jpg" alt="Kids Coloring Brand project screenshot" loading="lazy" decoding="async">
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        </a>
                         <div class="wg-card-info">
                             <span>
                                 <span class="wg-card-title">Kids Coloring Brand</span>
@@ -1407,17 +1517,19 @@
                             </span>
                             <span class="wg-card-cta"><i class="ri-arrow-right-up-line"></i></span>
                         </div>
-                    </a>
-                    <a href="#" class="wg-card" style="--wg-card-bg:#38BDF8;">
-                        <span class="wg-card-index">46</span>
-                        <div class="wg-card-mockup">
-                            <div class="wg-card-mockup-bar"><span></span><span></span><span></span></div>
-                            <div class="wg-card-mockup-body">
-                                <div class="wg-card-mockup-page has-img">
-                                    <img src="assets/images/work/gallery/049.jpg" alt="Mortgage Finance Portal project screenshot" loading="lazy" decoding="async">
+                    </div>
+                    <div class="wg-card-wrap">
+                        <a href="#" class="wg-card" style="--wg-card-bg:#38BDF8;">
+                            <span class="wg-card-index">46</span>
+                            <div class="wg-card-mockup">
+                                <div class="wg-card-mockup-bar"><span></span><span></span><span></span></div>
+                                <div class="wg-card-mockup-body">
+                                    <div class="wg-card-mockup-page has-img">
+                                        <img src="assets/images/work/gallery/049.jpg" alt="Mortgage Finance Portal project screenshot" loading="lazy" decoding="async">
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        </a>
                         <div class="wg-card-info">
                             <span>
                                 <span class="wg-card-title">Mortgage Finance Portal</span>
@@ -1425,17 +1537,19 @@
                             </span>
                             <span class="wg-card-cta"><i class="ri-arrow-right-up-line"></i></span>
                         </div>
-                    </a>
-                    <a href="#" class="wg-card" style="--wg-card-bg:#E879F9;">
-                        <span class="wg-card-index">47</span>
-                        <div class="wg-card-mockup">
-                            <div class="wg-card-mockup-bar"><span></span><span></span><span></span></div>
-                            <div class="wg-card-mockup-body">
-                                <div class="wg-card-mockup-page has-img">
-                                    <img src="assets/images/work/gallery/050.jpg" alt="Sports League Network project screenshot" loading="lazy" decoding="async">
+                    </div>
+                    <div class="wg-card-wrap">
+                        <a href="#" class="wg-card" style="--wg-card-bg:#E879F9;">
+                            <span class="wg-card-index">47</span>
+                            <div class="wg-card-mockup">
+                                <div class="wg-card-mockup-bar"><span></span><span></span><span></span></div>
+                                <div class="wg-card-mockup-body">
+                                    <div class="wg-card-mockup-page has-img">
+                                        <img src="assets/images/work/gallery/050.jpg" alt="Sports League Network project screenshot" loading="lazy" decoding="async">
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        </a>
                         <div class="wg-card-info">
                             <span>
                                 <span class="wg-card-title">Sports League Network</span>
@@ -1443,17 +1557,19 @@
                             </span>
                             <span class="wg-card-cta"><i class="ri-arrow-right-up-line"></i></span>
                         </div>
-                    </a>
-                    <a href="#" class="wg-card" style="--wg-card-bg:#FACC15;">
-                        <span class="wg-card-index">48</span>
-                        <div class="wg-card-mockup">
-                            <div class="wg-card-mockup-bar"><span></span><span></span><span></span></div>
-                            <div class="wg-card-mockup-body">
-                                <div class="wg-card-mockup-page has-img">
-                                    <img src="assets/images/work/gallery/051.jpg" alt="Digital Marketing Hub project screenshot" loading="lazy" decoding="async">
+                    </div>
+                    <div class="wg-card-wrap">
+                        <a href="#" class="wg-card" style="--wg-card-bg:#FACC15;">
+                            <span class="wg-card-index">48</span>
+                            <div class="wg-card-mockup">
+                                <div class="wg-card-mockup-bar"><span></span><span></span><span></span></div>
+                                <div class="wg-card-mockup-body">
+                                    <div class="wg-card-mockup-page has-img">
+                                        <img src="assets/images/work/gallery/051.jpg" alt="Digital Marketing Hub project screenshot" loading="lazy" decoding="async">
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        </a>
                         <div class="wg-card-info">
                             <span>
                                 <span class="wg-card-title">Digital Marketing Hub</span>
@@ -1461,17 +1577,19 @@
                             </span>
                             <span class="wg-card-cta"><i class="ri-arrow-right-up-line"></i></span>
                         </div>
-                    </a>
-                    <a href="#" class="wg-card" style="--wg-card-bg:#2DD4BF;">
-                        <span class="wg-card-index">49</span>
-                        <div class="wg-card-mockup">
-                            <div class="wg-card-mockup-bar"><span></span><span></span><span></span></div>
-                            <div class="wg-card-mockup-body">
-                                <div class="wg-card-mockup-page has-img">
-                                    <img src="assets/images/work/gallery/052.jpg" alt="Virtual Radio Network project screenshot" loading="lazy" decoding="async">
+                    </div>
+                    <div class="wg-card-wrap">
+                        <a href="#" class="wg-card" style="--wg-card-bg:#2DD4BF;">
+                            <span class="wg-card-index">49</span>
+                            <div class="wg-card-mockup">
+                                <div class="wg-card-mockup-bar"><span></span><span></span><span></span></div>
+                                <div class="wg-card-mockup-body">
+                                    <div class="wg-card-mockup-page has-img">
+                                        <img src="assets/images/work/gallery/052.jpg" alt="Virtual Radio Network project screenshot" loading="lazy" decoding="async">
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        </a>
                         <div class="wg-card-info">
                             <span>
                                 <span class="wg-card-title">Virtual Radio Network</span>
@@ -1479,17 +1597,19 @@
                             </span>
                             <span class="wg-card-cta"><i class="ri-arrow-right-up-line"></i></span>
                         </div>
-                    </a>
-                    <a href="#" class="wg-card" style="--wg-card-bg:#FF6B81;">
-                        <span class="wg-card-index">50</span>
-                        <div class="wg-card-mockup">
-                            <div class="wg-card-mockup-bar"><span></span><span></span><span></span></div>
-                            <div class="wg-card-mockup-body">
-                                <div class="wg-card-mockup-page has-img">
-                                    <img src="assets/images/work/gallery/053.jpg" alt="Travel Blog Platform project screenshot" loading="lazy" decoding="async">
+                    </div>
+                    <div class="wg-card-wrap">
+                        <a href="#" class="wg-card" style="--wg-card-bg:#FF6B81;">
+                            <span class="wg-card-index">50</span>
+                            <div class="wg-card-mockup">
+                                <div class="wg-card-mockup-bar"><span></span><span></span><span></span></div>
+                                <div class="wg-card-mockup-body">
+                                    <div class="wg-card-mockup-page has-img">
+                                        <img src="assets/images/work/gallery/053.jpg" alt="Travel Blog Platform project screenshot" loading="lazy" decoding="async">
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        </a>
                         <div class="wg-card-info">
                             <span>
                                 <span class="wg-card-title">Travel Blog Platform</span>
@@ -1497,17 +1617,19 @@
                             </span>
                             <span class="wg-card-cta"><i class="ri-arrow-right-up-line"></i></span>
                         </div>
-                    </a>
-                    <a href="#" class="wg-card" style="--wg-card-bg:#3D5AFE;">
-                        <span class="wg-card-index">51</span>
-                        <div class="wg-card-mockup">
-                            <div class="wg-card-mockup-bar"><span></span><span></span><span></span></div>
-                            <div class="wg-card-mockup-body">
-                                <div class="wg-card-mockup-page has-img">
-                                    <img src="assets/images/work/gallery/054.jpg" alt="Gourmet Food Brand project screenshot" loading="lazy" decoding="async">
+                    </div>
+                    <div class="wg-card-wrap">
+                        <a href="#" class="wg-card" style="--wg-card-bg:#3D5AFE;">
+                            <span class="wg-card-index">51</span>
+                            <div class="wg-card-mockup">
+                                <div class="wg-card-mockup-bar"><span></span><span></span><span></span></div>
+                                <div class="wg-card-mockup-body">
+                                    <div class="wg-card-mockup-page has-img">
+                                        <img src="assets/images/work/gallery/054.jpg" alt="Gourmet Food Brand project screenshot" loading="lazy" decoding="async">
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        </a>
                         <div class="wg-card-info">
                             <span>
                                 <span class="wg-card-title">Gourmet Food Brand</span>
@@ -1515,17 +1637,19 @@
                             </span>
                             <span class="wg-card-cta"><i class="ri-arrow-right-up-line"></i></span>
                         </div>
-                    </a>
-                    <a href="#" class="wg-card" style="--wg-card-bg:#B2DF48;">
-                        <span class="wg-card-index">52</span>
-                        <div class="wg-card-mockup">
-                            <div class="wg-card-mockup-bar"><span></span><span></span><span></span></div>
-                            <div class="wg-card-mockup-body">
-                                <div class="wg-card-mockup-page has-img">
-                                    <img src="assets/images/work/gallery/055.jpg" alt="Lingerie Fashion Brand project screenshot" loading="lazy" decoding="async">
+                    </div>
+                    <div class="wg-card-wrap">
+                        <a href="#" class="wg-card" style="--wg-card-bg:#B2DF48;">
+                            <span class="wg-card-index">52</span>
+                            <div class="wg-card-mockup">
+                                <div class="wg-card-mockup-bar"><span></span><span></span><span></span></div>
+                                <div class="wg-card-mockup-body">
+                                    <div class="wg-card-mockup-page has-img">
+                                        <img src="assets/images/work/gallery/055.jpg" alt="Lingerie Fashion Brand project screenshot" loading="lazy" decoding="async">
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        </a>
                         <div class="wg-card-info">
                             <span>
                                 <span class="wg-card-title">Lingerie Fashion Brand</span>
@@ -1533,17 +1657,19 @@
                             </span>
                             <span class="wg-card-cta"><i class="ri-arrow-right-up-line"></i></span>
                         </div>
-                    </a>
-                    <a href="#" class="wg-card" style="--wg-card-bg:#FF7A00;">
-                        <span class="wg-card-index">53</span>
-                        <div class="wg-card-mockup">
-                            <div class="wg-card-mockup-bar"><span></span><span></span><span></span></div>
-                            <div class="wg-card-mockup-body">
-                                <div class="wg-card-mockup-page has-img">
-                                    <img src="assets/images/work/gallery/056.jpg" alt="Global Travel Agency project screenshot" loading="lazy" decoding="async">
+                    </div>
+                    <div class="wg-card-wrap">
+                        <a href="#" class="wg-card" style="--wg-card-bg:#FF7A00;">
+                            <span class="wg-card-index">53</span>
+                            <div class="wg-card-mockup">
+                                <div class="wg-card-mockup-bar"><span></span><span></span><span></span></div>
+                                <div class="wg-card-mockup-body">
+                                    <div class="wg-card-mockup-page has-img">
+                                        <img src="assets/images/work/gallery/056.jpg" alt="Global Travel Agency project screenshot" loading="lazy" decoding="async">
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        </a>
                         <div class="wg-card-info">
                             <span>
                                 <span class="wg-card-title">Global Travel Agency</span>
@@ -1551,17 +1677,19 @@
                             </span>
                             <span class="wg-card-cta"><i class="ri-arrow-right-up-line"></i></span>
                         </div>
-                    </a>
-                    <a href="#" class="wg-card" style="--wg-card-bg:#8B5CF6;">
-                        <span class="wg-card-index">54</span>
-                        <div class="wg-card-mockup">
-                            <div class="wg-card-mockup-bar"><span></span><span></span><span></span></div>
-                            <div class="wg-card-mockup-body">
-                                <div class="wg-card-mockup-page has-img">
-                                    <img src="assets/images/work/gallery/057.jpg" alt="Wine Cellar Brand project screenshot" loading="lazy" decoding="async">
+                    </div>
+                    <div class="wg-card-wrap">
+                        <a href="#" class="wg-card" style="--wg-card-bg:#8B5CF6;">
+                            <span class="wg-card-index">54</span>
+                            <div class="wg-card-mockup">
+                                <div class="wg-card-mockup-bar"><span></span><span></span><span></span></div>
+                                <div class="wg-card-mockup-body">
+                                    <div class="wg-card-mockup-page has-img">
+                                        <img src="assets/images/work/gallery/057.jpg" alt="Wine Cellar Brand project screenshot" loading="lazy" decoding="async">
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        </a>
                         <div class="wg-card-info">
                             <span>
                                 <span class="wg-card-title">Wine Cellar Brand</span>
@@ -1569,17 +1697,19 @@
                             </span>
                             <span class="wg-card-cta"><i class="ri-arrow-right-up-line"></i></span>
                         </div>
-                    </a>
-                    <a href="#" class="wg-card" style="--wg-card-bg:#06B6D4;">
-                        <span class="wg-card-index">55</span>
-                        <div class="wg-card-mockup">
-                            <div class="wg-card-mockup-bar"><span></span><span></span><span></span></div>
-                            <div class="wg-card-mockup-body">
-                                <div class="wg-card-mockup-page has-img">
-                                    <img src="assets/images/work/gallery/058.jpg" alt="Crypto Platform project screenshot" loading="lazy" decoding="async">
+                    </div>
+                    <div class="wg-card-wrap">
+                        <a href="#" class="wg-card" style="--wg-card-bg:#06B6D4;">
+                            <span class="wg-card-index">55</span>
+                            <div class="wg-card-mockup">
+                                <div class="wg-card-mockup-bar"><span></span><span></span><span></span></div>
+                                <div class="wg-card-mockup-body">
+                                    <div class="wg-card-mockup-page has-img">
+                                        <img src="assets/images/work/gallery/058.jpg" alt="Crypto Platform project screenshot" loading="lazy" decoding="async">
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        </a>
                         <div class="wg-card-info">
                             <span>
                                 <span class="wg-card-title">Crypto Platform</span>
@@ -1587,17 +1717,19 @@
                             </span>
                             <span class="wg-card-cta"><i class="ri-arrow-right-up-line"></i></span>
                         </div>
-                    </a>
-                    <a href="#" class="wg-card" style="--wg-card-bg:#F472B6;">
-                        <span class="wg-card-index">56</span>
-                        <div class="wg-card-mockup">
-                            <div class="wg-card-mockup-bar"><span></span><span></span><span></span></div>
-                            <div class="wg-card-mockup-body">
-                                <div class="wg-card-mockup-page has-img">
-                                    <img src="assets/images/work/gallery/059.jpg" alt="Premium Vodka Brand project screenshot" loading="lazy" decoding="async">
+                    </div>
+                    <div class="wg-card-wrap">
+                        <a href="#" class="wg-card" style="--wg-card-bg:#F472B6;">
+                            <span class="wg-card-index">56</span>
+                            <div class="wg-card-mockup">
+                                <div class="wg-card-mockup-bar"><span></span><span></span><span></span></div>
+                                <div class="wg-card-mockup-body">
+                                    <div class="wg-card-mockup-page has-img">
+                                        <img src="assets/images/work/gallery/059.jpg" alt="Premium Vodka Brand project screenshot" loading="lazy" decoding="async">
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        </a>
                         <div class="wg-card-info">
                             <span>
                                 <span class="wg-card-title">Premium Vodka Brand</span>
@@ -1605,17 +1737,19 @@
                             </span>
                             <span class="wg-card-cta"><i class="ri-arrow-right-up-line"></i></span>
                         </div>
-                    </a>
-                    <a href="#" class="wg-card" style="--wg-card-bg:#FBBF24;">
-                        <span class="wg-card-index">57</span>
-                        <div class="wg-card-mockup">
-                            <div class="wg-card-mockup-bar"><span></span><span></span><span></span></div>
-                            <div class="wg-card-mockup-body">
-                                <div class="wg-card-mockup-page has-img">
-                                    <img src="assets/images/work/gallery/060.jpg" alt="Smile Care Clinic project screenshot" loading="lazy" decoding="async">
+                    </div>
+                    <div class="wg-card-wrap">
+                        <a href="#" class="wg-card" style="--wg-card-bg:#FBBF24;">
+                            <span class="wg-card-index">57</span>
+                            <div class="wg-card-mockup">
+                                <div class="wg-card-mockup-bar"><span></span><span></span><span></span></div>
+                                <div class="wg-card-mockup-body">
+                                    <div class="wg-card-mockup-page has-img">
+                                        <img src="assets/images/work/gallery/060.jpg" alt="Smile Care Clinic project screenshot" loading="lazy" decoding="async">
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        </a>
                         <div class="wg-card-info">
                             <span>
                                 <span class="wg-card-title">Smile Care Clinic</span>
@@ -1623,17 +1757,19 @@
                             </span>
                             <span class="wg-card-cta"><i class="ri-arrow-right-up-line"></i></span>
                         </div>
-                    </a>
-                    <a href="#" class="wg-card" style="--wg-card-bg:#34D399;">
-                        <span class="wg-card-index">58</span>
-                        <div class="wg-card-mockup">
-                            <div class="wg-card-mockup-bar"><span></span><span></span><span></span></div>
-                            <div class="wg-card-mockup-body">
-                                <div class="wg-card-mockup-page has-img">
-                                    <img src="assets/images/work/gallery/061.jpg" alt="Creative Marketing Studio project screenshot" loading="lazy" decoding="async">
+                    </div>
+                    <div class="wg-card-wrap">
+                        <a href="#" class="wg-card" style="--wg-card-bg:#34D399;">
+                            <span class="wg-card-index">58</span>
+                            <div class="wg-card-mockup">
+                                <div class="wg-card-mockup-bar"><span></span><span></span><span></span></div>
+                                <div class="wg-card-mockup-body">
+                                    <div class="wg-card-mockup-page has-img">
+                                        <img src="assets/images/work/gallery/061.jpg" alt="Creative Marketing Studio project screenshot" loading="lazy" decoding="async">
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        </a>
                         <div class="wg-card-info">
                             <span>
                                 <span class="wg-card-title">Creative Marketing Studio</span>
@@ -1641,17 +1777,19 @@
                             </span>
                             <span class="wg-card-cta"><i class="ri-arrow-right-up-line"></i></span>
                         </div>
-                    </a>
-                    <a href="#" class="wg-card" style="--wg-card-bg:#60A5FA;">
-                        <span class="wg-card-index">59</span>
-                        <div class="wg-card-mockup">
-                            <div class="wg-card-mockup-bar"><span></span><span></span><span></span></div>
-                            <div class="wg-card-mockup-body">
-                                <div class="wg-card-mockup-page has-img">
-                                    <img src="assets/images/work/gallery/062.jpg" alt="Physio Health Clinic project screenshot" loading="lazy" decoding="async">
+                    </div>
+                    <div class="wg-card-wrap">
+                        <a href="#" class="wg-card" style="--wg-card-bg:#60A5FA;">
+                            <span class="wg-card-index">59</span>
+                            <div class="wg-card-mockup">
+                                <div class="wg-card-mockup-bar"><span></span><span></span><span></span></div>
+                                <div class="wg-card-mockup-body">
+                                    <div class="wg-card-mockup-page has-img">
+                                        <img src="assets/images/work/gallery/062.jpg" alt="Physio Health Clinic project screenshot" loading="lazy" decoding="async">
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        </a>
                         <div class="wg-card-info">
                             <span>
                                 <span class="wg-card-title">Physio Health Clinic</span>
@@ -1659,17 +1797,19 @@
                             </span>
                             <span class="wg-card-cta"><i class="ri-arrow-right-up-line"></i></span>
                         </div>
-                    </a>
-                    <a href="#" class="wg-card" style="--wg-card-bg:#A78BFA;">
-                        <span class="wg-card-index">60</span>
-                        <div class="wg-card-mockup">
-                            <div class="wg-card-mockup-bar"><span></span><span></span><span></span></div>
-                            <div class="wg-card-mockup-body">
-                                <div class="wg-card-mockup-page has-img">
-                                    <img src="assets/images/work/gallery/063.jpg" alt="Food Delivery Hub project screenshot" loading="lazy" decoding="async">
+                    </div>
+                    <div class="wg-card-wrap">
+                        <a href="#" class="wg-card" style="--wg-card-bg:#A78BFA;">
+                            <span class="wg-card-index">60</span>
+                            <div class="wg-card-mockup">
+                                <div class="wg-card-mockup-bar"><span></span><span></span><span></span></div>
+                                <div class="wg-card-mockup-body">
+                                    <div class="wg-card-mockup-page has-img">
+                                        <img src="assets/images/work/gallery/063.jpg" alt="Food Delivery Hub project screenshot" loading="lazy" decoding="async">
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        </a>
                         <div class="wg-card-info">
                             <span>
                                 <span class="wg-card-title">Food Delivery Hub</span>
@@ -1677,17 +1817,19 @@
                             </span>
                             <span class="wg-card-cta"><i class="ri-arrow-right-up-line"></i></span>
                         </div>
-                    </a>
-                    <a href="#" class="wg-card" style="--wg-card-bg:#FB923C;">
-                        <span class="wg-card-index">61</span>
-                        <div class="wg-card-mockup">
-                            <div class="wg-card-mockup-bar"><span></span><span></span><span></span></div>
-                            <div class="wg-card-mockup-body">
-                                <div class="wg-card-mockup-page has-img">
-                                    <img src="assets/images/work/gallery/064.jpg" alt="Sports Betting Platform project screenshot" loading="lazy" decoding="async">
+                    </div>
+                    <div class="wg-card-wrap">
+                        <a href="#" class="wg-card" style="--wg-card-bg:#FB923C;">
+                            <span class="wg-card-index">61</span>
+                            <div class="wg-card-mockup">
+                                <div class="wg-card-mockup-bar"><span></span><span></span><span></span></div>
+                                <div class="wg-card-mockup-body">
+                                    <div class="wg-card-mockup-page has-img">
+                                        <img src="assets/images/work/gallery/064.jpg" alt="Sports Betting Platform project screenshot" loading="lazy" decoding="async">
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        </a>
                         <div class="wg-card-info">
                             <span>
                                 <span class="wg-card-title">Sports Betting Platform</span>
@@ -1695,17 +1837,19 @@
                             </span>
                             <span class="wg-card-cta"><i class="ri-arrow-right-up-line"></i></span>
                         </div>
-                    </a>
-                    <a href="#" class="wg-card" style="--wg-card-bg:#4ADE80;">
-                        <span class="wg-card-index">62</span>
-                        <div class="wg-card-mockup">
-                            <div class="wg-card-mockup-bar"><span></span><span></span><span></span></div>
-                            <div class="wg-card-mockup-body">
-                                <div class="wg-card-mockup-page has-img">
-                                    <img src="assets/images/work/gallery/065.jpg" alt="Creative Edit Studio project screenshot" loading="lazy" decoding="async">
+                    </div>
+                    <div class="wg-card-wrap">
+                        <a href="#" class="wg-card" style="--wg-card-bg:#4ADE80;">
+                            <span class="wg-card-index">62</span>
+                            <div class="wg-card-mockup">
+                                <div class="wg-card-mockup-bar"><span></span><span></span><span></span></div>
+                                <div class="wg-card-mockup-body">
+                                    <div class="wg-card-mockup-page has-img">
+                                        <img src="assets/images/work/gallery/065.jpg" alt="Creative Edit Studio project screenshot" loading="lazy" decoding="async">
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        </a>
                         <div class="wg-card-info">
                             <span>
                                 <span class="wg-card-title">Creative Edit Studio</span>
@@ -1713,17 +1857,19 @@
                             </span>
                             <span class="wg-card-cta"><i class="ri-arrow-right-up-line"></i></span>
                         </div>
-                    </a>
-                    <a href="#" class="wg-card" style="--wg-card-bg:#F87171;">
-                        <span class="wg-card-index">63</span>
-                        <div class="wg-card-mockup">
-                            <div class="wg-card-mockup-bar"><span></span><span></span><span></span></div>
-                            <div class="wg-card-mockup-body">
-                                <div class="wg-card-mockup-page has-img">
-                                    <img src="assets/images/work/gallery/066.jpg" alt="Design Portfolio Hub project screenshot" loading="lazy" decoding="async">
+                    </div>
+                    <div class="wg-card-wrap">
+                        <a href="#" class="wg-card" style="--wg-card-bg:#F87171;">
+                            <span class="wg-card-index">63</span>
+                            <div class="wg-card-mockup">
+                                <div class="wg-card-mockup-bar"><span></span><span></span><span></span></div>
+                                <div class="wg-card-mockup-body">
+                                    <div class="wg-card-mockup-page has-img">
+                                        <img src="assets/images/work/gallery/066.jpg" alt="Design Portfolio Hub project screenshot" loading="lazy" decoding="async">
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        </a>
                         <div class="wg-card-info">
                             <span>
                                 <span class="wg-card-title">Design Portfolio Hub</span>
@@ -1731,17 +1877,19 @@
                             </span>
                             <span class="wg-card-cta"><i class="ri-arrow-right-up-line"></i></span>
                         </div>
-                    </a>
-                    <a href="#" class="wg-card" style="--wg-card-bg:#38BDF8;">
-                        <span class="wg-card-index">64</span>
-                        <div class="wg-card-mockup">
-                            <div class="wg-card-mockup-bar"><span></span><span></span><span></span></div>
-                            <div class="wg-card-mockup-body">
-                                <div class="wg-card-mockup-page has-img">
-                                    <img src="assets/images/work/gallery/067.jpg" alt="Artisan Pizza Co project screenshot" loading="lazy" decoding="async">
+                    </div>
+                    <div class="wg-card-wrap">
+                        <a href="#" class="wg-card" style="--wg-card-bg:#38BDF8;">
+                            <span class="wg-card-index">64</span>
+                            <div class="wg-card-mockup">
+                                <div class="wg-card-mockup-bar"><span></span><span></span><span></span></div>
+                                <div class="wg-card-mockup-body">
+                                    <div class="wg-card-mockup-page has-img">
+                                        <img src="assets/images/work/gallery/067.jpg" alt="Artisan Pizza Co project screenshot" loading="lazy" decoding="async">
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        </a>
                         <div class="wg-card-info">
                             <span>
                                 <span class="wg-card-title">Artisan Pizza Co</span>
@@ -1749,17 +1897,19 @@
                             </span>
                             <span class="wg-card-cta"><i class="ri-arrow-right-up-line"></i></span>
                         </div>
-                    </a>
-                    <a href="#" class="wg-card" style="--wg-card-bg:#E879F9;">
-                        <span class="wg-card-index">65</span>
-                        <div class="wg-card-mockup">
-                            <div class="wg-card-mockup-bar"><span></span><span></span><span></span></div>
-                            <div class="wg-card-mockup-body">
-                                <div class="wg-card-mockup-page has-img">
-                                    <img src="assets/images/work/gallery/068.jpg" alt="Growth Marketing Agency project screenshot" loading="lazy" decoding="async">
+                    </div>
+                    <div class="wg-card-wrap">
+                        <a href="#" class="wg-card" style="--wg-card-bg:#E879F9;">
+                            <span class="wg-card-index">65</span>
+                            <div class="wg-card-mockup">
+                                <div class="wg-card-mockup-bar"><span></span><span></span><span></span></div>
+                                <div class="wg-card-mockup-body">
+                                    <div class="wg-card-mockup-page has-img">
+                                        <img src="assets/images/work/gallery/068.jpg" alt="Growth Marketing Agency project screenshot" loading="lazy" decoding="async">
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        </a>
                         <div class="wg-card-info">
                             <span>
                                 <span class="wg-card-title">Growth Marketing Agency</span>
@@ -1767,17 +1917,19 @@
                             </span>
                             <span class="wg-card-cta"><i class="ri-arrow-right-up-line"></i></span>
                         </div>
-                    </a>
-                    <a href="#" class="wg-card" style="--wg-card-bg:#FACC15;">
-                        <span class="wg-card-index">66</span>
-                        <div class="wg-card-mockup">
-                            <div class="wg-card-mockup-bar"><span></span><span></span><span></span></div>
-                            <div class="wg-card-mockup-body">
-                                <div class="wg-card-mockup-page has-img">
-                                    <img src="assets/images/work/gallery/069.jpg" alt="Zen Esthetics Studio project screenshot" loading="lazy" decoding="async">
+                    </div>
+                    <div class="wg-card-wrap">
+                        <a href="#" class="wg-card" style="--wg-card-bg:#FACC15;">
+                            <span class="wg-card-index">66</span>
+                            <div class="wg-card-mockup">
+                                <div class="wg-card-mockup-bar"><span></span><span></span><span></span></div>
+                                <div class="wg-card-mockup-body">
+                                    <div class="wg-card-mockup-page has-img">
+                                        <img src="assets/images/work/gallery/069.jpg" alt="Zen Esthetics Studio project screenshot" loading="lazy" decoding="async">
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        </a>
                         <div class="wg-card-info">
                             <span>
                                 <span class="wg-card-title">Zen Esthetics Studio</span>
@@ -1785,17 +1937,19 @@
                             </span>
                             <span class="wg-card-cta"><i class="ri-arrow-right-up-line"></i></span>
                         </div>
-                    </a>
-                    <a href="#" class="wg-card" style="--wg-card-bg:#2DD4BF;">
-                        <span class="wg-card-index">67</span>
-                        <div class="wg-card-mockup">
-                            <div class="wg-card-mockup-bar"><span></span><span></span><span></span></div>
-                            <div class="wg-card-mockup-body">
-                                <div class="wg-card-mockup-page has-img">
-                                    <img src="assets/images/work/gallery/071.jpg" alt="Freelance Copywriter Hub project screenshot" loading="lazy" decoding="async">
+                    </div>
+                    <div class="wg-card-wrap">
+                        <a href="#" class="wg-card" style="--wg-card-bg:#2DD4BF;">
+                            <span class="wg-card-index">67</span>
+                            <div class="wg-card-mockup">
+                                <div class="wg-card-mockup-bar"><span></span><span></span><span></span></div>
+                                <div class="wg-card-mockup-body">
+                                    <div class="wg-card-mockup-page has-img">
+                                        <img src="assets/images/work/gallery/071.jpg" alt="Freelance Copywriter Hub project screenshot" loading="lazy" decoding="async">
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        </a>
                         <div class="wg-card-info">
                             <span>
                                 <span class="wg-card-title">Freelance Copywriter Hub</span>
@@ -1803,17 +1957,19 @@
                             </span>
                             <span class="wg-card-cta"><i class="ri-arrow-right-up-line"></i></span>
                         </div>
-                    </a>
-                    <a href="#" class="wg-card" style="--wg-card-bg:#FF6B81;">
-                        <span class="wg-card-index">68</span>
-                        <div class="wg-card-mockup">
-                            <div class="wg-card-mockup-bar"><span></span><span></span><span></span></div>
-                            <div class="wg-card-mockup-body">
-                                <div class="wg-card-mockup-page has-img">
-                                    <img src="assets/images/work/gallery/072.jpg" alt="Smart Bookmark App project screenshot" loading="lazy" decoding="async">
+                    </div>
+                    <div class="wg-card-wrap">
+                        <a href="#" class="wg-card" style="--wg-card-bg:#FF6B81;">
+                            <span class="wg-card-index">68</span>
+                            <div class="wg-card-mockup">
+                                <div class="wg-card-mockup-bar"><span></span><span></span><span></span></div>
+                                <div class="wg-card-mockup-body">
+                                    <div class="wg-card-mockup-page has-img">
+                                        <img src="assets/images/work/gallery/072.jpg" alt="Smart Bookmark App project screenshot" loading="lazy" decoding="async">
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        </a>
                         <div class="wg-card-info">
                             <span>
                                 <span class="wg-card-title">Smart Bookmark App</span>
@@ -1821,17 +1977,19 @@
                             </span>
                             <span class="wg-card-cta"><i class="ri-arrow-right-up-line"></i></span>
                         </div>
-                    </a>
-                    <a href="#" class="wg-card" style="--wg-card-bg:#3D5AFE;">
-                        <span class="wg-card-index">69</span>
-                        <div class="wg-card-mockup">
-                            <div class="wg-card-mockup-bar"><span></span><span></span><span></span></div>
-                            <div class="wg-card-mockup-body">
-                                <div class="wg-card-mockup-page has-img">
-                                    <img src="assets/images/work/gallery/073.jpg" alt="Media Relations Agency project screenshot" loading="lazy" decoding="async">
+                    </div>
+                    <div class="wg-card-wrap">
+                        <a href="#" class="wg-card" style="--wg-card-bg:#3D5AFE;">
+                            <span class="wg-card-index">69</span>
+                            <div class="wg-card-mockup">
+                                <div class="wg-card-mockup-bar"><span></span><span></span><span></span></div>
+                                <div class="wg-card-mockup-body">
+                                    <div class="wg-card-mockup-page has-img">
+                                        <img src="assets/images/work/gallery/073.jpg" alt="Media Relations Agency project screenshot" loading="lazy" decoding="async">
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        </a>
                         <div class="wg-card-info">
                             <span>
                                 <span class="wg-card-title">Media Relations Agency</span>
@@ -1839,17 +1997,19 @@
                             </span>
                             <span class="wg-card-cta"><i class="ri-arrow-right-up-line"></i></span>
                         </div>
-                    </a>
-                    <a href="#" class="wg-card" style="--wg-card-bg:#B2DF48;">
-                        <span class="wg-card-index">70</span>
-                        <div class="wg-card-mockup">
-                            <div class="wg-card-mockup-bar"><span></span><span></span><span></span></div>
-                            <div class="wg-card-mockup-body">
-                                <div class="wg-card-mockup-page has-img">
-                                    <img src="assets/images/work/gallery/074.jpg" alt="Boutique Hotel Retreat project screenshot" loading="lazy" decoding="async">
+                    </div>
+                    <div class="wg-card-wrap">
+                        <a href="#" class="wg-card" style="--wg-card-bg:#B2DF48;">
+                            <span class="wg-card-index">70</span>
+                            <div class="wg-card-mockup">
+                                <div class="wg-card-mockup-bar"><span></span><span></span><span></span></div>
+                                <div class="wg-card-mockup-body">
+                                    <div class="wg-card-mockup-page has-img">
+                                        <img src="assets/images/work/gallery/074.jpg" alt="Boutique Hotel Retreat project screenshot" loading="lazy" decoding="async">
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        </a>
                         <div class="wg-card-info">
                             <span>
                                 <span class="wg-card-title">Boutique Hotel Retreat</span>
@@ -1857,17 +2017,19 @@
                             </span>
                             <span class="wg-card-cta"><i class="ri-arrow-right-up-line"></i></span>
                         </div>
-                    </a>
-                    <a href="#" class="wg-card" style="--wg-card-bg:#FF7A00;">
-                        <span class="wg-card-index">71</span>
-                        <div class="wg-card-mockup">
-                            <div class="wg-card-mockup-bar"><span></span><span></span><span></span></div>
-                            <div class="wg-card-mockup-body">
-                                <div class="wg-card-mockup-page has-img">
-                                    <img src="assets/images/work/gallery/075.jpg" alt="Home Comfort Services project screenshot" loading="lazy" decoding="async">
+                    </div>
+                    <div class="wg-card-wrap">
+                        <a href="#" class="wg-card" style="--wg-card-bg:#FF7A00;">
+                            <span class="wg-card-index">71</span>
+                            <div class="wg-card-mockup">
+                                <div class="wg-card-mockup-bar"><span></span><span></span><span></span></div>
+                                <div class="wg-card-mockup-body">
+                                    <div class="wg-card-mockup-page has-img">
+                                        <img src="assets/images/work/gallery/075.jpg" alt="Home Comfort Services project screenshot" loading="lazy" decoding="async">
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        </a>
                         <div class="wg-card-info">
                             <span>
                                 <span class="wg-card-title">Home Comfort Services</span>
@@ -1875,17 +2037,19 @@
                             </span>
                             <span class="wg-card-cta"><i class="ri-arrow-right-up-line"></i></span>
                         </div>
-                    </a>
-                    <a href="#" class="wg-card" style="--wg-card-bg:#8B5CF6;">
-                        <span class="wg-card-index">72</span>
-                        <div class="wg-card-mockup">
-                            <div class="wg-card-mockup-bar"><span></span><span></span><span></span></div>
-                            <div class="wg-card-mockup-body">
-                                <div class="wg-card-mockup-page has-img">
-                                    <img src="assets/images/work/gallery/076.jpg" alt="Mortgage Lending Portal project screenshot" loading="lazy" decoding="async">
+                    </div>
+                    <div class="wg-card-wrap">
+                        <a href="#" class="wg-card" style="--wg-card-bg:#8B5CF6;">
+                            <span class="wg-card-index">72</span>
+                            <div class="wg-card-mockup">
+                                <div class="wg-card-mockup-bar"><span></span><span></span><span></span></div>
+                                <div class="wg-card-mockup-body">
+                                    <div class="wg-card-mockup-page has-img">
+                                        <img src="assets/images/work/gallery/076.jpg" alt="Mortgage Lending Portal project screenshot" loading="lazy" decoding="async">
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        </a>
                         <div class="wg-card-info">
                             <span>
                                 <span class="wg-card-title">Mortgage Lending Portal</span>
@@ -1893,17 +2057,19 @@
                             </span>
                             <span class="wg-card-cta"><i class="ri-arrow-right-up-line"></i></span>
                         </div>
-                    </a>
-                    <a href="#" class="wg-card" style="--wg-card-bg:#06B6D4;">
-                        <span class="wg-card-index">73</span>
-                        <div class="wg-card-mockup">
-                            <div class="wg-card-mockup-bar"><span></span><span></span><span></span></div>
-                            <div class="wg-card-mockup-body">
-                                <div class="wg-card-mockup-page has-img">
-                                    <img src="assets/images/work/gallery/077.jpg" alt="Modern Build Co project screenshot" loading="lazy" decoding="async">
+                    </div>
+                    <div class="wg-card-wrap">
+                        <a href="#" class="wg-card" style="--wg-card-bg:#06B6D4;">
+                            <span class="wg-card-index">73</span>
+                            <div class="wg-card-mockup">
+                                <div class="wg-card-mockup-bar"><span></span><span></span><span></span></div>
+                                <div class="wg-card-mockup-body">
+                                    <div class="wg-card-mockup-page has-img">
+                                        <img src="assets/images/work/gallery/077.jpg" alt="Modern Build Co project screenshot" loading="lazy" decoding="async">
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        </a>
                         <div class="wg-card-info">
                             <span>
                                 <span class="wg-card-title">Modern Build Co</span>
@@ -1911,7 +2077,7 @@
                             </span>
                             <span class="wg-card-cta"><i class="ri-arrow-right-up-line"></i></span>
                         </div>
-                    </a>
+                    </div>
 
                 </div>
             </div>
@@ -2166,7 +2332,7 @@
                 img.src = '';
             }
 
-            document.querySelectorAll('.wg-card').forEach((card) => {
+            document.querySelectorAll('.wg-card-wrap').forEach((card) => {
                 card.addEventListener('click', (e) => {
                     const cardImg = card.querySelector('.wg-card-mockup-page.has-img img');
                     if (!cardImg) return;
