@@ -402,7 +402,7 @@
         }
 
         /* Side-by-side mode — added to <body> when the "Got A Project?"
-           popup auto-opens 3s after a card's lightbox (see the script
+           popup auto-opens 10s after a card's lightbox (see the script
            below). Splits the viewport rather than letting the popup's
            own full-bleed backdrop (assets/css/popup.css) cover the
            lightbox behind it: each overlay is confined to its own half
@@ -2172,7 +2172,7 @@
         // project popup above (.pp-open equivalent, body scroll lock,
         // backdrop click / Escape to close) for a consistent feel.
         //
-        // 3s after a card opens, the site's "Got A Project?" popup
+        // 10s after a card opens, the site's "Got A Project?" popup
         // (assets/js/popup.js, #projectPopupOverlay) auto-opens beside it
         // — a soft "like what you see? let's talk" nudge. That popup's
         // own open function is private to its own IIFE, so it's triggered
@@ -2230,7 +2230,7 @@
                 document.body.style.overflow = 'hidden';
                 scrollBox.scrollTop = 0;
                 clearTimeout(popupTimer);
-                popupTimer = setTimeout(triggerProjectPopup, 3000);
+                popupTimer = setTimeout(triggerProjectPopup, 10000);
             }
 
             function closeLightbox() {
