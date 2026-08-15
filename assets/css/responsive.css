@@ -1242,6 +1242,11 @@
     .testi-rating-num { font-size: 44px; }
     .testi-quote      { font-size: 16px; }
 
+    /* Blog — the avatar+name and the date fight for space on one row
+       (space-between) and each wrap onto two lines on narrow phones.
+       Stack them instead so each gets the full card width. */
+    .author-row { flex-direction: column; align-items: flex-start; gap: 6px; }
+
     /* Coming */
     .top-line   { font-size: 34px; }
     .main-title { font-size: 34px; }
