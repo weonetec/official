@@ -432,7 +432,13 @@
             }
             .wg-track {
                 overflow-x: auto;
-                scroll-snap-type: x proximity;
+                /* mandatory, not proximity — proximity only snaps when a
+                   scroll/swipe already happens to end near a card
+                   boundary, so a normal mid-length swipe was routinely
+                   left resting on a half-cut, unaligned card instead of
+                   settling on the next one. Mandatory always resolves to
+                   the nearest card. */
+                scroll-snap-type: x mandatory;
                 -webkit-overflow-scrolling: touch;
                 /* Locks touch dragging to the horizontal axis only, so
                    swiping through the cards can't also drag the page
