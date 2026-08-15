@@ -163,7 +163,13 @@
         /* Flex item actually placed in .wg-track now — holds the colored
            box (.wg-card) and its caption (.wg-card-info) stacked together
            so the two travel and lift as one unit, even though the caption
-           itself sits outside the box's own background/padding. */
+           itself sits outside the box's own background/padding. .wg-card
+           gets flex:1 (not a fixed/100% height) so it shares this same
+           budget with .wg-card-info below it instead of the info row
+           overflowing past .wg-sticky's clipped, pinned 100vh box — tried
+           giving the card its full pre-caption height once already and
+           confirmed the caption then clips invisible on a plain 1280x800
+           screen, not just short viewports. */
         .wg-card-wrap {
             flex: 0 0 auto;
             /* Height-driven (not width-driven) so the card shrinks to
