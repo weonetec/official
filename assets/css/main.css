@@ -1859,7 +1859,7 @@ li {
     width: 30px;
     height: 30px;
     border-radius: 50%;
-    background: linear-gradient(135deg, #ccc, #999);
+    background: #000;
     flex-shrink: 0;
     display: flex;
     align-items: center;
@@ -1868,7 +1868,7 @@ li {
 }
 
 /* Mini "We" mark (the animated header logo, minus the "one" letters — see
-   logo-animation.js) standing in for a plain avatar. The gradient circle
+   logo-animation.js) standing in for a plain avatar. The black circle
    above stays as its backdrop so the white/green/black logo fill keeps
    contrast regardless of the card's own light or dark background. */
 .avatar-logo {
