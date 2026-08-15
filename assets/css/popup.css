@@ -176,15 +176,33 @@
 }
 .pp-slider::-moz-range-thumb:hover,
 .pp-slider::-moz-range-thumb:active { transform: scale(1.2); }
+/* Absolutely positioned per-step instead of flex space-between: a native
+   range thumb doesn't travel the track's full width — it's inset by half
+   its own diameter (8px, thumb is 16px) at each end so it never overflows
+   past the track — but space-between distributed labels edge-to-edge
+   with no such inset, so the current step's label drifted further out of
+   alignment with the actual thumb position the further it was from the
+   ends. Each label's left offset here matches that exact 8px-inset
+   thumb-travel formula; the two end labels stay anchored to the track's
+   own edges (not inset) since centering them there would push their text
+   past the slider's own bounds. */
 .pp-slider-labels {
-    display: flex;
-    justify-content: space-between;
+    position: relative;
+    height: 14px;
     margin-top: 10px;
     font-size: 10px;
     letter-spacing: 0.5px;
     color: rgba(255,255,255,0.35);
     font-family: 'Satoshi-Variable', sans-serif;
 }
+.pp-slider-labels span { position: absolute; top: 0; white-space: nowrap; }
+.pp-slider-labels span:nth-child(1) { left: 0; }
+.pp-slider-labels span:nth-child(2) { left: calc(8px + (100% - 16px) * 1 / 6); transform: translateX(-50%); }
+.pp-slider-labels span:nth-child(3) { left: calc(8px + (100% - 16px) * 2 / 6); transform: translateX(-50%); }
+.pp-slider-labels span:nth-child(4) { left: calc(8px + (100% - 16px) * 3 / 6); transform: translateX(-50%); }
+.pp-slider-labels span:nth-child(5) { left: calc(8px + (100% - 16px) * 4 / 6); transform: translateX(-50%); }
+.pp-slider-labels span:nth-child(6) { left: calc(8px + (100% - 16px) * 5 / 6); transform: translateX(-50%); }
+.pp-slider-labels span:nth-child(7) { right: 0; }
 
 /* ── Email verification ── */
 .pp-email-row { display: flex; gap: 8px; }
