@@ -432,6 +432,18 @@
             }
             .wg-track {
                 overflow-x: auto;
+                /* Setting overflow-x alone, with overflow-y left at its
+                   initial value, doesn't actually keep overflow-y as
+                   visible — the spec computes an unset visible axis to
+                   auto instead whenever the other axis isn't visible.
+                   .wg-card's height:100% below (fixed, not shared with
+                   .wg-card-info) let the caption get pushed outside the
+                   wrap's own box, so the track's real content came out
+                   taller than the track itself — with overflow-y
+                   defaulting to auto, that showed up as a stray vertical
+                   scrollbar over the whole section. Fixed the height
+                   sharing below; this stays as a defensive backstop. */
+                overflow-y: hidden;
                 /* mandatory, not proximity — proximity only snaps when a
                    scroll/swipe already happens to end near a card
                    boundary, so a normal mid-length swipe was routinely
@@ -469,8 +481,14 @@
                 height: min(620px, 68vh, calc((100vw - 32px) * 4 / 3));
             }
             .wg-card {
-                flex: 0 0 auto;
-                height: 100%;
+                /* flex:1 + min-height:0, not flex:0 0 auto + height:100%
+                   — the old fixed height:100% claimed the wrap's entire
+                   box for the card alone, leaving .wg-card-info (the
+                   title/category caption below it) no room and pushing
+                   it outside the wrap's height entirely, same problem
+                   desktop already solves this same way. */
+                flex: 1;
+                min-height: 0;
                 width: auto;
                 align-self: center;
                 aspect-ratio: 3 / 4;
