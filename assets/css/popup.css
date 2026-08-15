@@ -110,84 +110,8 @@
 .pp-field input::placeholder,
 .pp-field textarea::placeholder { color: rgba(255,255,255,0.22); }
 .pp-field input:focus,
-.pp-field select:focus,
 .pp-field textarea:focus { border-color: #B2DF48; background: rgba(178,223,72,0.04); }
-.pp-field select { cursor: pointer; }
-.pp-field select option { background: #111; }
 .pp-field textarea { resize: vertical; min-height: 110px; }
-
-/* ── Budget Slider ── */
-.pp-slider-wrap {
-    background: rgba(255,255,255,0.05);
-    border: 1px solid rgba(255,255,255,0.1);
-    border-radius: 10px;
-    padding: 14px 16px 12px;
-}
-.pp-slider-value {
-    color: #B2DF48;
-    font-size: 14px;
-    font-weight: 700;
-    font-family: 'Satoshi-Variable', sans-serif;
-    margin-bottom: 12px;
-}
-.pp-slider {
-    -webkit-appearance: none;
-    appearance: none;
-    display: block;
-    width: 100%;
-    height: 4px;
-    border-radius: 2px;
-    margin: 0;
-    cursor: pointer;
-    outline: none;
-    background: linear-gradient(to right,
-        #B2DF48 var(--pp-slider-pct, 0%),
-        rgba(255,255,255,0.14) var(--pp-slider-pct, 0%));
-}
-.pp-slider::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    width: 16px;
-    height: 16px;
-    border-radius: 50%;
-    background: #B2DF48;
-    border: 3px solid #0d0d0d;
-    box-shadow: 0 0 0 1px rgba(178,223,72,0.5);
-    cursor: pointer;
-    transition: transform 0.15s;
-}
-.pp-slider::-webkit-slider-thumb:hover,
-.pp-slider::-webkit-slider-thumb:active { transform: scale(1.2); }
-.pp-slider::-moz-range-track {
-    height: 4px;
-    border-radius: 2px;
-    background: rgba(255,255,255,0.14);
-}
-.pp-slider::-moz-range-progress {
-    height: 4px;
-    border-radius: 2px;
-    background: #B2DF48;
-}
-.pp-slider::-moz-range-thumb {
-    width: 16px;
-    height: 16px;
-    border-radius: 50%;
-    background: #B2DF48;
-    border: 3px solid #0d0d0d;
-    box-shadow: 0 0 0 1px rgba(178,223,72,0.5);
-    cursor: pointer;
-    transition: transform 0.15s;
-}
-.pp-slider::-moz-range-thumb:hover,
-.pp-slider::-moz-range-thumb:active { transform: scale(1.2); }
-.pp-slider-labels {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 10px;
-    font-size: 10px;
-    letter-spacing: 0.5px;
-    color: rgba(255,255,255,0.35);
-    font-family: 'Satoshi-Variable', sans-serif;
-}
 
 /* ── Email verification ── */
 .pp-email-row { display: flex; gap: 8px; }
@@ -237,8 +161,12 @@
 .pp-verify-status.is-error { color: #FF6B6B; }
 .pp-verify-status.is-success { color: #B2DF48; font-weight: 600; }
 
-/* ── Service Chips ── */
-.pp-service-grid { display: flex; flex-wrap: wrap; gap: 10px; }
+/* ── Service Chips / Budget & Timeline Pills ──
+   .pp-pill-row is the same flex-wrap row as .pp-service-grid, just named
+   for its own single-select (radio) fields rather than the multi-select
+   (checkbox) service list — both use the identical .pp-chip pill. */
+.pp-service-grid,
+.pp-pill-row { display: flex; flex-wrap: wrap; gap: 10px; }
 .pp-chip {
     display: flex;
     align-items: center;
@@ -255,7 +183,8 @@
     user-select: none;
 }
 .pp-chip:hover { border-color: #B2DF48; color: #B2DF48; }
-.pp-chip input[type="checkbox"] { display: none; }
+.pp-chip input[type="checkbox"],
+.pp-chip input[type="radio"] { display: none; }
 .pp-chip:has(input:checked) {
     background: rgba(178,223,72,0.12);
     border-color: #B2DF48;

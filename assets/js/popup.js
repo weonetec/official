@@ -66,25 +66,22 @@
         '        </div>' +
         '        <span class="pp-error-msg"></span>' +
         '      </div>' +
-        '      <div class="pp-row">' +
-        '        <div class="pp-field">' +
-        '          <label>Project Budget</label>' +
-        '          <div class="pp-slider-wrap">' +
-        '            <div class="pp-slider-value" id="ppBudgetValue"></div>' +
-        '            <input type="range" class="pp-slider" id="ppBudgetSlider" min="0" max="3" step="1" value="0" aria-label="Project budget range">' +
-        '            <div class="pp-slider-labels"><span>Under 50K</span><span>50K–1L</span><span>1L–3L</span><span>3L+</span></div>' +
-        '          </div>' +
-        '          <input type="hidden" name="budget">' +
+        '      <div class="pp-field pp-full">' +
+        '        <label>Project Budget</label>' +
+        '        <div class="pp-pill-row">' +
+        '          <label class="pp-chip"><input type="radio" name="budget" value="Under 7-12K"> Under 7-12K</label>' +
+        '          <label class="pp-chip"><input type="radio" name="budget" value="15-20K"> 15-20K</label>' +
+        '          <label class="pp-chip"><input type="radio" name="budget" value="30-50K"> 30-50K</label>' +
+        '          <label class="pp-chip"><input type="radio" name="budget" value="Rest"> Rest</label>' +
         '        </div>' +
-        '        <div class="pp-field">' +
-        '          <label>Timeline</label>' +
-        '          <select name="timeline">' +
-        '            <option value="" disabled selected>When do you need it?</option>' +
-        '            <option>ASAP</option>' +
-        '            <option>Within 1 month</option>' +
-        '            <option>1 – 3 months</option>' +
-        '            <option>3+ months</option>' +
-        '          </select>' +
+        '      </div>' +
+        '      <div class="pp-field pp-full">' +
+        '        <label>Timeline</label>' +
+        '        <div class="pp-pill-row">' +
+        '          <label class="pp-chip"><input type="radio" name="timeline" value="ASAP"> ASAP</label>' +
+        '          <label class="pp-chip"><input type="radio" name="timeline" value="Within 1 month"> Within 1 month</label>' +
+        '          <label class="pp-chip"><input type="radio" name="timeline" value="1-3 months"> 1-3 months</label>' +
+        '          <label class="pp-chip"><input type="radio" name="timeline" value="3+ months"> 3+ months</label>' +
         '        </div>' +
         '      </div>' +
         '      <div class="pp-field pp-full">' +
@@ -121,28 +118,10 @@
         var submitLabel = submitBtn.querySelector('.pp-submit-label');
         var serviceGrid = form.querySelector('.pp-service-grid');
 
-        // ---- Budget slider ----
-        // Native range input (real keyboard/touch/drag support for free)
-        // styled to match the rest of the form, stepping through the same
-        // four brackets the old <select> offered. The slider's own value
-        // is just an index (0-3) — the actual bracket label it maps to is
-        // what's written to the hidden "budget" input that submits with
-        // the form, so the backend still gets a plain, human-readable
-        // string exactly like before.
-        var BUDGET_LABELS = ['Under ₹50,000', '₹50,000 – ₹1,00,000', '₹1,00,000 – ₹3,00,000', '₹3,00,000+'];
-        var budgetSlider = form.querySelector('#ppBudgetSlider');
-        var budgetValue = form.querySelector('#ppBudgetValue');
-        var budgetInput = form.querySelector('[name="budget"]');
-
-        function syncBudgetSlider() {
-            var label = BUDGET_LABELS[budgetSlider.value];
-            budgetValue.textContent = label;
-            budgetInput.value = label;
-            var pct = (budgetSlider.value / (budgetSlider.max - budgetSlider.min)) * 100;
-            budgetSlider.style.setProperty('--pp-slider-pct', pct + '%');
-        }
-        budgetSlider.addEventListener('input', syncBudgetSlider);
-        syncBudgetSlider();
+        // Budget and Timeline are both plain radio-pill rows now (.pp-chip,
+        // same styling/markup pattern as the Service Required checkboxes)
+        // — FormData(form) below picks up whichever radio in each group is
+        // checked by its name attribute natively, no manual sync needed.
 
         // On pages that run Lenis (index.html), it drives scrolling itself
         // via intercepted wheel/touch events, so body.style.overflow alone
@@ -178,7 +157,6 @@
             form.reset();
             clearErrors();
             resetVerification();
-            syncBudgetSlider();
         }
 
         // Delegated on document, not the buttons themselves — works for
