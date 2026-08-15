@@ -1767,16 +1767,35 @@ li {
 
 
 /* ── Card ── */
+/* Bootstrap's .row is already flex with equal-height columns, but the
+   <a> wrapping each card just sizes to its own content, so a shorter
+   title left the card visibly shorter than its neighbors. Stretching
+   the link to fill the column and the card to fill the link, then
+   pinning author-row to the bottom, makes every card match the
+   tallest one regardless of title length. */
+.blog-padding > [class*="col-"] > a {
+    display: flex;
+    height: 100%;
+}
+
 .blog-card {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
     border: none;
     border-radius: 0;
     background: transparent;
     cursor: pointer;
 }
 
+.blog-card .author-row {
+    margin-top: auto;
+}
+
 /* ── Thumbnail ── */
 .blog-card .thumb-wrap {
     width: 100%;
+    flex-shrink: 0;
     aspect-ratio: 4 / 3;
     border-radius: 20px;
     overflow: hidden;
