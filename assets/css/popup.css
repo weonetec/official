@@ -325,28 +325,33 @@
 .pp-submit-error:empty { display: none; }
 
 /* ── Submit ──
-   Same transparent/green-border pill style as the header nav's .cta-btn
-   (main.css) instead of a solid green fill — border lightens and the
-   icon turns white on hover, mirroring .cta-btn:hover exactly. */
+   Every comparable property here matches .cta-btn (main.css, the header
+   nav button) exactly — position, padding, gap, font-size, border-radius
+   unit, transition timing, hover lift distance — not just the same
+   colors. font-family/margin-top/align-self are the only additions,
+   since .cta-btn relies on ambient context for those (a plain <button>
+   injected into the popup form has neither). */
 .pp-submit {
+    position: relative;
     margin-top: 8px;
     background: transparent;
     color: #fff;
     border: 1px solid #B2DF48;
-    border-radius: 50px;
-    padding: 15px 36px;
-    font-size: 15px;
+    border-radius: 50em;
+    padding: 12px 22px;
+    font-size: 16px;
     font-weight: 700;
     font-family: 'Satoshi-Variable', sans-serif;
     cursor: pointer;
+    overflow: hidden;
     display: inline-flex;
     align-items: center;
-    gap: 10px;
-    transition: transform 0.2s, border-color 0.2s, opacity 0.2s;
+    gap: 20px;
+    transition: transform 0.3s ease, border-color 0.3s ease, opacity 0.2s ease;
     align-self: flex-start;
 }
 .pp-submit svg path { transition: fill 0.3s ease; }
-.pp-submit:hover { transform: translateY(-2px); border-color: #C8F25C; }
+.pp-submit:hover { transform: translateY(-1px); border-color: #C8F25C; }
 .pp-submit:hover svg path { fill: #ffffff; }
 .pp-submit:disabled { opacity: 0.65; cursor: not-allowed; transform: none; }
 
