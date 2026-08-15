@@ -117,11 +117,6 @@
         .article-body table th, .article-body table td { padding:14px 16px; text-align:left; border-bottom:1px solid rgba(255,255,255,0.1); color:rgba(255,255,255,0.7); font-size:15px; }
         .article-body table th { color:#fff; font-weight:700; font-family:'Satoshi-Variable'; background:rgba(255,255,255,0.03); }
 
-        /* FAQ — reuses the exact accordion the home page's FAQ section
-           uses (.custom-accord, main.css), just without that section's
-           own 180px top padding since this sits mid-page, not as a hero. */
-        .article-faq { padding:20px 0 0; }
-        .article-faq .wetitle { color:#fff; margin-bottom:32px; }
         .sidebar { position:sticky; top:100px; }
         .toc-card { background:#111; border-radius:16px; padding:28px; margin-bottom:24px; }
         .toc-card h4 { color:#B2DF48; font-size:18px; letter-spacing:2px; text-transform:uppercase; margin-bottom:20px; }
@@ -445,7 +440,6 @@
                                 <li><a href="#section-top5">The Top Five Agencies</a></li>
                                 <li><a href="#section-rising">Rising Studios to Watch</a></li>
                                 <li><a href="#section-choose">How to Choose the Right Agency</a></li>
-                                <li><a href="#section-faq">FAQs</a></li>
                             </ul>
                         </div>
 
@@ -488,83 +482,6 @@
         </div>
     </section>
     <!-- ========================= Detail Hero End ========================= -->
-
-    <!-- ========================= Article FAQ =========================
-         Reuses the exact accordion the home page's FAQ section uses
-         (.custom-accord, styled in main.css) rather than a new component. -->
-    <section class="article-faq" id="section-faq">
-        <div class="container">
-            <div class="row justify-content-center">
-                <div class="col-lg-8">
-                    <h2 class="wetitle">FAQs</h2>
-                    <div class="accordion custom-accord z-2 position-relative" id="accordionBlogFaq">
-
-                        <div class="accordion-item">
-                            <div class="accordian-wrapper">
-                                <h2 class="accordion-header" id="blogFaqHeadingOne">
-                                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#blogFaqCollapseOne" aria-expanded="true" aria-controls="blogFaqCollapseOne">
-                                        How much does it cost to redesign a SaaS website?
-                                    </button>
-                                </h2>
-                                <div id="blogFaqCollapseOne" class="accordion-collapse collapse show" aria-labelledby="blogFaqHeadingOne" data-bs-parent="#accordionBlogFaq">
-                                    <div class="accordion-body">
-                                        <p>It depends heavily on scope, but most of the agencies on this list run projects between $15,000 and $80,000 for a full site redesign. Retainer engagements typically start lower per month but run for 3–6 months or longer.</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="accordion-item">
-                            <div class="accordian-wrapper">
-                                <h2 class="accordion-header" id="blogFaqHeadingTwo">
-                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#blogFaqCollapseTwo" aria-expanded="false" aria-controls="blogFaqCollapseTwo">
-                                        How long does a typical SaaS website redesign take?
-                                    </button>
-                                </h2>
-                                <div id="blogFaqCollapseTwo" class="accordion-collapse collapse" aria-labelledby="blogFaqHeadingTwo" data-bs-parent="#accordionBlogFaq">
-                                    <div class="accordion-body">
-                                        <p>A focused marketing site redesign usually takes 4–8 weeks. Larger projects involving a new design system, multiple product pages, or a CMS migration can run 3–4 months.</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="accordion-item">
-                            <div class="accordian-wrapper">
-                                <h2 class="accordion-header" id="blogFaqHeadingThree">
-                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#blogFaqCollapseThree" aria-expanded="false" aria-controls="blogFaqCollapseThree">
-                                        Should we hire an agency or build an in-house design team?
-                                    </button>
-                                </h2>
-                                <div id="blogFaqCollapseThree" class="accordion-collapse collapse" aria-labelledby="blogFaqHeadingThree" data-bs-parent="#accordionBlogFaq">
-                                    <div class="accordion-body">
-                                        <p>For most early-stage SaaS teams, an agency is faster to ship with and cheaper than hiring a full in-house team. In-house makes more sense once you have enough ongoing design work to keep 2+ designers busy full-time.</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="accordion-item">
-                            <div class="accordian-wrapper">
-                                <h2 class="accordion-header" id="blogFaqHeadingFour">
-                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#blogFaqCollapseFour" aria-expanded="false" aria-controls="blogFaqCollapseFour">
-                                        What should we prepare before reaching out to an agency?
-                                    </button>
-                                </h2>
-                                <div id="blogFaqCollapseFour" class="accordion-collapse collapse" aria-labelledby="blogFaqHeadingFour" data-bs-parent="#accordionBlogFaq">
-                                    <div class="accordion-body">
-                                        <p>A rough budget range, a timeline, and 3–5 reference sites you like (and why) go a long way. Analytics on your current site's conversion funnel helps too, if you have it.</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    <!-- ========================= Article FAQ End ========================= -->
 
     <!-- ========================= Related Posts ========================= -->
     <section class="related-section">
