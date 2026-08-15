@@ -3020,6 +3020,14 @@ li {
     overflow: hidden;
     height: 70px;
     margin-bottom: 42px;
+    /* Solid black fill behind the image — the image (see below) is
+       sized to a fixed physical width that's often narrower than the
+       pill itself, and without this the pill's right portion beyond
+       the image's edge was left fully transparent, so the dark area
+       stopped short of the pill's actual rounded edge instead of
+       reaching it. The svg's own dark region is the same #000, so the
+       seam between "image" and "plain fill" is invisible. */
+    background-color: #000;
     background-image: url(../images/social-media-bg.svg);
     /* Sized by height only (not a %-of-box width) so the white/black
        split always renders at the same physical size the image was
