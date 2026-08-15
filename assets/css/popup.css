@@ -355,6 +355,22 @@
 .pp-submit:hover svg path { fill: #ffffff; }
 .pp-submit:disabled { opacity: 0.65; cursor: not-allowed; transform: none; }
 
+/* .cta-icon / .btn-glow-layer / .btn-inner-shadow.mini are shared,
+   globally-styled classes (main.css) already used by .cta-btn elsewhere
+   on the site — reused as-is here for their base look, but their hover-
+   triggered states in main.css are scoped to ".cta-btn:hover ..." only,
+   so those three rules need a ".pp-submit:hover ..." equivalent to fire
+   on this button too. Mouse-follow --x/--y tracking for the glow is
+   wired in popup.js itself, the same way main.js wires it for .cta-btn. */
+.pp-submit:hover .cta-icon { transform: translateX(6px) scale(1.05); }
+.pp-submit:hover .btn-glow-layer { opacity: 1; }
+.pp-submit:hover .btn-inner-shadow.mini {
+    box-shadow:
+        inset 0 0 22px rgba(178, 223, 72, 0.85),
+        inset 0 0 48px rgba(178, 223, 72, 0.6),
+        inset 0 0 90px rgba(178, 223, 72, 0.35);
+}
+
 /* ── Success ── */
 .pp-success {
     display: none;
