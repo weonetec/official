@@ -21,7 +21,17 @@
         <priority>0.7</priority>
     </url>
     <url>
-        <loc>https://weone.tech/blog-detail</loc>
+        <loc>https://weone.tech/blog-detail-shopify-vs-woocommerce</loc>
+        <changefreq>monthly</changefreq>
+        <priority>0.6</priority>
+    </url>
+    <url>
+        <loc>https://weone.tech/blog-detail-ecommerce-ux-mistakes</loc>
+        <changefreq>monthly</changefreq>
+        <priority>0.6</priority>
+    </url>
+    <url>
+        <loc>https://weone.tech/blog-detail-website-speed-conversion</loc>
         <changefreq>monthly</changefreq>
         <priority>0.6</priority>
     </url>
