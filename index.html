@@ -461,9 +461,6 @@
                             <li><a href="about">About Us</a>
                                 <span class="nav-underline"></span>
                             </li>
-                            <li><a href="blog">Blog</a>
-                                <span class="nav-underline"></span>
-                            </li>
                         </ul>
                     </nav>
                 </div>
@@ -516,7 +513,6 @@
             <li><a href="./" class="active">Home<i class="ri-arrow-right-up-line mob-nav-arrow" aria-hidden="true"></i></a></li>
             <li><a href="work">Our Work<i class="ri-arrow-right-up-line mob-nav-arrow" aria-hidden="true"></i></a></li>
             <li><a href="about">About Us<i class="ri-arrow-right-up-line mob-nav-arrow" aria-hidden="true"></i></a></li>
-            <li><a href="blog">Blog<i class="ri-arrow-right-up-line mob-nav-arrow" aria-hidden="true"></i></a></li>
         </ul>
         <a href="#" class="cta-btn mob-nav-cta js-open-popup">
             Get A Call Back
@@ -1447,7 +1443,14 @@
     </section>
     <!-- ─── END TESTIMONIAL SLIDER ─── -->
 
-    <section class="section blog-section">
+    <!-- Blog preview section hidden while the blog isn't ready yet — remove
+         style="display:none" below to bring it back. (Not wrapped in an
+         HTML comment: this section has its own self-contained inline
+         comments like "<!-- Card 1 -->", and HTML comments don't nest -
+         the parser closes on the FIRST "-->" it finds regardless of
+         depth, which would have silently truncated the wrapper and left
+         the rest of the section rendering live.) -->
+    <section class="section blog-section" style="display:none">
         <div class="container">
 
             <div class="row text-center">
@@ -2014,7 +2017,6 @@
                         <a href="./" class="footer-nav-link footer-nav-link--active">Home</a>
                         <a href="work" class="footer-nav-link">Our Work</a>
                         <a href="about" class="footer-nav-link">About Us</a>
-                        <a href="blog" class="footer-nav-link">Blog</a>
                     </nav>
 
                     <!-- Socials pill -->
