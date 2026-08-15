@@ -72,7 +72,10 @@
         '          <label class="pp-chip"><input type="radio" name="budget" value="Under 7-12K"> Under 7-12K</label>' +
         '          <label class="pp-chip"><input type="radio" name="budget" value="15-20K"> 15-20K</label>' +
         '          <label class="pp-chip"><input type="radio" name="budget" value="30-50K"> 30-50K</label>' +
-        '          <label class="pp-chip"><input type="radio" name="budget" value="Rest"> Rest</label>' +
+        '          <label class="pp-chip"><input type="radio" name="budget" value="70-1L"> 70-1L</label>' +
+        '          <label class="pp-chip"><input type="radio" name="budget" value="1L+"> 1L+</label>' +
+        '          <label class="pp-chip"><input type="radio" name="budget" value="2L+"> 2L+</label>' +
+        '          <label class="pp-chip"><input type="radio" name="budget" value="3L+"> 3L+</label>' +
         '        </div>' +
         '      </div>' +
         '      <div class="pp-field pp-full">' +
