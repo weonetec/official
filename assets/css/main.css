@@ -3002,14 +3002,16 @@ li {
     height: 70px;
     margin-bottom: 42px;
     background-image: url(../images/social-media-bg.svg);
-    /* The bg image's dark region (behind the SOCIALS label) doesn't
-       quite reach as far right as the label's actual rendered width,
-       so the last letter or two land on the image's lighter inner-glow
-       area and lose contrast against the label's dark text. Zooming in
-       and anchoring left shifts that dark region further right to
-       fully cover the label. */
+    /* Sized by height only (not a %-of-box width) so the white/black
+       split always renders at the same physical size the image was
+       designed at, regardless of how wide the pill itself gets drawn.
+       A %-based width here previously stretched in lockstep with
+       width:100% on mobile/tablet (below), which shoved the whole
+       white-to-black transition to the right and left the "SOCIALS"
+       label and the first icon sitting on a half-blended, illegible
+       patch of the gradient. */
     background-position: left center;
-    background-size: 130% 100%;
+    background-size: auto 100%;
     background-repeat: no-repeat;
     width: max-content;
     position: relative;
