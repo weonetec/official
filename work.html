@@ -479,6 +479,24 @@
                 flex: 0 0 auto;
                 width: auto;
                 height: min(620px, 68vh, calc((100vw - 32px) * 4 / 3));
+                /* Width derived from the height above via this same
+                   aspect ratio (not applied to .wg-card below anymore)
+                   — with width left ambiguous, the wrap's actual
+                   rendered width had nothing pinning it to the card's
+                   own aspect-ratio-derived size, so it stretched far
+                   wider than the card (measured 824px vs. the card's
+                   411px at 768px viewport width). .wg-card-info stretched
+                   to fill that oversized wrap while the card, centered
+                   inside it, stayed narrow — the ~200px gap between the
+                   card's left edge and the caption's left edge. Putting
+                   the aspect-ratio here instead gives the wrap a real,
+                   unambiguous width, which both children below now
+                   naturally fill (default align-items: stretch), so
+                   they line up exactly like they already do on desktop.
+                   The (100vw - 32px) term in the height formula above
+                   was already written assuming this — height * 3/4 there
+                   works out to exactly (100vw - 32px). */
+                aspect-ratio: 3 / 4;
             }
             .wg-card {
                 /* flex:1 + min-height:0, not flex:0 0 auto + height:100%
@@ -486,12 +504,11 @@
                    box for the card alone, leaving .wg-card-info (the
                    title/category caption below it) no room and pushing
                    it outside the wrap's height entirely, same problem
-                   desktop already solves this same way. */
+                   desktop already solves this same way. Width now comes
+                   from the wrap (see above), same as .wg-card-info below
+                   it, instead of computing its own via aspect-ratio. */
                 flex: 1;
                 min-height: 0;
-                width: auto;
-                align-self: center;
-                aspect-ratio: 3 / 4;
             }
         }
 
