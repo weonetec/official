@@ -457,7 +457,21 @@
                    itself vertically at the same time. */
                 touch-action: pan-x;
                 transform: none !important;
-                padding: 0 16px;
+                /* Matches .work-hero-headline's own 30px side padding
+                   at this tier (below) so the first card lines up under
+                   the headline text instead of starting further left of
+                   it — same left edge desktop already keeps between its
+                   headline and its first card (both 24px there). */
+                padding: 0 30px;
+                /* Without this, mandatory snapping treats the scrollport's
+                   edge as the padding-box edge (x=0), not where the
+                   padding actually ends — so the browser auto-scrolled
+                   past it on load to "snap" the first card to that edge,
+                   silently eating the left padding as scroll offset
+                   instead of showing it as a gap. Matches the padding
+                   above so the snap target lines up with the visible
+                   inset instead of past it. */
+                scroll-padding-left: 30px;
                 gap: 20px;
             }
             /* Height-driven (not a fixed width) so the card scales with
@@ -516,6 +530,15 @@
         @media (max-width: 767px) {
             .work-hero-headline h1  { font-size: clamp(36px, 10vw, 52px); }
             .work-hero-headline     { padding: 110px 16px 28px; }
+
+            /* Steps back down from the ≤991px tier's 30px to match this
+               tier's own headline padding (16px) above, same reasoning —
+               first card stays under the headline's left edge instead of
+               drifting out of alignment with it. */
+            .wg-track {
+                padding: 0 16px;
+                scroll-padding-left: 16px;
+            }
 
             .work-gallery-section { padding: 20px 0 40px; }
         }
