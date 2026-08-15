@@ -1242,10 +1242,10 @@
     .testi-rating-num { font-size: 44px; }
     .testi-quote      { font-size: 16px; }
 
-    /* Blog — the avatar+name and the date fight for space on one row
-       (space-between) and each wrap onto two lines on narrow phones.
-       Stack them instead so each gets the full card width. */
-    .author-row { flex-direction: column; align-items: flex-start; gap: 6px; }
+    /* Blog — the post date is hidden on narrow phones (secondary info,
+       not worth the cramped space); author-row previously needed to
+       stack to fit both, no longer necessary with only one child left. */
+    .post-date { display: none; }
 
     /* Coming */
     .top-line   { font-size: 34px; }
