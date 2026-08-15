@@ -1812,7 +1812,7 @@ li {
 }
 
 .card-meta .badge-tag {
-    font-size: 18px;
+    font-size: 14px;
     font-weight: 400;
     letter-spacing: 2px;
     color: #0000003b;
@@ -1821,11 +1821,11 @@ li {
 
 .card-meta .divider {
     color: #0000003b;
-    font-size: 18px;
+    font-size: 14px;
 }
 
 .card-meta .read-time {
-    font-size: 18px;
+    font-size: 14px;
     font-weight: 400;
     letter-spacing: 2px;
     color: #0000003b;

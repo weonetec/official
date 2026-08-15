@@ -48,7 +48,7 @@
     <link rel="stylesheet" href="assets/morganite/stylesheet.css">
     <link rel="stylesheet" href="assets/css/bootstrap.min.css">
     <link rel="stylesheet" href="assets/css/new.css">
-    <link rel="stylesheet" href="assets/css/main.css?v=52">
+    <link rel="stylesheet" href="assets/css/main.css?v=53">
     <link rel="stylesheet" href="assets/css/responsive.css?v=58">
     <link rel="stylesheet" href="assets/css/popup.css?v=4">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
@@ -64,7 +64,7 @@
         .detail-cat-tag { display:inline-block; padding:6px 16px; border:1px solid #B2DF48; color:#B2DF48; border-radius:100px; font-size:13px; letter-spacing:1px; text-transform:uppercase; margin-bottom:20px; }
         .detail-title { font-family:'Satoshi-Variable'; font-weight:700; font-size:56px; color:#fff; line-height:1.1; margin-bottom:28px; }
         .detail-meta { display:flex; align-items:center; gap:20px; flex-wrap:wrap; margin-bottom:40px; }
-        .detail-meta .author-avatar { width:40px; height:40px; border-radius:50%; background:#B2DF48; flex-shrink:0; }
+        .detail-meta .author-avatar { width:40px; height:40px; border-radius:50%; background:#000; flex-shrink:0; }
         .detail-meta .meta-author { color:#fff; font-size:14px; }
         .detail-meta .meta-date, .detail-meta .meta-read { color:rgba(255,255,255,0.4); font-size:13px; }
         .detail-featured-img { width:100%; max-height:500px; object-fit:cover; border-radius:20px; margin-bottom:40px; }
@@ -74,7 +74,7 @@
         .article-share { display:flex; align-items:center; gap:12px; margin-bottom:40px; }
         .article-share span { color:rgba(255,255,255,0.4); font-size:13px; letter-spacing:1px; text-transform:uppercase; font-family:'Satoshi-Variable'; }
         .article-share a { width:36px; height:36px; border-radius:50%; border:1px solid rgba(255,255,255,0.15); display:inline-flex; align-items:center; justify-content:center; color:rgba(255,255,255,0.6); text-decoration:none; transition:all 0.2s; }
-        .article-share a:hover { border-color:#B2DF48; color:#B2DF48; }
+        .article-share a:hover { border-color:#B2DF48; color:#B2DF48; animation: category-shake 0.5s ease; }
 
         .article-body { background:#0a0a0a; border:1px solid rgba(255,255,255,0.06); border-radius:20px; padding:48px; }
         .article-body h2 { font-family:'Satoshi-Variable'; font-weight:800; font-size:30px; color:#fff; margin:36px 0 16px; }
@@ -83,6 +83,13 @@
         .article-body p { font-size:17px; color:rgba(255,255,255,0.7); line-height:1.75; margin-bottom:20px; }
         .article-body ul { padding-left:24px; margin-bottom:20px; }
         .article-body ul li { font-size:17px; color:rgba(255,255,255,0.7); line-height:1.75; margin-bottom:8px; }
+
+        /* Tick-marker list — used for the "Rising Studios to Watch" list.
+           Swaps the default disc bullet for a green checkmark, same accent
+           color as .key-takeaways' dot bullets above. */
+        .article-body ul.tick-list { list-style:none; padding-left:0; }
+        .article-body ul.tick-list li { position:relative; padding-left:30px; }
+        .article-body ul.tick-list li::before { content:'\2713'; position:absolute; left:0; top:0; color:#B2DF48; font-weight:700; }
         .article-body blockquote { border-left:4px solid #B2DF48; padding:16px 24px; margin:32px 0; background:rgba(255,255,255,0.03); border-radius:0 12px 12px 0; }
         .article-body blockquote p { color:rgba(255,255,255,0.6); font-style:italic; margin:0; }
 
@@ -97,7 +104,7 @@
 
         /* Mid-article CTA banner — same gradient card treatment as the
            popup form modal, scaled down for an inline placement. */
-        .article-cta-banner { background:linear-gradient(160deg, #0d0d0d 0%, #111800 100%); border:1px solid rgba(178,223,72,0.18); border-radius:20px; padding:36px; margin:40px 0; text-align:center; }
+        .article-cta-banner { background:linear-gradient(160deg, #0d0d0d 0%, #111800 100%); border:1px solid rgba(178,223,72,0.18); border-radius:20px; padding:36px; margin:40px 0; text-align:left; }
         .article-cta-banner h4 { color:#fff; font-size:22px; font-weight:800; margin-bottom:8px; font-family:'Satoshi-Variable'; }
         .article-cta-banner p { color:rgba(255,255,255,0.5); font-size:15px; margin-bottom:20px; }
         .article-cta-banner .cta-btn { display:inline-flex; }
@@ -117,17 +124,17 @@
         .article-faq .wetitle { color:#fff; margin-bottom:32px; }
         .sidebar { position:sticky; top:100px; }
         .toc-card { background:#111; border-radius:16px; padding:28px; margin-bottom:24px; }
-        .toc-card h4 { color:#fff; font-size:14px; letter-spacing:2px; text-transform:uppercase; margin-bottom:20px; }
+        .toc-card h4 { color:#B2DF48; font-size:18px; letter-spacing:2px; text-transform:uppercase; margin-bottom:20px; }
         .toc-card ul { list-style:none; padding:0; margin:0; }
         .toc-card ul li { margin-bottom:12px; }
         .toc-card ul li a { color:rgba(255,255,255,0.5); font-size:14px; text-decoration:none; transition:color 0.2s; }
         .toc-card ul li a:hover { color:#B2DF48; }
         .sidebar-cta-card { background:#0a0a0a; border-radius:16px; padding:28px; position:relative; overflow:hidden; margin-bottom:24px; }
         .sidebar-cta-card::before { content:''; position:absolute; inset:0; border-radius:16px; padding:1px; background:linear-gradient(226deg,#b3ff004f 0%,#171812 100%); -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0); -webkit-mask-composite:xor; mask-composite:exclude; pointer-events:none; }
-        .sidebar-cta-card h4 { color:#fff; font-size:20px; font-weight:700; margin-bottom:12px; }
+        .sidebar-cta-card h4 { color:#B2DF48; font-size:24px; font-weight:700; margin-bottom:12px; }
         .sidebar-cta-card p { color:rgba(255,255,255,0.5); font-size:14px; margin-bottom:20px; }
         .author-card { background:#111; border-radius:16px; padding:28px; }
-        .author-card .author-avatar-lg { width:60px; height:60px; border-radius:50%; background:#B2DF48; margin-bottom:16px; }
+        .author-card .author-avatar-lg { width:60px; height:60px; border-radius:50%; background:#000; margin-bottom:16px; display:flex; align-items:center; justify-content:center; overflow:hidden; }
         .author-card h4 { color:#fff; font-weight:700; margin-bottom:6px; }
         .author-card p { color:rgba(255,255,255,0.5); font-size:14px; margin:0; }
         .related-section { padding:80px 0; background:#000; }
@@ -289,7 +296,20 @@
 
             <!-- Meta row -->
             <div class="detail-meta">
-                <div class="author-avatar"></div>
+                <div class="author-avatar">
+                    <svg class="wl-logo avatar-logo" viewBox="-2 -2 86 52" xmlns="http://www.w3.org/2000/svg" aria-label="We">
+                        <defs>
+                            <mask class="w-reveal-mask" maskUnits="userSpaceOnUse">
+                                <rect class="w-reveal-rect" x="-6" y="-20" width="0" height="90" fill="white"/>
+                            </mask>
+                        </defs>
+                        <path class="logo-w" d="M14.208 47.36L0 0H10.816L17.024 20.544C17.856 23.36 18.624 26.176 19.392 30.848C20.16 26.176 20.928 23.488 21.76 20.544L27.584 0H39.168L44.736 20.544C45.504 23.424 46.272 26.304 47.104 30.848C48.064 26.048 48.768 23.424 49.6 20.672L55.936 0H66.496L52.032 47.36H41.92L33.28 16.256L24.384 47.36H14.208Z" fill="white"/>
+                        <g class="logo-eye">
+                            <circle class="logo-ball" cx="72.824" cy="38.43" r="8.7" fill="#B2DF48"/>
+                            <path class="logo-emark" d="M79.68 38.72C79.68 39.2 79.65 39.7 79.59 40.22H67.98C68.06 41.26 68.39 42.06 68.97 42.62C69.57 43.16 70.3 43.43 71.16 43.43C72.44 43.43 73.33 42.89 73.83 41.81H79.29C79.01 42.91 78.5 43.9 77.76 44.78C77.04 45.66 76.13 46.35 75.03 46.85C73.93 47.35 72.7 47.6 71.34 47.6C69.7 47.6 68.24 47.25 66.96 46.55C65.68 45.85 64.68 44.85 63.96 43.55C63.24 42.25 62.88 40.73 62.88 38.99C62.88 37.25 63.23 35.73 63.93 34.43C64.65 33.13 65.65 32.13 66.93 31.43C68.21 30.73 69.68 30.38 71.34 30.38C72.96 30.38 74.4 30.72 75.66 31.4C76.92 32.08 77.9 33.05 78.6 34.31C79.32 35.57 79.68 37.04 79.68 38.72ZM74.43 37.37C74.43 36.49 74.13 35.79 73.53 35.27C72.93 34.75 72.18 34.49 71.28 34.49C70.42 34.49 69.69 34.74 69.09 35.24C68.51 35.74 68.15 36.45 68.01 37.37H74.43Z" fill="black"/>
+                        </g>
+                    </svg>
+                </div>
                 <span class="meta-author">by <strong style="color:#fff;">WeOne Intercom</strong></span>
                 <span class="meta-date">3 July, 2025</span>
                 <span class="meta-read">17 min read</span>
@@ -396,7 +416,7 @@
 
                         <h2 id="section-rising">Rising Studios to Watch</h2>
                         <p>Beyond the established names, 2025 has seen an exciting crop of smaller, more nimble studios gaining serious traction in the SaaS design space. These are the agencies punching above their weight:</p>
-                        <ul>
+                        <ul class="tick-list">
                             <li><strong>Unfold Studio</strong> — specialising in interactive product storytelling and scroll-driven animations</li>
                             <li><strong>Codeware Design</strong> — a dev-design hybrid building design systems in Figma and React simultaneously</li>
                             <li><strong>Narrative Bureau</strong> — copy-led design agency that writes and designs the site as a unified creative act</li>
@@ -443,7 +463,20 @@
 
                         <!-- Author Card -->
                         <div class="author-card">
-                            <div class="author-avatar-lg"></div>
+                            <div class="author-avatar-lg">
+                                <svg class="wl-logo avatar-logo" viewBox="-2 -2 86 52" xmlns="http://www.w3.org/2000/svg" aria-label="We">
+                                    <defs>
+                                        <mask class="w-reveal-mask" maskUnits="userSpaceOnUse">
+                                            <rect class="w-reveal-rect" x="-6" y="-20" width="0" height="90" fill="white"/>
+                                        </mask>
+                                    </defs>
+                                    <path class="logo-w" d="M14.208 47.36L0 0H10.816L17.024 20.544C17.856 23.36 18.624 26.176 19.392 30.848C20.16 26.176 20.928 23.488 21.76 20.544L27.584 0H39.168L44.736 20.544C45.504 23.424 46.272 26.304 47.104 30.848C48.064 26.048 48.768 23.424 49.6 20.672L55.936 0H66.496L52.032 47.36H41.92L33.28 16.256L24.384 47.36H14.208Z" fill="white"/>
+                                    <g class="logo-eye">
+                                        <circle class="logo-ball" cx="72.824" cy="38.43" r="8.7" fill="#B2DF48"/>
+                                        <path class="logo-emark" d="M79.68 38.72C79.68 39.2 79.65 39.7 79.59 40.22H67.98C68.06 41.26 68.39 42.06 68.97 42.62C69.57 43.16 70.3 43.43 71.16 43.43C72.44 43.43 73.33 42.89 73.83 41.81H79.29C79.01 42.91 78.5 43.9 77.76 44.78C77.04 45.66 76.13 46.35 75.03 46.85C73.93 47.35 72.7 47.6 71.34 47.6C69.7 47.6 68.24 47.25 66.96 46.55C65.68 45.85 64.68 44.85 63.96 43.55C63.24 42.25 62.88 40.73 62.88 38.99C62.88 37.25 63.23 35.73 63.93 34.43C64.65 33.13 65.65 32.13 66.93 31.43C68.21 30.73 69.68 30.38 71.34 30.38C72.96 30.38 74.4 30.72 75.66 31.4C76.92 32.08 77.9 33.05 78.6 34.31C79.32 35.57 79.68 37.04 79.68 38.72ZM74.43 37.37C74.43 36.49 74.13 35.79 73.53 35.27C72.93 34.75 72.18 34.49 71.28 34.49C70.42 34.49 69.69 34.74 69.09 35.24C68.51 35.74 68.15 36.45 68.01 37.37H74.43Z" fill="black"/>
+                                    </g>
+                                </svg>
+                            </div>
                             <h4>WeOne Intercom</h4>
                             <p>Senior Design Strategist at WeOne. Writes about SaaS design, branding, and the intersection of aesthetics and business outcomes. 8+ years helping startups ship products that convert.</p>
                         </div>
