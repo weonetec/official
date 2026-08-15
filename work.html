@@ -401,6 +401,34 @@
             color: #B2DF48;
         }
 
+        /* Side-by-side mode — added to <body> when the "Got A Project?"
+           popup auto-opens 3s after a card's lightbox (see the script
+           below). Splits the viewport rather than letting the popup's
+           own full-bleed backdrop (assets/css/popup.css) cover the
+           lightbox behind it: each overlay is confined to its own half
+           and keeps centering its own content within that half via its
+           existing justify-content. The popup's backdrop goes transparent
+           and click-through (only .pp-modal itself stays interactive) so
+           its half doesn't just look like a second, redundant dark
+           overlay stacked on nothing. Desktop-only — two half-width
+           panels has no room to work on phones/tablets. */
+        @media (min-width: 992px) {
+            body.wg-popup-beside .wg-lightbox {
+                right: 50%;
+            }
+            body.wg-popup-beside .wg-lightbox-close {
+                right: calc(50% + 24px);
+            }
+            body.wg-popup-beside .pp-overlay {
+                left: 50%;
+                background: transparent;
+                pointer-events: none;
+            }
+            body.wg-popup-beside .pp-overlay .pp-modal {
+                pointer-events: auto;
+            }
+        }
+
         /* =========================================
            RESPONSIVE
         ========================================= */
@@ -2143,6 +2171,14 @@
         // placeholder "#") href. Same open/close conventions as the
         // project popup above (.pp-open equivalent, body scroll lock,
         // backdrop click / Escape to close) for a consistent feel.
+        //
+        // 3s after a card opens, the site's "Got A Project?" popup
+        // (assets/js/popup.js, #projectPopupOverlay) auto-opens beside it
+        // — a soft "like what you see? let's talk" nudge. That popup's
+        // own open function is private to its own IIFE, so it's triggered
+        // the same way any .js-open-popup button does: a synthetic click,
+        // routed through popup.js's own delegated listener, rather than
+        // reaching into that shared file.
         (() => {
             const lightbox = document.querySelector('.wg-lightbox');
             const scrollBox = document.querySelector('.wg-lightbox-scroll');
@@ -2150,18 +2186,58 @@
             const closeBtn = document.querySelector('.wg-lightbox-close');
             if (!lightbox || !scrollBox || !img || !closeBtn) return;
 
+            let popupTimer = null;
+            let popupObserverAttached = false;
+
+            // popup.js injects #projectPopupOverlay on its own
+            // DOMContentLoaded handler, which — since this script block is
+            // the last thing on the page — hasn't necessarily run yet at
+            // parse time here, so both lookups happen lazily inside this
+            // function instead of being captured once at the top (that
+            // capture returned null and silently broke the auto-open
+            // entirely; caught by actually testing it, not just reading
+            // the code back).
+            function triggerProjectPopup() {
+                const ppOverlay = document.getElementById('projectPopupOverlay');
+                const ppTrigger = document.querySelector('.js-open-popup');
+                if (!ppOverlay || !ppTrigger) return;
+
+                // Side-by-side layout (see the CSS above) only applies
+                // while this class is on <body>; a MutationObserver — not
+                // a hook into popup.js's own close function — clears it
+                // whenever the popup closes by ANY means (its own X,
+                // backdrop click, Esc), so a later manual "Got A Project?"
+                // click elsewhere on the page never inherits stale
+                // beside-positioning. Attached once, on first use.
+                if (!popupObserverAttached) {
+                    new MutationObserver(() => {
+                        if (!ppOverlay.classList.contains('pp-open')) {
+                            document.body.classList.remove('wg-popup-beside');
+                        }
+                    }).observe(ppOverlay, { attributes: true, attributeFilter: ['class'] });
+                    popupObserverAttached = true;
+                }
+
+                if (ppOverlay.classList.contains('pp-open')) return;
+                document.body.classList.add('wg-popup-beside');
+                ppTrigger.click();
+            }
+
             function openLightbox(src, alt) {
                 img.src = src;
                 img.alt = alt || '';
                 lightbox.classList.add('wg-lightbox-open');
                 document.body.style.overflow = 'hidden';
                 scrollBox.scrollTop = 0;
+                clearTimeout(popupTimer);
+                popupTimer = setTimeout(triggerProjectPopup, 3000);
             }
 
             function closeLightbox() {
                 lightbox.classList.remove('wg-lightbox-open');
                 document.body.style.overflow = '';
                 img.src = '';
+                clearTimeout(popupTimer);
             }
 
             document.querySelectorAll('.wg-card-wrap').forEach((card) => {
