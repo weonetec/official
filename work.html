@@ -234,7 +234,9 @@
             display: flex;
             flex-direction: column;
             gap: 14px;
-            transition: transform 1.6s cubic-bezier(0.22, 1, 0.36, 1);
+            /* Slowed from 1.6s so the hover pan reads as a deliberate
+               scroll through the screenshot instead of a quick snap. */
+            transition: transform 3.5s cubic-bezier(0.22, 1, 0.36, 1);
         }
 
         /* Real-screenshot variant (assets/images/work/gallery/*.jpg) — full
@@ -311,6 +313,72 @@
                 transform: rotate(0deg);
                 background: #1a1a1a;
             }
+        }
+
+        /* =========================================
+           WORK GALLERY LIGHTBOX
+           Same open/close conventions as .pp-overlay/.pp-modal
+           (assets/css/popup.css) — dark backdrop fade, scale-in box,
+           circular close button — sized for a scrollable full-length
+           screenshot instead of a form.
+        ========================================= */
+        .wg-lightbox {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.88);
+            z-index: 9999;
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+            padding: 60px 20px;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.35s ease;
+        }
+        .wg-lightbox.wg-lightbox-open {
+            opacity: 1;
+            pointer-events: all;
+        }
+        .wg-lightbox-scroll {
+            width: min(720px, 100%);
+            max-height: 100%;
+            overflow-y: auto;
+            border-radius: 16px;
+            background: #111;
+            transform: translateY(24px) scale(0.98);
+            transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+            scrollbar-width: thin;
+            scrollbar-color: #B2DF48 #1a1a1a;
+        }
+        .wg-lightbox.wg-lightbox-open .wg-lightbox-scroll {
+            transform: translateY(0) scale(1);
+        }
+        .wg-lightbox-img {
+            display: block;
+            width: 100%;
+            height: auto;
+        }
+        .wg-lightbox-close {
+            position: fixed;
+            top: 20px;
+            right: 24px;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            color: #fff;
+            font-size: 24px;
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            line-height: 1;
+            transition: background 0.2s;
+        }
+        .wg-lightbox-close:hover {
+            background: rgba(178, 223, 72, 0.15);
+            color: #B2DF48;
         }
 
         /* =========================================
@@ -1896,6 +1964,17 @@
     </footer>
     <!-- ========================= Site Footer End ========================= -->
 
+    <!-- ========================= Work Gallery Lightbox =========================
+         Opened by clicking any .wg-card (see the script below) — shows that
+         card's full, uncropped screenshot in a scrollable box instead of the
+         cropped card preview. -->
+    <div class="wg-lightbox">
+        <div class="wg-lightbox-scroll">
+            <img class="wg-lightbox-img" src="" alt="">
+        </div>
+        <button class="wg-lightbox-close" type="button" aria-label="Close preview">&times;</button>
+    </div>
+
     <!-- ========================= Scripts ========================= -->
     <script src="assets/js/jquery-4.0.0.min.js"></script>
     <script src="assets/js/bootstrap.bundle.min.js"></script>
@@ -2059,6 +2138,50 @@
             });
 
             window.addEventListener('load', () => ScrollTrigger.refresh());
+        })();
+
+        // Work gallery — click a card to open its full screenshot in a
+        // scrollable lightbox instead of following the (currently
+        // placeholder "#") href. Same open/close conventions as the
+        // project popup above (.pp-open equivalent, body scroll lock,
+        // backdrop click / Escape to close) for a consistent feel.
+        (() => {
+            const lightbox = document.querySelector('.wg-lightbox');
+            const scrollBox = document.querySelector('.wg-lightbox-scroll');
+            const img = document.querySelector('.wg-lightbox-img');
+            const closeBtn = document.querySelector('.wg-lightbox-close');
+            if (!lightbox || !scrollBox || !img || !closeBtn) return;
+
+            function openLightbox(src, alt) {
+                img.src = src;
+                img.alt = alt || '';
+                lightbox.classList.add('wg-lightbox-open');
+                document.body.style.overflow = 'hidden';
+                scrollBox.scrollTop = 0;
+            }
+
+            function closeLightbox() {
+                lightbox.classList.remove('wg-lightbox-open');
+                document.body.style.overflow = '';
+                img.src = '';
+            }
+
+            document.querySelectorAll('.wg-card').forEach((card) => {
+                card.addEventListener('click', (e) => {
+                    const cardImg = card.querySelector('.wg-card-mockup-page.has-img img');
+                    if (!cardImg) return;
+                    e.preventDefault();
+                    openLightbox(cardImg.getAttribute('src'), cardImg.getAttribute('alt'));
+                });
+            });
+
+            closeBtn.addEventListener('click', closeLightbox);
+            lightbox.addEventListener('click', (e) => {
+                if (e.target === lightbox) closeLightbox();
+            });
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && lightbox.classList.contains('wg-lightbox-open')) closeLightbox();
+            });
         })();
 
     </script>
