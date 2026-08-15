@@ -167,16 +167,17 @@
            gets flex:1 (not a fixed/100% height) so it shares this same
            budget with .wg-card-info below it instead of the info row
            overflowing past .wg-sticky's clipped, pinned 100vh box — tried
-           giving the card its full pre-caption height once already and
-           confirmed the caption then clips invisible on a plain 1280x800
-           screen, not just short viewports. */
+           giving the card its full requested height with no cap once
+           already and confirmed the caption then clips invisible on a
+           plain 1280x800 screen, not just short viewports. */
         .wg-card-wrap {
             flex: 0 0 auto;
+            width: 500px;
             /* Height-driven (not width-driven) so the card shrinks to
                whatever room is actually left under the headline instead
-               of risking overflow/clipping on shorter viewports; 560px
-               is just the desktop cap. Width follows via aspect-ratio. */
-            height: min(560px, 100%);
+               of risking overflow/clipping on shorter viewports; 600px
+               is just the desktop cap. */
+            height: min(600px, 100%);
             display: flex;
             flex-direction: column;
         }
@@ -184,7 +185,6 @@
         .wg-card {
             flex: 1;
             min-height: 0;
-            aspect-ratio: 3 / 4;
             border-radius: 28px;
             padding: 32px;
             display: flex;
@@ -451,6 +451,12 @@
             .wg-card {
                 flex: 0 0 auto;
                 height: auto;
+                /* Desktop derives height from flex:1 sharing the wrap's
+                   height budget with .wg-card-info; below this breakpoint
+                   .wg-card-wrap is width-driven with height:auto instead,
+                   so the box needs its own ratio back to size sensibly
+                   from that fixed width. */
+                aspect-ratio: 3 / 4;
             }
         }
 
