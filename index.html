@@ -204,11 +204,232 @@
         .blog-section .explore-more-wrap .btn-glow-layer { background: radial-gradient(120px 120px at var(--x, 50%) var(--y, 50%), rgba(0,0,0,0.35), rgba(0,0,0,0.15), transparent 60%); }
         .blog-section .explore-more-wrap .btn-inner-shadow.mini { box-shadow: inset 0 4px 22px rgba(0,0,0,0.25); }
         .blog-section .explore-more-wrap .cta-btn:hover .btn-inner-shadow.mini { box-shadow: inset 0 0 22px rgba(0,0,0,0.35), inset 0 0 48px rgba(0,0,0,0.2), inset 0 0 90px rgba(0,0,0,0.12); }
+
+        /* =========================================
+           INDEPENDENCE DAY LOADER — seasonal, temporary.
+           Shown once per browser session, only during the 10-20 August
+           window (gated in the script below, not here) — safe to delete
+           this whole block, the matching HTML block right after <body>,
+           and its <script> near the end of body, any time after that
+           window without touching anything else on the page.
+        ========================================= */
+        .iday-loader {
+            position: fixed;
+            inset: 0;
+            z-index: 100000;
+            background: #04070d;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            transition: opacity 0.6s ease, visibility 0.6s ease;
+        }
+        .iday-loader.iday-hide { opacity: 0; visibility: hidden; pointer-events: none; }
+        .iday-rays {
+            position: absolute;
+            inset: -20%;
+            background: repeating-conic-gradient(from 0deg, rgba(255,153,51,0.08) 0deg 6deg, transparent 6deg 12deg);
+            animation: idayRaysSpin 40s linear infinite;
+        }
+        .iday-confetti { position: absolute; inset: 0; pointer-events: none; }
+        .iday-confetti span {
+            position: absolute;
+            top: -20px;
+            width: 7px;
+            height: 12px;
+            opacity: 0.9;
+            animation: idayFall linear infinite;
+        }
+        .iday-flag-wrap {
+            position: relative;
+            display: flex;
+            align-items: flex-start;
+            height: 200px;
+            margin-bottom: 28px;
+        }
+        .iday-pole {
+            width: 5px;
+            height: 240px;
+            background: linear-gradient(180deg, #d8b978, #8a6a2e);
+            border-radius: 3px;
+            margin-top: -10px;
+            box-shadow: 0 0 8px rgba(0,0,0,0.4);
+        }
+        .iday-flag {
+            width: 220px;
+            height: auto;
+            margin-left: 2px;
+            transform-origin: left center;
+            transform: scaleX(0);
+            filter: drop-shadow(0 10px 24px rgba(0,0,0,0.45));
+            animation: idayUnfurl 1.1s cubic-bezier(0.22,1,0.36,1) 0.3s forwards;
+        }
+        .iday-loader.iday-wave .iday-flag { animation: idayWave 3s ease-in-out infinite; }
+        .iday-chakra { transform-box: fill-box; transform-origin: center; animation: idaySpin 7s linear infinite; }
+        .iday-text {
+            text-align: center;
+            opacity: 0;
+            transform: translateY(12px);
+            animation: idayTextIn 0.7s ease 1.3s forwards;
+        }
+        .iday-title {
+            display: block;
+            font-family: 'Morganite';
+            font-style: italic;
+            font-weight: 500;
+            font-size: clamp(28px, 4vw, 44px);
+            background: linear-gradient(90deg, #FF9933, #ffffff 50%, #138808);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        .iday-sub {
+            display: block;
+            margin-top: 8px;
+            font-family: 'Satoshi-Variable';
+            font-size: 15px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.6);
+        }
+        .iday-skip {
+            position: absolute;
+            bottom: 28px;
+            right: 28px;
+            background: transparent;
+            border: 1px solid rgba(255,255,255,0.25);
+            color: rgba(255,255,255,0.7);
+            border-radius: 50px;
+            padding: 8px 18px;
+            font-size: 13px;
+            font-family: 'Satoshi-Variable';
+            cursor: pointer;
+            transition: border-color 0.2s, color 0.2s;
+        }
+        .iday-skip:hover { border-color: #B2DF48; color: #B2DF48; }
+        @keyframes idayUnfurl { to { transform: scaleX(1); } }
+        @keyframes idayWave {
+            0%, 100% { transform: scaleX(1) skewY(0deg); }
+            25% { transform: scaleX(1) skewY(1.4deg); }
+            75% { transform: scaleX(1) skewY(-1.4deg); }
+        }
+        @keyframes idaySpin { to { transform: rotate(360deg); } }
+        @keyframes idayTextIn { to { opacity: 1; transform: translateY(0); } }
+        @keyframes idayRaysSpin { to { transform: rotate(360deg); } }
+        @keyframes idayFall {
+            from { transform: translateY(-20px) rotate(0deg); }
+            to { transform: translateY(110vh) rotate(360deg); }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            .iday-rays, .iday-confetti span, .iday-flag, .iday-chakra, .iday-loader.iday-wave .iday-flag { animation: none !important; }
+            .iday-flag { transform: scaleX(1); }
+            .iday-text { opacity: 1; transform: none; }
+        }
+        @media (max-width: 575px) {
+            .iday-flag { width: 160px; }
+            .iday-pole { height: 190px; }
+            .iday-flag-wrap { height: 160px; }
+        }
     </style>
 </head>
 
 <body>
 
+    <!-- ========================= Independence Day Loader =========================
+         Seasonal, temporary — see the matching note above its CSS in <head>
+         for what's safe to delete and when. -->
+    <div class="iday-loader" id="idayLoader">
+        <div class="iday-rays"></div>
+        <div class="iday-confetti" id="idayConfetti"></div>
+        <div class="iday-flag-wrap">
+            <div class="iday-pole"></div>
+            <svg class="iday-flag" viewBox="0 0 300 200" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <rect y="0" width="300" height="66.667" fill="#FF9933"></rect>
+                <rect y="66.667" width="300" height="66.667" fill="#FFFFFF"></rect>
+                <rect y="133.333" width="300" height="66.667" fill="#138808"></rect>
+                <g class="iday-chakra" id="idayChakra">
+                    <circle cx="150" cy="100" r="26" fill="none" stroke="#000080" stroke-width="2.6"></circle>
+                    <circle cx="150" cy="100" r="3.2" fill="#000080"></circle>
+                </g>
+            </svg>
+        </div>
+        <div class="iday-text">
+            <span class="iday-title">Happy Independence Day</span>
+            <span class="iday-sub">15th August — Jai Hind</span>
+        </div>
+        <button type="button" class="iday-skip" id="idaySkip">Skip</button>
+    </div>
+    <script>
+        (function () {
+            var loader = document.getElementById('idayLoader');
+            if (!loader) return;
+
+            // Only during the Independence Day window, and only once per
+            // browser session — otherwise this would replay every time
+            // someone navigates back to the home page.
+            var now = new Date();
+            var isSeason = now.getMonth() === 7 && now.getDate() >= 10 && now.getDate() <= 20;
+            var alreadyShown = sessionStorage.getItem('idayShown');
+            if (!isSeason || alreadyShown) {
+                loader.remove();
+                return;
+            }
+            sessionStorage.setItem('idayShown', '1');
+
+            document.body.style.overflow = 'hidden';
+
+            // 24-spoke Ashoka Chakra, generated instead of hand-written so
+            // the spacing is exact (15deg apart) without 24 near-identical
+            // <line> tags cluttering the markup.
+            var chakra = document.getElementById('idayChakra');
+            var svgNS = 'http://www.w3.org/2000/svg';
+            for (var i = 0; i < 24; i++) {
+                var line = document.createElementNS(svgNS, 'line');
+                line.setAttribute('x1', 150);
+                line.setAttribute('y1', 100);
+                line.setAttribute('x2', 150);
+                line.setAttribute('y2', 76);
+                line.setAttribute('stroke', '#000080');
+                line.setAttribute('stroke-width', '1.4');
+                line.setAttribute('transform', 'rotate(' + (i * 15) + ' 150 100)');
+                chakra.appendChild(line);
+            }
+
+            // Confetti in the flag's three colors, randomized so it
+            // doesn't feel mechanical.
+            var confettiHost = document.getElementById('idayConfetti');
+            var colors = ['#FF9933', '#FFFFFF', '#138808'];
+            for (var c = 0; c < 36; c++) {
+                var piece = document.createElement('span');
+                piece.style.left = (Math.random() * 100) + '%';
+                piece.style.background = colors[c % 3];
+                piece.style.animationDuration = (2.6 + Math.random() * 2) + 's';
+                piece.style.animationDelay = (Math.random() * 2) + 's';
+                confettiHost.appendChild(piece);
+            }
+
+            function dismiss() {
+                loader.classList.add('iday-hide');
+                document.body.style.overflow = '';
+                loader.addEventListener('transitionend', function () { loader.remove(); }, { once: true });
+            }
+
+            // Settle into the continuous wave once the unfurl animation
+            // finishes, then auto-dismiss a couple seconds later; a
+            // visible Skip button (or clicking anywhere) lets anyone move
+            // on immediately instead of waiting it out.
+            setTimeout(function () { loader.classList.add('iday-wave'); }, 1450);
+            var autoTimer = setTimeout(dismiss, 4200);
+            document.getElementById('idaySkip').addEventListener('click', function () {
+                clearTimeout(autoTimer);
+                dismiss();
+            });
+            loader.addEventListener('click', function (e) {
+                if (e.target === loader) { clearTimeout(autoTimer); dismiss(); }
+            });
+        })();
+    </script>
 
     <!-- =========================
      Site Header Start
