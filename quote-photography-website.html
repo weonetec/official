@@ -98,6 +98,17 @@
             color: #B2DF48;
             text-transform: uppercase;
         }
+        /* "Choose Your Package" reuses the home page's .wetitle/.italicTitle
+           heading (same sizing + responsive scaling as "EXPLORE. Our Work"),
+           recolored white/lime for this page's dark background. */
+        .qt-cards-heading {
+            color: #fff;
+            text-align: center;
+            margin: 0 0 14px;
+        }
+        .qt-cards-heading .italicTitle {
+            color: #B2DF48;
+        }
         .qt-section-sub {
             text-align: center;
             color: rgba(255, 255, 255, 0.5);
@@ -556,7 +567,7 @@
     <!-- ========================= Package Cards ========================= -->
     <section class="qt-section">
         <div class="container">
-            <h2 class="qt-section-title">Choose Your <span>Package</span></h2>
+            <h2 class="wetitle qt-cards-heading">Choose Your <span class="italicTitle">Package</span></h2>
             <p class="qt-section-sub">Three tiers built around different levels of customization, technology, and long-term scalability.</p>
 
             <div class="qt-grid">
