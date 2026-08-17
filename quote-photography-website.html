@@ -27,18 +27,6 @@
             position: relative;
             overflow: hidden;
         }
-        .qt-hero-glow {
-            position: absolute;
-            top: -12%;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 620px;
-            height: 620px;
-            max-width: 90vw;
-            background: radial-gradient(circle, rgba(178, 223, 72, 0.16), transparent 62%);
-            pointer-events: none;
-            z-index: 0;
-        }
         .qt-hero .container { position: relative; z-index: 1; }
         .qt-brand-logo {
             display: block;
@@ -73,18 +61,18 @@
         }
         .qt-meta-item {
             font-family: 'Satoshi-Variable', sans-serif;
-            font-size: 15px;
-            color: rgba(255, 255, 255, 0.55);
+            font-size: 18px;
+            color: rgba(255, 255, 255, 0.7);
             white-space: nowrap;
-            padding: 0 20px;
+            padding: 0 22px;
         }
         .qt-meta-item + .qt-meta-item { border-left: 1px solid rgba(255, 255, 255, 0.2); }
-        .qt-meta-item strong { color: #fff; font-weight: 600; }
+        .qt-meta-item strong { color: #B2DF48; font-weight: 600; }
 
         .qt-section { padding: 60px 0; }
         .qt-section-tight { padding: 20px 0 60px; }
         .qt-lead {
-            max-width: 760px;
+            max-width: 1080px;
             margin: 0 auto;
             color: rgba(255, 255, 255, 0.65);
             font-size: 17px;
@@ -108,7 +96,7 @@
             font-weight: 400;
             font-size: 1.15em;
             color: #B2DF48;
-            text-transform: none;
+            text-transform: uppercase;
         }
         .qt-section-sub {
             text-align: center;
@@ -135,9 +123,32 @@
             background: rgba(255, 255, 255, 0.02);
             position: relative;
         }
+        /* Rotating gradient stroke for the highlighted plan. The custom
+           --qt-angle property is animated so the conic-gradient painted into
+           the (transparent) border spins around the card; the interior is a
+           solid fill layer clipped to the padding-box so the gradient only
+           shows in the 2px stroke. Browsers without @property just render a
+           static gradient stroke at 0deg — graceful fallback. */
+        @property --qt-angle {
+            syntax: '<angle>';
+            initial-value: 0deg;
+            inherits: false;
+        }
         .qt-card.is-featured {
-            border-color: #B2DF48;
-            background: linear-gradient(160deg, rgba(178,223,72,0.07) 0%, rgba(255,255,255,0.02) 60%);
+            border: 2px solid transparent;
+            background:
+                linear-gradient(160deg, rgba(178,223,72,0.10), rgba(0,0,0,0) 55%) padding-box,
+                linear-gradient(#0a0a0a, #0a0a0a) padding-box,
+                conic-gradient(from var(--qt-angle),
+                    #B2DF48, rgba(178,223,72,0.12), #6f9a1f, #B2DF48,
+                    rgba(178,223,72,0.12), #6f9a1f, #B2DF48) border-box;
+            animation: qt-border-spin 4s linear infinite;
+        }
+        @keyframes qt-border-spin {
+            to { --qt-angle: 360deg; }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            .qt-card.is-featured { animation: none; }
         }
         .qt-card-badge {
             position: absolute;
@@ -161,6 +172,7 @@
             font-size: 52px;
             color: #B2DF48;
             line-height: 1.05;
+            text-transform: uppercase;
         }
         .qt-card-price {
             font-family: 'Satoshi-Variable';
@@ -471,7 +483,6 @@
 
     <!-- ========================= Quote Hero ========================= -->
     <section class="qt-hero">
-        <div class="qt-hero-glow"></div>
         <div class="container">
             <a href="./" class="qt-brand-logo" aria-label="WeOne">
                 <svg class="wl-logo" viewBox="0 0 128 48" xmlns="http://www.w3.org/2000/svg" aria-label="WeOne Logo">
@@ -490,8 +501,7 @@
                     <path class="logo-e2" d="M118.806 45.272H119.638C120.235 45.272 120.854 44.9733 121.494 44.376C122.134 43.7787 122.56 42.8613 122.774 41.624L123.926 33.176H125.462L124.246 41.624C124.032 43.2453 123.456 44.4827 122.518 45.336C121.579 46.1467 120.598 46.552 119.574 46.552H118.55C117.696 46.552 116.907 46.1467 116.182 45.336C115.499 44.4827 115.286 43.2453 115.542 41.624L118.614 19.416C118.87 17.7947 119.467 16.5787 120.406 15.768C121.344 14.9147 122.326 14.488 123.35 14.488H124.118C125.142 14.488 125.995 14.9147 126.678 15.768C127.403 16.5787 127.638 17.7947 127.382 19.416L125.782 30.616H118.55L117.014 41.624C116.843 42.8613 116.971 43.7787 117.398 44.376C117.867 44.9733 118.336 45.272 118.806 45.272ZM124.438 29.528L125.91 19.416C126.08 18.1787 125.931 17.2613 125.462 16.664C125.035 16.0667 124.502 15.768 123.862 15.768H123.35C122.71 15.768 122.048 16.0667 121.366 16.664C120.726 17.2613 120.32 18.1787 120.15 19.416L118.742 29.528H124.438Z" fill="white"/>
                 </svg>
             </a>
-            <span class="qt-eyebrow">Quotation</span>
-            <h1 class="wetitle">Website Design &amp; Development<br><span class="italicTitle">Quotation</span></h1>
+            <h1 class="wetitle">Website Design &amp;<br><span class="italicTitle">Development Quotation</span></h1>
             <div class="qt-meta">
                 <span class="qt-meta-item"><strong>Prepared For:</strong> Photography Client</span>
                 <span class="qt-meta-item"><strong>Service:</strong> Professional Photography Portfolio Website</span>
@@ -544,7 +554,8 @@
                 </div>
 
                 <!-- Professional -->
-                <div class="qt-card">
+                <div class="qt-card is-featured">
+                    <span class="qt-card-badge">Recommended</span>
                     <span class="qt-card-name">Professional</span>
                     <div class="qt-card-price">₹20,000 – ₹25,000</div>
                     <p class="qt-card-desc"><strong style="color:#fff;">Best for:</strong> Professional photographers who want a more customized and premium website.</p>
@@ -570,8 +581,7 @@
                 </div>
 
                 <!-- Premium -->
-                <div class="qt-card is-featured">
-                    <span class="qt-card-badge">Recommended</span>
+                <div class="qt-card">
                     <span class="qt-card-name">Premium / Future-Ready</span>
                     <div class="qt-card-price">₹50,000+</div>
                     <p class="qt-card-desc"><strong style="color:#fff;">Best for:</strong> Established photographers, premium studios, photography brands and businesses looking for a modern, high-end digital presence.</p>
