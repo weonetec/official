@@ -220,6 +220,55 @@
             .title-block .cta-btn { margin-top: 24px; }
         }
 
+        /* Portfolio preview cards ("EXPLORE. Our Work") — "Visit the
+           site" was just a tiny (.7em, from .label-sm) plain-text label
+           sitting under the hover-reveal heading, easy to miss as the
+           actual call to action on the card. Restyled as a real pill
+           button matching the site's lime/bold cta language, and it
+           pops in with a slight overshoot once the card's hover-reveal
+           overlay is visible (rather than fading in flatly alongside
+           the heading), plus its own extra scale/color response if the
+           cursor is specifically over the button itself, not just
+           anywhere on the card. */
+        .work-details .visit-site-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 16px;
+            padding: 13px 28px;
+            background: #B2DF48;
+            color: #000;
+            font-family: 'Satoshi-Variable';
+            font-weight: 700;
+            font-size: 15px;
+            letter-spacing: 0.3px;
+            text-transform: uppercase;
+            border-radius: 50em;
+            opacity: 0;
+            transform: scale(0.75);
+            transition: transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.3s ease, background-color 0.25s ease;
+        }
+        .work-1:hover .work-details .visit-site-btn {
+            opacity: 1;
+            transform: scale(1);
+            transition-delay: 0.08s;
+        }
+        .work-details .visit-site-btn:hover {
+            background: #fff;
+            transform: scale(1.08) !important;
+        }
+        .work-details .visit-site-btn i {
+            font-size: 17px;
+            transition: transform 0.25s ease;
+        }
+        .work-details .visit-site-btn:hover i {
+            transform: translate(2px, -2px);
+        }
+        @media (max-width: 767px) {
+            .work-details .visit-site-btn { padding: 10px 22px; font-size: 13px; margin-top: 10px; }
+            .work-details .visit-site-btn i { font-size: 15px; }
+        }
+
     </style>
 </head>
 
@@ -661,7 +710,7 @@
                                     <h4 class="work-heading"><strong>Turns modern pet nutrition into a playful,
                                             motion-driven e-commerce world, built with bold visuals, custom
                                             interactions and a personality that feels alive.</strong></h4>
-                                    <p class="label-sm grey-2">Visit the site</p>
+                                    <p class="visit-site-btn">Visit the site<i class="ri-arrow-right-up-line"></i></p>
                                 </div>
                             </a>
                             <a id="w-node-_2af0b399-23af-c964-e199-2fa307a58c07-55ce6e60"
@@ -670,7 +719,7 @@
                                 <video class="work-image" src="assets/images/portfolio-2.mp4" autoplay loop muted playsinline></video>
                                 <div class="work-details delphora">
                                     <h4 class="work-heading">Boa Concept revolutionises your intralogistic with modular and interconnected solutions.</h4>
-                                    <p class="label-sm grey-2">Visit the site</p>
+                                    <p class="visit-site-btn">Visit the site<i class="ri-arrow-right-up-line"></i></p>
                                 </div>
                             </a>
                         </div>
@@ -681,7 +730,7 @@
                                 <video class="work-image" src="assets/images/portfolio-4.mp4" autoplay loop muted playsinline></video>
                                 <div class="work-details">
                                     <h4 class="work-heading">A playful burger ordering concept crafted with immersive visuals, smooth interactions, and dynamic motion design to make ordering fast, engaging, and irresistibly fun.</h4>
-                                    <p class="label-sm grey-2">Visit the site</p>
+                                    <p class="visit-site-btn">Visit the site<i class="ri-arrow-right-up-line"></i></p>
                                 </div>
                             </a>
                         </div>
@@ -692,7 +741,7 @@
                                 <video class="work-image" src="assets/images/portfolio-5.mp4" autoplay loop muted playsinline></video>
                                 <div class="work-details gts">
                                     <h4 class="work-heading">Wembi instantly improves the performance of any device, machine, or digital system by creating its virtual twin.</h4>
-                                    <p class="label-sm grey-2">Visit the site</p>
+                                    <p class="visit-site-btn">Visit the site<i class="ri-arrow-right-up-line"></i></p>
                                 </div>
                             </a>
                             <a id="w-node-_2af0b399-23af-c964-e199-2fa307a58c07-55ce6e60"
@@ -701,7 +750,7 @@
                                 <video class="work-image zoom-crop" src="assets/images/portfolio-6.mp4" autoplay loop muted playsinline></video>
                                 <div class="work-details dhol">
                                     <h4 class="work-heading">I've been in Spanish bars for 70+ years. About time I had a website that did me justice.</h4>
-                                    <p class="label-sm grey-2">Visit the site</p>
+                                    <p class="visit-site-btn">Visit the site<i class="ri-arrow-right-up-line"></i></p>
                                 </div>
                             </a>
                         </div>
