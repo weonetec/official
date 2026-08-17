@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Website Design &amp; Development Quotation — Photography Portfolio | WeOne</title>
+    <title>Website Design &amp; Development Quotation - Photography Portfolio | WeOne</title>
     <meta name="robots" content="noindex, nofollow">
     <link rel="icon" type="image/svg+xml" href="assets/images/favicon.svg">
 
@@ -18,11 +18,11 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css">
 
     <style>
-        /* ===== Quote document — scoped styles ===== */
+        /* ===== Quote document - scoped styles ===== */
         body { background-color: #000; }
 
         .qt-hero {
-            padding: 190px 0 60px;
+            padding: 130px 0 60px;
             text-align: center;
             position: relative;
             overflow: hidden;
@@ -35,7 +35,7 @@
         }
         .qt-brand-logo .wl-logo {
             display: inline-block;
-            width: clamp(150px, 22vw, 210px);
+            width: clamp(88px, 11vw, 120px);
             height: auto;
         }
         .qt-eyebrow {
@@ -128,7 +128,7 @@
            the (transparent) border spins around the card; the interior is a
            solid fill layer clipped to the padding-box so the gradient only
            shows in the 2px stroke. Browsers without @property just render a
-           static gradient stroke at 0deg — graceful fallback. */
+           static gradient stroke at 0deg - graceful fallback. */
         @property --qt-angle {
             syntax: '<angle>';
             initial-value: 0deg;
@@ -185,7 +185,12 @@
             color: rgba(255, 255, 255, 0.55);
             font-size: 14px;
             line-height: 1.6;
-            margin: 12px 0 24px;
+            margin: 12px 0 20px;
+        }
+        .qt-card-cta {
+            width: 100%;
+            justify-content: center;
+            margin: 0 0 26px;
         }
         .qt-card-features {
             list-style: none;
@@ -352,10 +357,9 @@
         .qt-prepared-lines div.muted { color: rgba(255, 255, 255, 0.4); font-style: italic; }
 
         @media (max-width: 991px) {
-            .qt-hero { padding: 150px 0 50px; }
+            .qt-hero { padding: 108px 0 50px; }
             .qt-grid { grid-template-columns: 1fr; max-width: 480px; margin-left: auto; margin-right: auto; }
             .qt-terms-grid { grid-template-columns: 1fr; }
-            .qt-recommend { padding: 36px 28px; }
         }
         @media (max-width: 767px) {
             .qt-meta { flex-wrap: wrap; }
@@ -532,8 +536,14 @@
                 <!-- Starter -->
                 <div class="qt-card">
                     <span class="qt-card-name">Starter</span>
-                    <div class="qt-card-price">₹8,000 – ₹12,000</div>
+                    <div class="qt-card-price">₹8,000 - ₹12,000</div>
                     <p class="qt-card-desc"><strong style="color:#fff;">Best for:</strong> Photographers looking for a simple, professional online presence at an affordable budget.</p>
+                    <a href="#" class="cta-btn js-open-popup qt-card-cta">
+                        Get A Call Back
+                        <span class="cta-icon"><svg width="20" height="20" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg"><g clip-path="url(#clip0_qc1)"><path d="M6.99999 13.4178C7.52032 13.4178 8.03482 13.4085 8.54232 13.391C11.172 13.2982 13.2977 11.1726 13.3904 8.54292C13.4085 8.03542 13.4172 7.52092 13.4172 7.00058C13.4172 6.48025 13.4079 5.96575 13.3904 5.45825C13.2977 2.82858 11.172 0.702914 8.54232 0.610165C8.03482 0.592081 7.52032 0.583331 6.99999 0.583331C6.47965 0.583331 5.96515 0.592665 5.45765 0.610165C2.8274 0.702914 0.701737 2.82858 0.608987 5.45883C0.590903 5.96633 0.582153 6.48083 0.582153 7.00116C0.582153 7.5215 0.591487 8.036 0.608987 8.5435C0.701737 11.1726 2.8274 13.2982 5.45765 13.3904C5.96515 13.4085 6.47965 13.4178 6.99999 13.4178ZM4.30499 9.49725C4.07515 9.24933 4.08974 8.86142 4.33824 8.63217L7.87557 5.35442L5.76099 5.138C5.60699 5.12225 5.47165 5.0505 5.37424 4.94491C5.25874 4.82067 5.19515 4.64858 5.2144 4.466C5.24882 4.13 5.54924 3.885 5.88582 3.92L9.15132 4.256C9.36015 4.26242 9.55324 4.34991 9.69499 4.50333C9.83615 4.65558 9.90907 4.8545 9.90032 5.02075L9.98607 8.34575C9.9954 8.68408 9.72765 8.96525 9.39049 8.974C9.20674 8.97866 9.04049 8.90225 8.92499 8.778C8.82757 8.673 8.76632 8.533 8.76224 8.37783L8.70857 6.25275L5.17065 9.5305C4.92274 9.76033 4.53482 9.74517 4.30499 9.49725Z" fill="#B2DF48"/></g><defs><clipPath id="clip0_qc1"><rect width="14" height="14" fill="white" transform="translate(0 14) rotate(-90)"/></clipPath></defs></svg></span>
+                        <span class="btn-glow-layer"></span>
+                        <div class="btn-inner-shadow mini"></div>
+                    </a>
                     <ul class="qt-card-features">
                         <li>Free domain &amp; hosting</li>
                         <li>WordPress-based website</li>
@@ -555,8 +565,14 @@
                 <div class="qt-card is-featured">
                     <span class="qt-card-badge">Recommended</span>
                     <span class="qt-card-name">Professional</span>
-                    <div class="qt-card-price">₹20,000 – ₹25,000</div>
+                    <div class="qt-card-price">₹20,000 - ₹25,000</div>
                     <p class="qt-card-desc"><strong style="color:#fff;">Best for:</strong> Professional photographers who want a more customized and premium website.</p>
+                    <a href="#" class="cta-btn js-open-popup qt-card-cta">
+                        Get A Call Back
+                        <span class="cta-icon"><svg width="20" height="20" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg"><g clip-path="url(#clip0_qc2)"><path d="M6.99999 13.4178C7.52032 13.4178 8.03482 13.4085 8.54232 13.391C11.172 13.2982 13.2977 11.1726 13.3904 8.54292C13.4085 8.03542 13.4172 7.52092 13.4172 7.00058C13.4172 6.48025 13.4079 5.96575 13.3904 5.45825C13.2977 2.82858 11.172 0.702914 8.54232 0.610165C8.03482 0.592081 7.52032 0.583331 6.99999 0.583331C6.47965 0.583331 5.96515 0.592665 5.45765 0.610165C2.8274 0.702914 0.701737 2.82858 0.608987 5.45883C0.590903 5.96633 0.582153 6.48083 0.582153 7.00116C0.582153 7.5215 0.591487 8.036 0.608987 8.5435C0.701737 11.1726 2.8274 13.2982 5.45765 13.3904C5.96515 13.4085 6.47965 13.4178 6.99999 13.4178ZM4.30499 9.49725C4.07515 9.24933 4.08974 8.86142 4.33824 8.63217L7.87557 5.35442L5.76099 5.138C5.60699 5.12225 5.47165 5.0505 5.37424 4.94491C5.25874 4.82067 5.19515 4.64858 5.2144 4.466C5.24882 4.13 5.54924 3.885 5.88582 3.92L9.15132 4.256C9.36015 4.26242 9.55324 4.34991 9.69499 4.50333C9.83615 4.65558 9.90907 4.8545 9.90032 5.02075L9.98607 8.34575C9.9954 8.68408 9.72765 8.96525 9.39049 8.974C9.20674 8.97866 9.04049 8.90225 8.92499 8.778C8.82757 8.673 8.76632 8.533 8.76224 8.37783L8.70857 6.25275L5.17065 9.5305C4.92274 9.76033 4.53482 9.74517 4.30499 9.49725Z" fill="#B2DF48"/></g><defs><clipPath id="clip0_qc2"><rect width="14" height="14" fill="white" transform="translate(0 14) rotate(-90)"/></clipPath></defs></svg></span>
+                        <span class="btn-glow-layer"></span>
+                        <div class="btn-inner-shadow mini"></div>
+                    </a>
                     <ul class="qt-card-features">
                         <li>Premium WordPress theme OR custom HTML/CSS design</li>
                         <li>Up to 3 design concepts/options</li>
@@ -583,6 +599,12 @@
                     <span class="qt-card-name">Premium / Future-Ready</span>
                     <div class="qt-card-price">₹50,000+</div>
                     <p class="qt-card-desc"><strong style="color:#fff;">Best for:</strong> Established photographers, premium studios, photography brands and businesses looking for a modern, high-end digital presence.</p>
+                    <a href="#" class="cta-btn js-open-popup qt-card-cta">
+                        Get A Call Back
+                        <span class="cta-icon"><svg width="20" height="20" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg"><g clip-path="url(#clip0_qc3)"><path d="M6.99999 13.4178C7.52032 13.4178 8.03482 13.4085 8.54232 13.391C11.172 13.2982 13.2977 11.1726 13.3904 8.54292C13.4085 8.03542 13.4172 7.52092 13.4172 7.00058C13.4172 6.48025 13.4079 5.96575 13.3904 5.45825C13.2977 2.82858 11.172 0.702914 8.54232 0.610165C8.03482 0.592081 7.52032 0.583331 6.99999 0.583331C6.47965 0.583331 5.96515 0.592665 5.45765 0.610165C2.8274 0.702914 0.701737 2.82858 0.608987 5.45883C0.590903 5.96633 0.582153 6.48083 0.582153 7.00116C0.582153 7.5215 0.591487 8.036 0.608987 8.5435C0.701737 11.1726 2.8274 13.2982 5.45765 13.3904C5.96515 13.4085 6.47965 13.4178 6.99999 13.4178ZM4.30499 9.49725C4.07515 9.24933 4.08974 8.86142 4.33824 8.63217L7.87557 5.35442L5.76099 5.138C5.60699 5.12225 5.47165 5.0505 5.37424 4.94491C5.25874 4.82067 5.19515 4.64858 5.2144 4.466C5.24882 4.13 5.54924 3.885 5.88582 3.92L9.15132 4.256C9.36015 4.26242 9.55324 4.34991 9.69499 4.50333C9.83615 4.65558 9.90907 4.8545 9.90032 5.02075L9.98607 8.34575C9.9954 8.68408 9.72765 8.96525 9.39049 8.974C9.20674 8.97866 9.04049 8.90225 8.92499 8.778C8.82757 8.673 8.76632 8.533 8.76224 8.37783L8.70857 6.25275L5.17065 9.5305C4.92274 9.76033 4.53482 9.74517 4.30499 9.49725Z" fill="#B2DF48"/></g><defs><clipPath id="clip0_qc3"><rect width="14" height="14" fill="white" transform="translate(0 14) rotate(-90)"/></clipPath></defs></svg></span>
+                        <span class="btn-glow-layer"></span>
+                        <div class="btn-inner-shadow mini"></div>
+                    </a>
                     <ul class="qt-card-features">
                         <li>Premium, modern &amp; highly customized website design</li>
                         <li>Up to 5 custom design concepts/options</li>
@@ -613,9 +635,6 @@
     <!-- ========================= Comparison Table ========================= -->
     <section class="qt-section">
         <div class="container">
-            <h2 class="qt-section-title">Package <span>Comparison</span></h2>
-            <p class="qt-section-sub">A quick side-by-side look at what's included in each tier.</p>
-
             <div class="qt-table-scroll">
                 <table class="qt-table">
                     <thead>
@@ -629,37 +648,37 @@
                     <tbody>
                         <tr class="price-row">
                             <td>Price</td>
-                            <td>₹8K–₹12K</td>
-                            <td>₹20K–₹25K</td>
+                            <td>₹8K-₹12K</td>
+                            <td>₹20K-₹25K</td>
                             <td>₹50K+</td>
                         </tr>
                         <tr>
                             <td>Domain &amp; Hosting</td>
                             <td><span class="qt-check">✓ Free</span></td>
-                            <td><span class="qt-dash">—</span></td>
-                            <td><span class="qt-dash">—</span></td>
+                            <td><span class="qt-dash">-</span></td>
+                            <td><span class="qt-dash">-</span></td>
                         </tr>
                         <tr>
                             <td>WordPress</td>
                             <td><span class="qt-check">✓</span></td>
                             <td><span class="qt-check">✓</span></td>
-                            <td><span class="qt-dash">—</span></td>
+                            <td><span class="qt-dash">-</span></td>
                         </tr>
                         <tr>
                             <td>Simple Theme</td>
                             <td><span class="qt-check">✓</span></td>
-                            <td><span class="qt-dash">—</span></td>
-                            <td><span class="qt-dash">—</span></td>
+                            <td><span class="qt-dash">-</span></td>
+                            <td><span class="qt-dash">-</span></td>
                         </tr>
                         <tr>
                             <td>Premium Theme</td>
-                            <td><span class="qt-dash">—</span></td>
+                            <td><span class="qt-dash">-</span></td>
                             <td><span class="qt-check">✓</span></td>
-                            <td><span class="qt-dash">—</span></td>
+                            <td><span class="qt-dash">-</span></td>
                         </tr>
                         <tr>
                             <td>Custom HTML/CSS</td>
-                            <td><span class="qt-dash">—</span></td>
+                            <td><span class="qt-dash">-</span></td>
                             <td><span class="qt-check">✓</span></td>
                             <td><span class="qt-check">✓</span></td>
                         </tr>
@@ -713,20 +732,20 @@
                         </tr>
                         <tr>
                             <td>Modern UI/UX</td>
-                            <td><span class="qt-dash">—</span></td>
+                            <td><span class="qt-dash">-</span></td>
                             <td><span class="qt-check">✓</span></td>
                             <td><span class="qt-check">✓✓</span></td>
                         </tr>
                         <tr>
                             <td>Advanced Features</td>
-                            <td><span class="qt-dash">—</span></td>
+                            <td><span class="qt-dash">-</span></td>
                             <td>Mid-level</td>
                             <td>Advanced</td>
                         </tr>
                         <tr>
                             <td>Next.js</td>
-                            <td><span class="qt-dash">—</span></td>
-                            <td><span class="qt-dash">—</span></td>
+                            <td><span class="qt-dash">-</span></td>
+                            <td><span class="qt-dash">-</span></td>
                             <td><span class="qt-check">✓</span></td>
                         </tr>
                         <tr>
@@ -737,19 +756,6 @@
                         </tr>
                     </tbody>
                 </table>
-            </div>
-        </div>
-    </section>
-
-    <!-- ========================= Recommended Package ========================= -->
-    <section class="qt-section">
-        <div class="container">
-            <div class="qt-recommend">
-                <span class="qt-recommend-star">⭐</span>
-                <h3>Recommended: <span>Premium / Future-Ready</span> — ₹50,000+</h3>
-                <p>For a professional photography brand, we recommend the Premium Package.</p>
-                <p>Photography is highly visual, so the website should not simply function as an online brochure. It should present your work beautifully, strengthen your brand, create trust with potential clients, and provide a foundation for future growth.</p>
-                <p>The Next.js-based architecture also provides a modern technical foundation for adding more functionality in the future.</p>
             </div>
         </div>
     </section>
@@ -810,53 +816,6 @@
             </div>
         </div>
     </section>
-
-    <!-- ========================= Site Footer Start ========================= -->
-    <footer class="site-footer">
-        <div class="container">
-            <div class="footer-inner">
-                <div class="footer-left">
-                    <h2 class="footer-heading"><span class="italic">ART.</span> COMES FIRST</h2>
-                    <p class="footer-desc">We shape distinctive success stories with breakthrough ideas and creative mastery, elevating you ahead of the competition.</p>
-                    <a href="#" class="cta-btn js-open-popup">
-                        Got A Project? Let's talk
-                        <span class="cta-icon"><svg width="20" height="20" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg"><g clip-path="url(#clip0_ftr)"><path d="M6.99999 13.4178C7.52032 13.4178 8.03482 13.4085 8.54232 13.391C11.172 13.2982 13.2977 11.1726 13.3904 8.54292C13.4085 8.03542 13.4172 7.52092 13.4172 7.00058C13.4172 6.48025 13.4079 5.96575 13.3904 5.45825C13.2977 2.82858 11.172 0.702914 8.54232 0.610165C8.03482 0.592081 7.52032 0.583331 6.99999 0.583331C6.47965 0.583331 5.96515 0.592665 5.45765 0.610165C2.8274 0.702914 0.701737 2.82858 0.608987 5.45883C0.590903 5.96633 0.582153 6.48083 0.582153 7.00116C0.582153 7.5215 0.591487 8.036 0.608987 8.5435C0.701737 11.1726 2.8274 13.2982 5.45765 13.3904C5.96515 13.4085 6.47965 13.4178 6.99999 13.4178ZM4.30499 9.49725C4.07515 9.24933 4.08974 8.86142 4.33824 8.63217L7.87557 5.35442L5.76099 5.138C5.60699 5.12225 5.47165 5.0505 5.37424 4.94491C5.25874 4.82067 5.19515 4.64858 5.2144 4.466C5.24882 4.13 5.54924 3.885 5.88582 3.92L9.15132 4.256C9.36015 4.26242 9.55324 4.34991 9.69499 4.50333C9.83615 4.65558 9.90907 4.8545 9.90032 5.02075L9.98607 8.34575C9.9954 8.68408 9.72765 8.96525 9.39049 8.974C9.20674 8.97866 9.04049 8.90225 8.92499 8.778C8.82757 8.673 8.76632 8.533 8.76224 8.37783L8.70857 6.25275L5.17065 9.5305C4.92274 9.76033 4.53482 9.74517 4.30499 9.49725Z" fill="#B2DF48"/></g><defs><clipPath id="clip0_ftr"><rect width="14" height="14" fill="white" transform="translate(0 14) rotate(-90)"/></clipPath></defs></svg></span>
-                        <span class="btn-glow-layer"></span>
-                        <div class="btn-inner-shadow mini"></div>
-                    </a>
-                    <div class="footer-address">
-                        <span class="footer-address-label">Address</span>
-                        <p>Spcenex, 361, Purbachal, Kalitala Road, Kolkata 700078</p>
-                    </div>
-                    <div class="footer-illus"><img src="assets/images/footer-element.svg" alt=""></div>
-                </div>
-                <div class="footer-right">
-                    <nav class="footer-nav">
-                        <a href="./" class="footer-nav-link">Home</a>
-                        <a href="work" class="footer-nav-link">Our Work</a>
-                        <a href="about" class="footer-nav-link">About Us</a>
-                        <a href="blog" class="footer-nav-link">Blog</a>
-                        <a href="pricing" class="footer-nav-link">Pricing</a>
-                    </nav>
-                    <div class="footer-socials-pill">
-                        <span class="footer-socials-label">SOCIALS</span>
-                        <div class="footer-socials-icons">
-                            <a href="https://www.facebook.com/people/Weonetech/61588410036775/" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><i class="ri-facebook-fill"></i></a>
-                            <a href="https://www.instagram.com/weonetec/" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><i class="ri-instagram-line"></i></a>
-                            <a href="https://www.linkedin.com/in/we-one-5145ba421/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"><i class="ri-linkedin-fill"></i></a>
-                        </div>
-                    </div>
-                    <div class="footer-bottom">
-                        <div class="footer-contact-item">
-                            <span class="footer-contact-label">Contact us</span>
-                            <a href="mailto:info@weone.tech" class="footer-contact-value">info@weone.tech</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </footer>
-    <!-- ========================= Site Footer End ========================= -->
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
