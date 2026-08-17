@@ -259,6 +259,34 @@
         .qt-dash { color: rgba(255, 255, 255, 0.25); }
         .qt-table .price-row td { color: #fff; font-weight: 700; }
 
+        /* White-themed comparison section: the table sits in a white rounded
+           panel with dark-on-light styling (inverts the page's dark theme,
+           scoped to .qt-compare so the other sections stay dark). */
+        .qt-compare .qt-table-scroll {
+            background: #fff;
+            border-radius: 24px;
+            border: 1px solid rgba(0, 0, 0, 0.08);
+            padding: 6px 10px;
+        }
+        .qt-compare .qt-table th,
+        .qt-compare .qt-table td {
+            border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+            color: rgba(17, 17, 17, 0.72);
+        }
+        .qt-compare .qt-table th,
+        .qt-compare .qt-table td:first-child,
+        .qt-compare .qt-table th:first-child,
+        .qt-compare .qt-table .price-row td {
+            color: #111;
+        }
+        .qt-compare .qt-table thead th {
+            border-bottom: 1px solid rgba(111, 154, 31, 0.55);
+        }
+        .qt-compare .qt-table tbody tr:hover { background: rgba(0, 0, 0, 0.03); }
+        .qt-compare .qt-table tbody tr:last-child td { border-bottom: none; }
+        .qt-compare .qt-check { color: #5f8a12; }
+        .qt-compare .qt-dash { color: rgba(0, 0, 0, 0.28); }
+
         /* ── Recommended callout ── */
         .qt-recommend {
             border: 1px solid rgba(178, 223, 72, 0.4);
@@ -633,7 +661,7 @@
     </section>
 
     <!-- ========================= Comparison Table ========================= -->
-    <section class="qt-section">
+    <section class="qt-section qt-compare">
         <div class="container">
             <div class="qt-table-scroll">
                 <table class="qt-table">
