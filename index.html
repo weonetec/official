@@ -257,16 +257,24 @@
             background: #fff;
             transform: scale(1.08) !important;
         }
-        .work-details .visit-site-btn i {
-            font-size: 17px;
+        .work-details .visit-site-btn .cta-icon {
+            display: inline-flex;
             transition: transform 0.25s ease;
         }
-        .work-details .visit-site-btn:hover i {
+        .work-details .visit-site-btn .cta-icon svg {
+            width: 16px;
+            height: 16px;
+            display: block;
+        }
+        .work-details .visit-site-btn .cta-icon svg path {
+            fill: #000;
+        }
+        .work-details .visit-site-btn:hover .cta-icon {
             transform: translate(2px, -2px);
         }
         @media (max-width: 767px) {
             .work-details .visit-site-btn { padding: 10px 22px; font-size: 13px; margin-top: 10px; }
-            .work-details .visit-site-btn i { font-size: 15px; }
+            .work-details .visit-site-btn .cta-icon svg { width: 14px; height: 14px; }
         }
 
     </style>
@@ -710,7 +718,7 @@
                                     <h4 class="work-heading"><strong>Turns modern pet nutrition into a playful,
                                             motion-driven e-commerce world, built with bold visuals, custom
                                             interactions and a personality that feels alive.</strong></h4>
-                                    <p class="visit-site-btn">Visit the site<i class="ri-arrow-right-up-line"></i></p>
+                                    <p class="visit-site-btn">Visit the site<span class="cta-icon"><svg width="16" height="16" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg"><g clip-path="url(#clip0_work_meebits)"><path d="M6.99999 13.4178C7.52032 13.4178 8.03482 13.4085 8.54232 13.391C11.172 13.2982 13.2977 11.1726 13.3904 8.54292C13.4085 8.03542 13.4172 7.52092 13.4172 7.00058C13.4172 6.48025 13.4079 5.96575 13.3904 5.45825C13.2977 2.82858 11.172 0.702914 8.54232 0.610165C8.03482 0.592081 7.52032 0.583331 6.99999 0.583331C6.47965 0.583331 5.96515 0.592665 5.45765 0.610165C2.8274 0.702914 0.701737 2.82858 0.608987 5.45883C0.590903 5.96633 0.582153 6.48083 0.582153 7.00116C0.582153 7.5215 0.591487 8.036 0.608987 8.5435C0.701737 11.1726 2.8274 13.2982 5.45765 13.3904C5.96515 13.4085 6.47965 13.4178 6.99999 13.4178ZM4.30499 9.49725C4.07515 9.24933 4.08974 8.86142 4.33824 8.63217L7.87557 5.35442L5.76099 5.138C5.60699 5.12225 5.47165 5.0505 5.37424 4.94491C5.25874 4.82067 5.19515 4.64858 5.2144 4.466C5.24882 4.13 5.54924 3.885 5.88582 3.92L9.15132 4.256C9.36015 4.26242 9.55324 4.34991 9.69499 4.50333C9.83615 4.65558 9.90907 4.8545 9.90032 5.02075L9.98607 8.34575C9.9954 8.68408 9.72765 8.96525 9.39049 8.974C9.20674 8.97866 9.04049 8.90225 8.92499 8.778C8.82757 8.673 8.76632 8.533 8.76224 8.37783L8.70857 6.25275L5.17065 9.5305C4.92274 9.76033 4.53482 9.74517 4.30499 9.49725Z" fill="#000"/></g><defs><clipPath id="clip0_work_meebits"><rect width="14" height="14" fill="white" transform="translate(0 14) rotate(-90)"/></clipPath></defs></svg></span></p>
                                 </div>
                             </a>
                             <a id="w-node-_2af0b399-23af-c964-e199-2fa307a58c07-55ce6e60"
@@ -719,7 +727,7 @@
                                 <video class="work-image" src="assets/images/portfolio-2.mp4" autoplay loop muted playsinline></video>
                                 <div class="work-details delphora">
                                     <h4 class="work-heading">Boa Concept revolutionises your intralogistic with modular and interconnected solutions.</h4>
-                                    <p class="visit-site-btn">Visit the site<i class="ri-arrow-right-up-line"></i></p>
+                                    <p class="visit-site-btn">Visit the site<span class="cta-icon"><svg width="16" height="16" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg"><g clip-path="url(#clip0_work_delphora)"><path d="M6.99999 13.4178C7.52032 13.4178 8.03482 13.4085 8.54232 13.391C11.172 13.2982 13.2977 11.1726 13.3904 8.54292C13.4085 8.03542 13.4172 7.52092 13.4172 7.00058C13.4172 6.48025 13.4079 5.96575 13.3904 5.45825C13.2977 2.82858 11.172 0.702914 8.54232 0.610165C8.03482 0.592081 7.52032 0.583331 6.99999 0.583331C6.47965 0.583331 5.96515 0.592665 5.45765 0.610165C2.8274 0.702914 0.701737 2.82858 0.608987 5.45883C0.590903 5.96633 0.582153 6.48083 0.582153 7.00116C0.582153 7.5215 0.591487 8.036 0.608987 8.5435C0.701737 11.1726 2.8274 13.2982 5.45765 13.3904C5.96515 13.4085 6.47965 13.4178 6.99999 13.4178ZM4.30499 9.49725C4.07515 9.24933 4.08974 8.86142 4.33824 8.63217L7.87557 5.35442L5.76099 5.138C5.60699 5.12225 5.47165 5.0505 5.37424 4.94491C5.25874 4.82067 5.19515 4.64858 5.2144 4.466C5.24882 4.13 5.54924 3.885 5.88582 3.92L9.15132 4.256C9.36015 4.26242 9.55324 4.34991 9.69499 4.50333C9.83615 4.65558 9.90907 4.8545 9.90032 5.02075L9.98607 8.34575C9.9954 8.68408 9.72765 8.96525 9.39049 8.974C9.20674 8.97866 9.04049 8.90225 8.92499 8.778C8.82757 8.673 8.76632 8.533 8.76224 8.37783L8.70857 6.25275L5.17065 9.5305C4.92274 9.76033 4.53482 9.74517 4.30499 9.49725Z" fill="#000"/></g><defs><clipPath id="clip0_work_delphora"><rect width="14" height="14" fill="white" transform="translate(0 14) rotate(-90)"/></clipPath></defs></svg></span></p>
                                 </div>
                             </a>
                         </div>
@@ -730,7 +738,7 @@
                                 <video class="work-image" src="assets/images/portfolio-4.mp4" autoplay loop muted playsinline></video>
                                 <div class="work-details">
                                     <h4 class="work-heading">A playful burger ordering concept crafted with immersive visuals, smooth interactions, and dynamic motion design to make ordering fast, engaging, and irresistibly fun.</h4>
-                                    <p class="visit-site-btn">Visit the site<i class="ri-arrow-right-up-line"></i></p>
+                                    <p class="visit-site-btn">Visit the site<span class="cta-icon"><svg width="16" height="16" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg"><g clip-path="url(#clip0_work_crav)"><path d="M6.99999 13.4178C7.52032 13.4178 8.03482 13.4085 8.54232 13.391C11.172 13.2982 13.2977 11.1726 13.3904 8.54292C13.4085 8.03542 13.4172 7.52092 13.4172 7.00058C13.4172 6.48025 13.4079 5.96575 13.3904 5.45825C13.2977 2.82858 11.172 0.702914 8.54232 0.610165C8.03482 0.592081 7.52032 0.583331 6.99999 0.583331C6.47965 0.583331 5.96515 0.592665 5.45765 0.610165C2.8274 0.702914 0.701737 2.82858 0.608987 5.45883C0.590903 5.96633 0.582153 6.48083 0.582153 7.00116C0.582153 7.5215 0.591487 8.036 0.608987 8.5435C0.701737 11.1726 2.8274 13.2982 5.45765 13.3904C5.96515 13.4085 6.47965 13.4178 6.99999 13.4178ZM4.30499 9.49725C4.07515 9.24933 4.08974 8.86142 4.33824 8.63217L7.87557 5.35442L5.76099 5.138C5.60699 5.12225 5.47165 5.0505 5.37424 4.94491C5.25874 4.82067 5.19515 4.64858 5.2144 4.466C5.24882 4.13 5.54924 3.885 5.88582 3.92L9.15132 4.256C9.36015 4.26242 9.55324 4.34991 9.69499 4.50333C9.83615 4.65558 9.90907 4.8545 9.90032 5.02075L9.98607 8.34575C9.9954 8.68408 9.72765 8.96525 9.39049 8.974C9.20674 8.97866 9.04049 8.90225 8.92499 8.778C8.82757 8.673 8.76632 8.533 8.76224 8.37783L8.70857 6.25275L5.17065 9.5305C4.92274 9.76033 4.53482 9.74517 4.30499 9.49725Z" fill="#000"/></g><defs><clipPath id="clip0_work_crav"><rect width="14" height="14" fill="white" transform="translate(0 14) rotate(-90)"/></clipPath></defs></svg></span></p>
                                 </div>
                             </a>
                         </div>
@@ -741,7 +749,7 @@
                                 <video class="work-image" src="assets/images/portfolio-5.mp4" autoplay loop muted playsinline></video>
                                 <div class="work-details gts">
                                     <h4 class="work-heading">Wembi instantly improves the performance of any device, machine, or digital system by creating its virtual twin.</h4>
-                                    <p class="visit-site-btn">Visit the site<i class="ri-arrow-right-up-line"></i></p>
+                                    <p class="visit-site-btn">Visit the site<span class="cta-icon"><svg width="16" height="16" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg"><g clip-path="url(#clip0_work_gts)"><path d="M6.99999 13.4178C7.52032 13.4178 8.03482 13.4085 8.54232 13.391C11.172 13.2982 13.2977 11.1726 13.3904 8.54292C13.4085 8.03542 13.4172 7.52092 13.4172 7.00058C13.4172 6.48025 13.4079 5.96575 13.3904 5.45825C13.2977 2.82858 11.172 0.702914 8.54232 0.610165C8.03482 0.592081 7.52032 0.583331 6.99999 0.583331C6.47965 0.583331 5.96515 0.592665 5.45765 0.610165C2.8274 0.702914 0.701737 2.82858 0.608987 5.45883C0.590903 5.96633 0.582153 6.48083 0.582153 7.00116C0.582153 7.5215 0.591487 8.036 0.608987 8.5435C0.701737 11.1726 2.8274 13.2982 5.45765 13.3904C5.96515 13.4085 6.47965 13.4178 6.99999 13.4178ZM4.30499 9.49725C4.07515 9.24933 4.08974 8.86142 4.33824 8.63217L7.87557 5.35442L5.76099 5.138C5.60699 5.12225 5.47165 5.0505 5.37424 4.94491C5.25874 4.82067 5.19515 4.64858 5.2144 4.466C5.24882 4.13 5.54924 3.885 5.88582 3.92L9.15132 4.256C9.36015 4.26242 9.55324 4.34991 9.69499 4.50333C9.83615 4.65558 9.90907 4.8545 9.90032 5.02075L9.98607 8.34575C9.9954 8.68408 9.72765 8.96525 9.39049 8.974C9.20674 8.97866 9.04049 8.90225 8.92499 8.778C8.82757 8.673 8.76632 8.533 8.76224 8.37783L8.70857 6.25275L5.17065 9.5305C4.92274 9.76033 4.53482 9.74517 4.30499 9.49725Z" fill="#000"/></g><defs><clipPath id="clip0_work_gts"><rect width="14" height="14" fill="white" transform="translate(0 14) rotate(-90)"/></clipPath></defs></svg></span></p>
                                 </div>
                             </a>
                             <a id="w-node-_2af0b399-23af-c964-e199-2fa307a58c07-55ce6e60"
@@ -750,7 +758,7 @@
                                 <video class="work-image zoom-crop" src="assets/images/portfolio-6.mp4" autoplay loop muted playsinline></video>
                                 <div class="work-details dhol">
                                     <h4 class="work-heading">I've been in Spanish bars for 70+ years. About time I had a website that did me justice.</h4>
-                                    <p class="visit-site-btn">Visit the site<i class="ri-arrow-right-up-line"></i></p>
+                                    <p class="visit-site-btn">Visit the site<span class="cta-icon"><svg width="16" height="16" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg"><g clip-path="url(#clip0_work_dhol)"><path d="M6.99999 13.4178C7.52032 13.4178 8.03482 13.4085 8.54232 13.391C11.172 13.2982 13.2977 11.1726 13.3904 8.54292C13.4085 8.03542 13.4172 7.52092 13.4172 7.00058C13.4172 6.48025 13.4079 5.96575 13.3904 5.45825C13.2977 2.82858 11.172 0.702914 8.54232 0.610165C8.03482 0.592081 7.52032 0.583331 6.99999 0.583331C6.47965 0.583331 5.96515 0.592665 5.45765 0.610165C2.8274 0.702914 0.701737 2.82858 0.608987 5.45883C0.590903 5.96633 0.582153 6.48083 0.582153 7.00116C0.582153 7.5215 0.591487 8.036 0.608987 8.5435C0.701737 11.1726 2.8274 13.2982 5.45765 13.3904C5.96515 13.4085 6.47965 13.4178 6.99999 13.4178ZM4.30499 9.49725C4.07515 9.24933 4.08974 8.86142 4.33824 8.63217L7.87557 5.35442L5.76099 5.138C5.60699 5.12225 5.47165 5.0505 5.37424 4.94491C5.25874 4.82067 5.19515 4.64858 5.2144 4.466C5.24882 4.13 5.54924 3.885 5.88582 3.92L9.15132 4.256C9.36015 4.26242 9.55324 4.34991 9.69499 4.50333C9.83615 4.65558 9.90907 4.8545 9.90032 5.02075L9.98607 8.34575C9.9954 8.68408 9.72765 8.96525 9.39049 8.974C9.20674 8.97866 9.04049 8.90225 8.92499 8.778C8.82757 8.673 8.76632 8.533 8.76224 8.37783L8.70857 6.25275L5.17065 9.5305C4.92274 9.76033 4.53482 9.74517 4.30499 9.49725Z" fill="#000"/></g><defs><clipPath id="clip0_work_dhol"><rect width="14" height="14" fill="white" transform="translate(0 14) rotate(-90)"/></clipPath></defs></svg></span></p>
                                 </div>
                             </a>
                         </div>
