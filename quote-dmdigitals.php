@@ -370,34 +370,21 @@ $verified = isset($_SESSION['quote_access']['dmdigitals']) && $_SESSION['quote_a
             font-weight: 600;
         }
         .qt-prepared-lines { margin-top: 10px; }
-        .qt-prepared-lines div {
+        .qt-prepared-logo { margin: 8px 0 22px; }
+        .qt-prepared-logo .wl-logo { display: inline-block; width: 120px; height: auto; }
+        .qt-prepared-website {
+            margin-top: 18px;
             color: #fff;
             font-size: 15px;
             line-height: 1.8;
             font-family: 'Satoshi-Variable', sans-serif;
         }
-        .qt-prepared-lines div.muted { color: rgba(255, 255, 255, 0.4); font-style: italic; }
-        .qt-prepared-logo { margin: 8px 0 22px; }
-        .qt-prepared-logo .wl-logo { display: inline-block; width: 120px; height: auto; }
-        .qt-founders {
-            display: flex;
-            justify-content: center;
-            flex-wrap: wrap;
-            gap: 16px 56px;
-            margin-bottom: 22px;
-        }
-        .qt-founder-name {
-            color: #fff;
-            font-size: 17px;
-            font-weight: 700;
-            font-family: 'Satoshi-Variable', sans-serif;
-        }
-        .qt-prepared-lines a {
+        .qt-prepared-website a {
             color: #B2DF48;
             text-decoration: none;
             transition: opacity 0.2s ease;
         }
-        .qt-prepared-lines a:hover { opacity: 0.7; text-decoration: underline; }
+        .qt-prepared-website a:hover { opacity: 0.7; text-decoration: underline; }
 
         /* ── Access gate ── */
         .qt-gate {
@@ -915,17 +902,14 @@ $verified = isset($_SESSION['quote_access']['dmdigitals']) && $_SESSION['quote_a
                             <path class="logo-e2" d="M118.806 45.272H119.638C120.235 45.272 120.854 44.9733 121.494 44.376C122.134 43.7787 122.56 42.8613 122.774 41.624L123.926 33.176H125.462L124.246 41.624C124.032 43.2453 123.456 44.4827 122.518 45.336C121.579 46.1467 120.598 46.552 119.574 46.552H118.55C117.696 46.552 116.907 46.1467 116.182 45.336C115.499 44.4827 115.286 43.2453 115.542 41.624L118.614 19.416C118.87 17.7947 119.467 16.5787 120.406 15.768C121.344 14.9147 122.326 14.488 123.35 14.488H124.118C125.142 14.488 125.995 14.9147 126.678 15.768C127.403 16.5787 127.638 17.7947 127.382 19.416L125.782 30.616H118.55L117.014 41.624C116.843 42.8613 116.971 43.7787 117.398 44.376C117.867 44.9733 118.336 45.272 118.806 45.272ZM124.438 29.528L125.91 19.416C126.08 18.1787 125.931 17.2613 125.462 16.664C125.035 16.0667 124.502 15.768 123.862 15.768H123.35C122.71 15.768 122.048 16.0667 121.366 16.664C120.726 17.2613 120.32 18.1787 120.15 19.416L118.742 29.528H124.438Z" fill="white"/>
                         </svg>
                     </div>
-                    <div class="qt-founders">
-                        <div class="qt-founder">
-                            <div class="qt-founder-name">Sarboruo Sarkar</div>
-                        </div>
-                        <div class="qt-founder">
-                            <div class="qt-founder-name">Sandip Sen</div>
-                        </div>
-                    </div>
                     <div class="qt-prepared-lines">
-                        <div><a href="mailto:info@weone.tech">info@weone.tech</a></div>
-                        <div><a href="https://weone.tech" target="_blank" rel="noopener noreferrer">weone.tech</a></div>
+                        <a href="mailto:info@weone.tech" class="cta-btn qt-prepared-cta">
+                            info@weone.tech
+                            <span class="cta-icon"><svg width="20" height="20" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg"><g clip-path="url(#clip0_qtmail)"><path d="M6.99999 13.4178C7.52032 13.4178 8.03482 13.4085 8.54232 13.391C11.172 13.2982 13.2977 11.1726 13.3904 8.54292C13.4085 8.03542 13.4172 7.52092 13.4172 7.00058C13.4172 6.48025 13.4079 5.96575 13.3904 5.45825C13.2977 2.82858 11.172 0.702914 8.54232 0.610165C8.03482 0.592081 7.52032 0.583331 6.99999 0.583331C6.47965 0.583331 5.96515 0.592665 5.45765 0.610165C2.8274 0.702914 0.701737 2.82858 0.608987 5.45883C0.590903 5.96633 0.582153 6.48083 0.582153 7.00116C0.582153 7.5215 0.591487 8.036 0.608987 8.5435C0.701737 11.1726 2.8274 13.2982 5.45765 13.3904C5.96515 13.4085 6.47965 13.4178 6.99999 13.4178ZM4.30499 9.49725C4.07515 9.24933 4.08974 8.86142 4.33824 8.63217L7.87557 5.35442L5.76099 5.138C5.60699 5.12225 5.47165 5.0505 5.37424 4.94491C5.25874 4.82067 5.19515 4.64858 5.2144 4.466C5.24882 4.13 5.54924 3.885 5.88582 3.92L9.15132 4.256C9.36015 4.26242 9.55324 4.34991 9.69499 4.50333C9.83615 4.65558 9.90907 4.8545 9.90032 5.02075L9.98607 8.34575C9.9954 8.68408 9.72765 8.96525 9.39049 8.974C9.20674 8.97866 9.04049 8.90225 8.92499 8.778C8.82757 8.673 8.76632 8.533 8.76224 8.37783L8.70857 6.25275L5.17065 9.5305C4.92274 9.76033 4.53482 9.74517 4.30499 9.49725Z" fill="#B2DF48"/></g><defs><clipPath id="clip0_qtmail"><rect width="14" height="14" fill="white" transform="translate(0 14) rotate(-90)"/></clipPath></defs></svg></span>
+                            <span class="btn-glow-layer"></span>
+                            <div class="btn-inner-shadow mini"></div>
+                        </a>
+                        <div class="qt-prepared-website"><a href="https://weone.tech" target="_blank" rel="noopener noreferrer">weone.tech</a></div>
                     </div>
                 </div>
             </div>
