@@ -39,8 +39,8 @@ $verified = isset($_SESSION['quote_access']['dmdigitals']) && $_SESSION['quote_a
     <link rel="stylesheet" href="assets/css/responsive.css?v=60">
     <link rel="stylesheet" href="assets/css/popup.css?v=10" media="print" onload="this.media='all'">
     <noscript><link rel="stylesheet" href="assets/css/popup.css?v=10"></noscript>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css" media="print" onload="this.media='all'">
-    <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css"></noscript>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css">
+
 
     <style>
         /* ===== Quote document - scoped styles ===== */
