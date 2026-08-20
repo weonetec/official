@@ -1,0 +1,1015 @@
+<?php
+/**
+ * Private, gated quotation page — link is shared directly with the
+ * recipient, never linked from site nav/sitemap. The pricing content
+ * below is only echoed into the response when $verified is true, so an
+ * unverified visitor's page source genuinely contains no pricing — this
+ * isn't a CSS/JS show-hide, the HTML itself is absent server-side.
+ *
+ * Access is granted by assets/php/quote-verify.php once the visitor
+ * proves control of the email they typed in (6-digit code, same pattern
+ * as the main site's popup form) and is remembered for the rest of this
+ * PHP session only.
+ */
+session_start();
+// Explicit no-store rather than relying on PHP's session.cache_limiter ini
+// default — this page's HTML genuinely differs per visitor (priced content
+// vs. gate form), so it must never be cached/replayed by a proxy or CDN.
+header('Cache-Control: no-store, private');
+header('Pragma: no-cache');
+$verified = isset($_SESSION['quote_access']['dmdigitals']) && $_SESSION['quote_access']['dmdigitals'] === true;
+?>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Website Design &amp; Development Quotation - DM Digitals | WeOne</title>
+    <meta name="robots" content="noindex, nofollow">
+    <link rel="icon" type="image/svg+xml" href="assets/images/favicon.svg">
+
+    <link rel="stylesheet" href="assets/Satoshi/WEB/css/satoshi.css">
+    <link rel="stylesheet" href="assets/morganite/stylesheet.css">
+    <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/css/new.css?v=10">
+    <link rel="stylesheet" href="assets/css/main.css?v=56">
+    <link rel="stylesheet" href="assets/css/responsive.css?v=60">
+    <link rel="stylesheet" href="assets/css/popup.css?v=10">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css">
+
+    <style>
+        /* ===== Quote document - scoped styles ===== */
+        body { background-color: #000; }
+
+        .qt-hero {
+            padding: 130px 0 60px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .qt-hero .container { position: relative; z-index: 1; }
+        .qt-brand-logo {
+            display: block;
+            text-align: center;
+            margin: 0 auto 30px;
+        }
+        .qt-brand-logo .wl-logo {
+            display: inline-block;
+            width: clamp(88px, 11vw, 120px);
+            height: auto;
+        }
+        .qt-eyebrow {
+            font-family: 'Satoshi-Variable', sans-serif;
+            letter-spacing: 3px;
+            font-size: 13px;
+            color: #B2DF48;
+            text-transform: uppercase;
+            font-weight: 600;
+            margin-bottom: 18px;
+            display: inline-block;
+        }
+        .qt-hero .wetitle { color: #fff; }
+        .qt-hero .wetitle .italicTitle { color: #B2DF48; }
+        .qt-meta {
+            display: flex;
+            flex-wrap: nowrap;
+            justify-content: center;
+            align-items: center;
+            gap: 0;
+            max-width: 100%;
+            margin: 26px auto 0;
+        }
+        .qt-meta-item {
+            font-family: 'Satoshi-Variable', sans-serif;
+            font-size: 18px;
+            color: rgba(255, 255, 255, 0.7);
+            white-space: nowrap;
+            padding: 0 22px;
+        }
+        .qt-meta-item + .qt-meta-item { border-left: 1px solid rgba(255, 255, 255, 0.2); }
+        .qt-meta-item strong { color: #B2DF48; font-weight: 600; }
+
+        .qt-section { padding: 60px 0; }
+        .qt-section-tight { padding: 20px 0 60px; }
+        .qt-lead {
+            max-width: 1300px;
+            margin: 0 auto;
+            color: rgba(255, 255, 255, 0.72);
+            font-size: 16px;
+            line-height: 1.75;
+            font-family: 'Satoshi-Variable', sans-serif;
+            text-align: center;
+        }
+        .qt-section-title {
+            font-family: 'Satoshi-Variable', sans-serif;
+            font-weight: bold;
+            text-transform: uppercase;
+            font-size: clamp(34px, 5vw, 56px);
+            line-height: 1.05;
+            color: #fff;
+            text-align: center;
+            margin-bottom: 14px;
+        }
+        .qt-section-title span {
+            font-family: 'Morganite', sans-serif;
+            font-style: italic;
+            font-weight: 400;
+            font-size: 1.15em;
+            color: #B2DF48;
+            text-transform: uppercase;
+        }
+        .qt-cards-heading,
+        .qt-terms-heading {
+            color: #fff;
+            text-align: center;
+            margin: 0 0 14px;
+        }
+        .qt-cards-heading .italicTitle,
+        .qt-terms-heading .italicTitle {
+            color: #B2DF48;
+        }
+        .qt-section-sub {
+            text-align: center;
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 16.5px;
+            max-width: 960px;
+            margin: 0 auto 48px;
+            font-family: 'Satoshi-Variable', sans-serif;
+        }
+
+        /* ── Package cards ── */
+        .qt-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+            align-items: stretch;
+        }
+        .qt-card {
+            display: flex;
+            flex-direction: column;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
+            padding: 40px 32px;
+            background: rgba(255, 255, 255, 0.02);
+            position: relative;
+        }
+        @property --qt-angle {
+            syntax: '<angle>';
+            initial-value: 0deg;
+            inherits: false;
+        }
+        .qt-card.is-featured {
+            border: 2px solid transparent;
+            background:
+                linear-gradient(160deg, rgba(178,223,72,0.10), rgba(0,0,0,0) 55%) padding-box,
+                linear-gradient(#0a0a0a, #0a0a0a) padding-box,
+                conic-gradient(from var(--qt-angle),
+                    #B2DF48, rgba(178,223,72,0.12), #6f9a1f, #B2DF48,
+                    rgba(178,223,72,0.12), #6f9a1f, #B2DF48) border-box;
+            animation: qt-border-spin 4s linear infinite;
+        }
+        @keyframes qt-border-spin {
+            to { --qt-angle: 360deg; }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            .qt-card.is-featured { animation: none; }
+        }
+        .qt-card-badge {
+            position: absolute;
+            top: -14px;
+            left: 32px;
+            background: #B2DF48;
+            color: #000;
+            font-family: 'Satoshi-Variable';
+            font-weight: 700;
+            font-size: 12px;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            padding: 6px 16px;
+            border-radius: 50px;
+        }
+        .qt-card-name {
+            display: block;
+            font-family: 'Morganite', sans-serif;
+            font-style: italic;
+            font-weight: 400;
+            font-size: 52px;
+            color: #B2DF48;
+            line-height: 1.05;
+            text-transform: uppercase;
+        }
+        .qt-card-price {
+            font-family: 'Satoshi-Variable';
+            font-weight: 800;
+            font-size: 30px;
+            color: #fff;
+            margin-top: 14px;
+        }
+        .qt-card-desc {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 15.5px;
+            line-height: 1.6;
+            margin: 12px 0 20px;
+        }
+        .qt-card-cta {
+            width: 100%;
+            justify-content: space-between;
+            margin: 0 0 26px;
+        }
+        .qt-card-features {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 24px;
+            flex: 1;
+        }
+        .qt-card-features li {
+            position: relative;
+            padding-left: 26px;
+            color: rgba(255, 255, 255, 0.78);
+            font-size: 15.5px;
+            line-height: 1.55;
+            margin-bottom: 12px;
+        }
+        .qt-card-features li::before {
+            content: '\2713';
+            position: absolute;
+            left: 0;
+            top: 0;
+            color: #B2DF48;
+            font-weight: 700;
+        }
+        .qt-card-suitable {
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            padding-top: 18px;
+            font-size: 15px;
+            line-height: 1.6;
+            color: rgba(255, 255, 255, 0.55);
+            font-style: italic;
+        }
+        .qt-card-suitable strong { color: rgba(255,255,255,0.7); font-style: normal; }
+
+        /* ── Comparison table ── */
+        .qt-table-scroll { overflow-x: auto; }
+        .qt-table {
+            width: 100%;
+            min-width: 640px;
+            border-collapse: collapse;
+            font-family: 'Satoshi-Variable', sans-serif;
+        }
+        .qt-table th, .qt-table td {
+            padding: 16px 18px;
+            text-align: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            font-size: 14.5px;
+            color: rgba(255, 255, 255, 0.7);
+        }
+        .qt-table th {
+            font-weight: 700;
+            color: #fff;
+            font-size: 13px;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+        .qt-table td:first-child, .qt-table th:first-child {
+            text-align: left;
+            color: #fff;
+            font-weight: 600;
+        }
+        .qt-table thead th {
+            border-bottom: 1px solid rgba(178, 223, 72, 0.35);
+        }
+        .qt-table tbody tr:hover { background: rgba(255, 255, 255, 0.02); }
+        .qt-check { color: #B2DF48; font-weight: 700; }
+        .qt-dash { color: rgba(255, 255, 255, 0.25); }
+        .qt-table .price-row td { color: #fff; font-weight: 700; }
+
+        .qt-compare .qt-table-scroll {
+            background: #fff;
+            border-radius: 24px;
+            border: 1px solid rgba(0, 0, 0, 0.08);
+            padding: 6px 10px;
+        }
+        .qt-compare .qt-table th,
+        .qt-compare .qt-table td {
+            border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+            color: rgba(17, 17, 17, 0.72);
+        }
+        .qt-compare .qt-table th,
+        .qt-compare .qt-table td:first-child,
+        .qt-compare .qt-table th:first-child,
+        .qt-compare .qt-table .price-row td {
+            color: #111;
+        }
+        .qt-compare .qt-table thead th {
+            border-bottom: 1px solid rgba(111, 154, 31, 0.55);
+        }
+        .qt-compare .qt-table tbody tr:hover { background: rgba(0, 0, 0, 0.03); }
+        .qt-compare .qt-table tbody tr:last-child td { border-bottom: none; }
+        .qt-compare .qt-check { color: #5f8a12; }
+        .qt-compare .qt-dash { color: rgba(0, 0, 0, 0.28); }
+
+        /* ── Terms ── */
+        .qt-terms-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+        .qt-term {
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 18px;
+            padding: 26px 28px;
+            background: rgba(255, 255, 255, 0.02);
+        }
+        .qt-term-num {
+            font-family: 'Morganite', sans-serif;
+            font-style: italic;
+            color: #B2DF48;
+            font-size: 22px;
+            margin-right: 8px;
+        }
+        .qt-term h4 {
+            display: inline;
+            font-family: 'Satoshi-Variable';
+            font-weight: 700;
+            font-size: 18px;
+            color: #fff;
+        }
+        .qt-term p {
+            margin-top: 12px;
+            color: rgba(255, 255, 255, 0.62);
+            font-size: 17px;
+            line-height: 1.6;
+            font-family: 'Satoshi-Variable', sans-serif;
+        }
+
+        /* ── Thank you / prepared by ── */
+        .qt-thanks {
+            text-align: center;
+            max-width: 820px;
+            margin: 0 auto;
+        }
+        .qt-thanks p {
+            color: #fff;
+            font-size: 25px;
+            line-height: 1.55;
+            font-weight: 500;
+            font-family: 'Satoshi-Variable', sans-serif;
+        }
+        .qt-prepared {
+            margin-top: 36px;
+            padding-top: 28px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .qt-prepared-label {
+            font-size: 12px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, 0.4);
+            font-family: 'Satoshi-Variable';
+            font-weight: 600;
+        }
+        .qt-prepared-lines { margin-top: 10px; }
+        .qt-prepared-lines div {
+            color: #fff;
+            font-size: 15px;
+            line-height: 1.8;
+            font-family: 'Satoshi-Variable', sans-serif;
+        }
+        .qt-prepared-lines div.muted { color: rgba(255, 255, 255, 0.4); font-style: italic; }
+        .qt-prepared-logo { margin: 8px 0 22px; }
+        .qt-prepared-logo .wl-logo { display: inline-block; width: 120px; height: auto; }
+        .qt-founders {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 16px 56px;
+            margin-bottom: 22px;
+        }
+        .qt-founder-name {
+            color: #fff;
+            font-size: 17px;
+            font-weight: 700;
+            font-family: 'Satoshi-Variable', sans-serif;
+        }
+        .qt-prepared-lines a {
+            color: #B2DF48;
+            text-decoration: none;
+            transition: opacity 0.2s ease;
+        }
+        .qt-prepared-lines a:hover { opacity: 0.7; text-decoration: underline; }
+
+        /* ── Access gate ── */
+        .qt-gate {
+            max-width: 560px;
+            margin: 0 auto;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
+            padding: 44px 44px 40px;
+            background: rgba(255, 255, 255, 0.02);
+        }
+        .qt-gate-icon {
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            background: rgba(178, 223, 72, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 22px;
+        }
+        .qt-gate h2 {
+            font-family: 'Satoshi-Variable', sans-serif;
+            font-weight: 700;
+            font-size: 24px;
+            color: #fff;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        .qt-gate-sub {
+            text-align: center;
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 14.5px;
+            line-height: 1.6;
+            font-family: 'Satoshi-Variable', sans-serif;
+            margin-bottom: 30px;
+        }
+        .qt-gate .pp-form { gap: 18px; }
+        .qt-gate .pp-row { grid-template-columns: 1fr; }
+        .qt-gate .pp-submit { align-self: stretch; justify-content: center; margin-top: 4px; }
+        .qt-gate-note {
+            margin-top: 20px;
+            text-align: center;
+            color: rgba(255, 255, 255, 0.32);
+            font-size: 12px;
+            font-family: 'Satoshi-Variable', sans-serif;
+        }
+
+        @media (max-width: 991px) {
+            .qt-hero { padding: 108px 0 50px; }
+            .qt-grid { grid-template-columns: 1fr; max-width: 480px; margin-left: auto; margin-right: auto; }
+            .qt-terms-grid { grid-template-columns: 1fr; }
+        }
+        @media (max-width: 767px) {
+            .qt-meta { flex-wrap: wrap; }
+            .qt-meta-item { white-space: normal; padding: 2px 14px; }
+            .qt-meta-item + .qt-meta-item { border-left: none; }
+        }
+        @media (max-width: 575px) {
+            .qt-card { padding: 32px 24px; }
+            .qt-gate { padding: 34px 24px 30px; }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- ========================= Site Header ========================= -->
+    <header class="site-header">
+        <div class="container">
+            <div class="row align-items-center">
+
+                <div class="col-lg-2 col-md-3 col-6">
+                    <div class="header-logo">
+                        <a href="./">
+                            <svg class="wl-logo" viewBox="0 0 128 48" xmlns="http://www.w3.org/2000/svg" aria-label="WeOne Logo">
+                                <defs>
+                                    <mask class="w-reveal-mask" maskUnits="userSpaceOnUse">
+                                        <rect class="w-reveal-rect" x="-6" y="-20" width="0" height="90" fill="white"/>
+                                    </mask>
+                                </defs>
+                                <path class="logo-w" d="M14.208 47.36L0 0H10.816L17.024 20.544C17.856 23.36 18.624 26.176 19.392 30.848C20.16 26.176 20.928 23.488 21.76 20.544L27.584 0H39.168L44.736 20.544C45.504 23.424 46.272 26.304 47.104 30.848C48.064 26.048 48.768 23.424 49.6 20.672L55.936 0H66.496L52.032 47.36H41.92L33.28 16.256L24.384 47.36H14.208Z" fill="white"/>
+                                <g class="logo-eye">
+                                    <circle class="logo-ball" cx="72.824" cy="38.43" r="8.7" fill="#B2DF48"/>
+                                    <path class="logo-emark" d="M79.68 38.72C79.68 39.2 79.65 39.7 79.59 40.22H67.98C68.06 41.26 68.39 42.06 68.97 42.62C69.57 43.16 70.3 43.43 71.16 43.43C72.44 43.43 73.33 42.89 73.83 41.81H79.29C79.01 42.91 78.5 43.9 77.76 44.78C77.04 45.66 76.13 46.35 75.03 46.85C73.93 47.35 72.7 47.6 71.34 47.6C69.7 47.6 68.24 47.25 66.96 46.55C65.68 45.85 64.68 44.85 63.96 43.55C63.24 42.25 62.88 40.73 62.88 38.99C62.88 37.25 63.23 35.73 63.93 34.43C64.65 33.13 65.65 32.13 66.93 31.43C68.21 30.73 69.68 30.38 71.34 30.38C72.96 30.38 74.4 30.72 75.66 31.4C76.92 32.08 77.9 33.05 78.6 34.31C79.32 35.57 79.68 37.04 79.68 38.72ZM74.43 37.37C74.43 36.49 74.13 35.79 73.53 35.27C72.93 34.75 72.18 34.49 71.28 34.49C70.42 34.49 69.69 34.74 69.09 35.24C68.51 35.74 68.15 36.45 68.01 37.37H74.43Z" fill="black"/>
+                                </g>
+                                <path class="logo-o" d="M95.368 46.552C94.344 46.552 93.4694 46.1467 92.744 45.336C92.0614 44.4827 91.848 43.2453 92.104 41.624L95.176 19.416C95.4747 17.7947 96.072 16.5787 96.968 15.768C97.9067 14.9147 98.888 14.488 99.912 14.488H100.68C101.704 14.488 102.557 14.9147 103.24 15.768C103.965 16.5787 104.2 17.7947 103.944 19.416L100.808 41.624C100.595 43.2453 100.019 44.4827 99.08 45.336C98.1414 46.1467 97.16 46.552 96.136 46.552H95.368ZM99.912 15.768C99.272 15.768 98.6107 16.0667 97.928 16.664C97.288 17.2613 96.8827 18.1787 96.712 19.416L93.576 41.624C93.4054 42.8613 93.5547 43.7787 94.024 44.376C94.4934 44.9733 95.0267 45.272 95.624 45.272H96.2C96.7974 45.272 97.416 44.9733 98.056 44.376C98.696 43.7787 99.1227 42.8613 99.336 41.624L102.472 19.416C102.643 18.1787 102.493 17.2613 102.024 16.664C101.597 16.0667 101.064 15.768 100.424 15.768H99.912Z" fill="white"/>
+                                <path class="logo-n" d="M111.923 15.768C111.624 15.768 111.283 15.8747 110.899 16.088C110.515 16.3013 110.131 16.6 109.747 16.984C109.405 17.368 109.107 17.8373 108.851 18.392C108.595 18.904 108.424 19.48 108.339 20.12L108.275 20.184L104.627 46.36H103.091L107.571 14.68H109.043L108.659 17.176C109.256 16.3653 109.917 15.7253 110.643 15.256C111.368 14.744 112.051 14.488 112.691 14.488H112.883C113.907 14.488 114.696 14.9147 115.251 15.768C115.805 16.5787 115.976 17.7947 115.763 19.416L111.923 46.36H110.387L114.291 19.416C114.461 18.1787 114.291 17.2613 113.779 16.664C113.309 16.0667 112.776 15.768 112.179 15.768H111.923Z" fill="white"/>
+                                <path class="logo-e2" d="M118.806 45.272H119.638C120.235 45.272 120.854 44.9733 121.494 44.376C122.134 43.7787 122.56 42.8613 122.774 41.624L123.926 33.176H125.462L124.246 41.624C124.032 43.2453 123.456 44.4827 122.518 45.336C121.579 46.1467 120.598 46.552 119.574 46.552H118.55C117.696 46.552 116.907 46.1467 116.182 45.336C115.499 44.4827 115.286 43.2453 115.542 41.624L118.614 19.416C118.87 17.7947 119.467 16.5787 120.406 15.768C121.344 14.9147 122.326 14.488 123.35 14.488H124.118C125.142 14.488 125.995 14.9147 126.678 15.768C127.403 16.5787 127.638 17.7947 127.382 19.416L125.782 30.616H118.55L117.014 41.624C116.843 42.8613 116.971 43.7787 117.398 44.376C117.867 44.9733 118.336 45.272 118.806 45.272ZM124.438 29.528L125.91 19.416C126.08 18.1787 125.931 17.2613 125.462 16.664C125.035 16.0667 124.502 15.768 123.862 15.768H123.35C122.71 15.768 122.048 16.0667 121.366 16.664C120.726 17.2613 120.32 18.1787 120.15 19.416L118.742 29.528H124.438Z" fill="white"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="col-lg-8 d-none d-lg-flex justify-content-center">
+                    <nav class="header-nav">
+                        <ul class="nav-list">
+                            <li><a href="./">Home</a><span class="nav-underline"></span></li>
+                            <li><a href="work">Our Work</a><span class="nav-underline"></span></li>
+                            <li><a href="about">About Us</a><span class="nav-underline"></span></li>
+                            <li><a href="blog">Blog</a><span class="nav-underline"></span></li>
+                        </ul>
+                    </nav>
+                </div>
+
+                <div class="col-lg-2 col-md-9 col-6 d-flex justify-content-end align-items-center gap-3">
+                    <div class="header-cta">
+                        <a href="#" class="cta-btn js-open-popup">
+                            Get A Call Back
+                            <span class="cta-icon"><svg width="20" height="20" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg"><g clip-path="url(#clip0_hdr)"><path d="M6.99999 13.4178C7.52032 13.4178 8.03482 13.4085 8.54232 13.391C11.172 13.2982 13.2977 11.1726 13.3904 8.54292C13.4085 8.03542 13.4172 7.52092 13.4172 7.00058C13.4172 6.48025 13.4079 5.96575 13.3904 5.45825C13.2977 2.82858 11.172 0.702914 8.54232 0.610165C8.03482 0.592081 7.52032 0.583331 6.99999 0.583331C6.47965 0.583331 5.96515 0.592665 5.45765 0.610165C2.8274 0.702914 0.701737 2.82858 0.608987 5.45883C0.590903 5.96633 0.582153 6.48083 0.582153 7.00116C0.582153 7.5215 0.591487 8.036 0.608987 8.5435C0.701737 11.1726 2.8274 13.2982 5.45765 13.3904C5.96515 13.4085 6.47965 13.4178 6.99999 13.4178ZM4.30499 9.49725C4.07515 9.24933 4.08974 8.86142 4.33824 8.63217L7.87557 5.35442L5.76099 5.138C5.60699 5.12225 5.47165 5.0505 5.37424 4.94491C5.25874 4.82067 5.19515 4.64858 5.2144 4.466C5.24882 4.13 5.54924 3.885 5.88582 3.92L9.15132 4.256C9.36015 4.26242 9.55324 4.34991 9.69499 4.50333C9.83615 4.65558 9.90907 4.8545 9.90032 5.02075L9.98607 8.34575C9.9954 8.68408 9.72765 8.96525 9.39049 8.974C9.20674 8.97866 9.04049 8.90225 8.92499 8.778C8.82757 8.673 8.76632 8.533 8.76224 8.37783L8.70857 6.25275L5.17065 9.5305C4.92274 9.76033 4.53482 9.74517 4.30499 9.49725Z" fill="#B2DF48"/></g><defs><clipPath id="clip0_hdr"><rect width="14" height="14" fill="white" transform="translate(0 14) rotate(-90)"/></clipPath></defs></svg></span>
+                            <span class="btn-glow-layer"></span>
+                            <div class="btn-inner-shadow mini"></div>
+                        </a>
+                    </div>
+                    <button class="mob-nav-toggle d-lg-none" aria-label="Open navigation"><span></span><span></span><span></span></button>
+                </div>
+
+            </div>
+        </div>
+    </header>
+
+    <div class="mob-nav-overlay"></div>
+    <div class="mob-nav-drawer">
+        <button class="mob-nav-close" aria-label="Close navigation">&times;</button>
+        <ul>
+            <li><a href="./">Home<i class="ri-arrow-right-up-line mob-nav-arrow" aria-hidden="true"></i></a></li>
+            <li><a href="work">Our Work<i class="ri-arrow-right-up-line mob-nav-arrow" aria-hidden="true"></i></a></li>
+            <li><a href="about">About Us<i class="ri-arrow-right-up-line mob-nav-arrow" aria-hidden="true"></i></a></li>
+            <li><a href="blog">Blog<i class="ri-arrow-right-up-line mob-nav-arrow" aria-hidden="true"></i></a></li>
+        </ul>
+        <a href="#" class="cta-btn mob-nav-cta js-open-popup">
+            Get A Call Back
+            <span class="cta-icon">
+                <svg width="20" height="20" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <g clip-path="url(#clip0_2_52_mobnav)">
+                        <path
+                            d="M6.99999 13.4178C7.52032 13.4178 8.03482 13.4085 8.54232 13.391C11.172 13.2982 13.2977 11.1726 13.3904 8.54292C13.4085 8.03542 13.4172 7.52092 13.4172 7.00058C13.4172 6.48025 13.4079 5.96575 13.3904 5.45825C13.2977 2.82858 11.172 0.702914 8.54232 0.610165C8.03482 0.592081 7.52032 0.583331 6.99999 0.583331C6.47965 0.583331 5.96515 0.592665 5.45765 0.610165C2.8274 0.702914 0.701737 2.82858 0.608987 5.45883C0.590903 5.96633 0.582153 6.48083 0.582153 7.00116C0.582153 7.5215 0.591487 8.036 0.608987 8.5435C0.701737 11.1726 2.8274 13.2982 5.45765 13.3904C5.96515 13.4085 6.47965 13.4178 6.99999 13.4178ZM4.30499 9.49725C4.07515 9.24933 4.08974 8.86142 4.33824 8.63217L7.87557 5.35442L5.76099 5.138C5.60699 5.12225 5.47165 5.0505 5.37424 4.94491C5.25874 4.82067 5.19515 4.64858 5.2144 4.466C5.24882 4.13 5.54924 3.885 5.88582 3.92L9.15132 4.256C9.36015 4.26242 9.55324 4.34991 9.69499 4.50333C9.83615 4.65558 9.90907 4.8545 9.90032 5.02075L9.98607 8.34575C9.9954 8.68408 9.72765 8.96525 9.39049 8.974C9.20674 8.97866 9.04049 8.90225 8.92499 8.778C8.82757 8.673 8.76632 8.533 8.76224 8.37783L8.70857 6.25275L5.17065 9.5305C4.92274 9.76033 4.53482 9.74517 4.30499 9.49725Z"
+                            fill="#B2DF48" />
+                    </g>
+                    <defs>
+                        <clipPath id="clip0_2_52_mobnav">
+                            <rect width="14" height="14" fill="white" transform="translate(0 14) rotate(-90)" />
+                        </clipPath>
+                    </defs>
+                </svg>
+            </span>
+            <span class="btn-glow-layer"></span>
+            <div class="btn-inner-shadow mini"></div>
+        </a>
+    </div>
+
+    <div class="mobile-sticky-cta">
+        <a href="#" class="cta-btn js-open-popup">
+            Get A Call Back
+            <span class="cta-icon">
+                <svg width="20" height="20" viewBox="0 0 14 14" fill="none"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <g clip-path="url(#clip0_2_52_sticky)">
+                        <path
+                            d="M6.99999 13.4178C7.52032 13.4178 8.03482 13.4085 8.54232 13.391C11.172 13.2982 13.2977 11.1726 13.3904 8.54292C13.4085 8.03542 13.4172 7.52092 13.4172 7.00058C13.4172 6.48025 13.4079 5.96575 13.3904 5.45825C13.2977 2.82858 11.172 0.702914 8.54232 0.610165C8.03482 0.592081 7.52032 0.583331 6.99999 0.583331C6.47965 0.583331 5.96515 0.592665 5.45765 0.610165C2.8274 0.702914 0.701737 2.82858 0.608987 5.45883C0.590903 5.96633 0.582153 6.48083 0.582153 7.00116C0.582153 7.5215 0.591487 8.036 0.608987 8.5435C0.701737 11.1726 2.8274 13.2982 5.45765 13.3904C5.96515 13.4085 6.47965 13.4178 6.99999 13.4178ZM4.30499 9.49725C4.07515 9.24933 4.08974 8.86142 4.33824 8.63217L7.87557 5.35442L5.76099 5.138C5.60699 5.12225 5.47165 5.0505 5.37424 4.94491C5.25874 4.82067 5.19515 4.64858 5.2144 4.466C5.24882 4.13 5.54924 3.885 5.88582 3.92L9.15132 4.256C9.36015 4.26242 9.55324 4.34991 9.69499 4.50333C9.83615 4.65558 9.90907 4.8545 9.90032 5.02075L9.98607 8.34575C9.9954 8.68408 9.72765 8.96525 9.39049 8.974C9.20674 8.97866 9.04049 8.90225 8.92499 8.778C8.82757 8.673 8.76632 8.533 8.76224 8.37783L8.70857 6.25275L5.17065 9.5305C4.92274 9.76033 4.53482 9.74517 4.30499 9.49725Z"
+                            fill="#B2DF48" />
+                    </g>
+                    <defs>
+                        <clipPath id="clip0_2_52_sticky">
+                            <rect width="14" height="14" fill="white"
+                                transform="translate(0 14) rotate(-90)" />
+                        </clipPath>
+                    </defs>
+                </svg>
+            </span>
+            <span class="btn-glow-layer"></span>
+            <div class="btn-inner-shadow mini"></div>
+        </a>
+    </div>
+    <!-- ========================= Site Header End ========================= -->
+
+    <!-- ========================= Quote Hero ========================= -->
+    <section class="qt-hero">
+        <div class="container">
+            <a href="./" class="qt-brand-logo" aria-label="WeOne">
+                <svg class="wl-logo" viewBox="0 0 128 48" xmlns="http://www.w3.org/2000/svg" aria-label="WeOne Logo">
+                    <defs>
+                        <mask class="w-reveal-mask" maskUnits="userSpaceOnUse">
+                            <rect class="w-reveal-rect" x="-6" y="-20" width="0" height="90" fill="white"/>
+                        </mask>
+                    </defs>
+                    <path class="logo-w" d="M14.208 47.36L0 0H10.816L17.024 20.544C17.856 23.36 18.624 26.176 19.392 30.848C20.16 26.176 20.928 23.488 21.76 20.544L27.584 0H39.168L44.736 20.544C45.504 23.424 46.272 26.304 47.104 30.848C48.064 26.048 48.768 23.424 49.6 20.672L55.936 0H66.496L52.032 47.36H41.92L33.28 16.256L24.384 47.36H14.208Z" fill="white"/>
+                    <g class="logo-eye">
+                        <circle class="logo-ball" cx="72.824" cy="38.43" r="8.7" fill="#B2DF48"/>
+                        <path class="logo-emark" d="M79.68 38.72C79.68 39.2 79.65 39.7 79.59 40.22H67.98C68.06 41.26 68.39 42.06 68.97 42.62C69.57 43.16 70.3 43.43 71.16 43.43C72.44 43.43 73.33 42.89 73.83 41.81H79.29C79.01 42.91 78.5 43.9 77.76 44.78C77.04 45.66 76.13 46.35 75.03 46.85C73.93 47.35 72.7 47.6 71.34 47.6C69.7 47.6 68.24 47.25 66.96 46.55C65.68 45.85 64.68 44.85 63.96 43.55C63.24 42.25 62.88 40.73 62.88 38.99C62.88 37.25 63.23 35.73 63.93 34.43C64.65 33.13 65.65 32.13 66.93 31.43C68.21 30.73 69.68 30.38 71.34 30.38C72.96 30.38 74.4 30.72 75.66 31.4C76.92 32.08 77.9 33.05 78.6 34.31C79.32 35.57 79.68 37.04 79.68 38.72ZM74.43 37.37C74.43 36.49 74.13 35.79 73.53 35.27C72.93 34.75 72.18 34.49 71.28 34.49C70.42 34.49 69.69 34.74 69.09 35.24C68.51 35.74 68.15 36.45 68.01 37.37H74.43Z" fill="black"/>
+                    </g>
+                    <path class="logo-o" d="M95.368 46.552C94.344 46.552 93.4694 46.1467 92.744 45.336C92.0614 44.4827 91.848 43.2453 92.104 41.624L95.176 19.416C95.4747 17.7947 96.072 16.5787 96.968 15.768C97.9067 14.9147 98.888 14.488 99.912 14.488H100.68C101.704 14.488 102.557 14.9147 103.24 15.768C103.965 16.5787 104.2 17.7947 103.944 19.416L100.808 41.624C100.595 43.2453 100.019 44.4827 99.08 45.336C98.1414 46.1467 97.16 46.552 96.136 46.552H95.368ZM99.912 15.768C99.272 15.768 98.6107 16.0667 97.928 16.664C97.288 17.2613 96.8827 18.1787 96.712 19.416L93.576 41.624C93.4054 42.8613 93.5547 43.7787 94.024 44.376C94.4934 44.9733 95.0267 45.272 95.624 45.272H96.2C96.7974 45.272 97.416 44.9733 98.056 44.376C98.696 43.7787 99.1227 42.8613 99.336 41.624L102.472 19.416C102.643 18.1787 102.493 17.2613 102.024 16.664C101.597 16.0667 101.064 15.768 100.424 15.768H99.912Z" fill="white"/>
+                    <path class="logo-n" d="M111.923 15.768C111.624 15.768 111.283 15.8747 110.899 16.088C110.515 16.3013 110.131 16.6 109.747 16.984C109.405 17.368 109.107 17.8373 108.851 18.392C108.595 18.904 108.424 19.48 108.339 20.12L108.275 20.184L104.627 46.36H103.091L107.571 14.68H109.043L108.659 17.176C109.256 16.3653 109.917 15.7253 110.643 15.256C111.368 14.744 112.051 14.488 112.691 14.488H112.883C113.907 14.488 114.696 14.9147 115.251 15.768C115.805 16.5787 115.976 17.7947 115.763 19.416L111.923 46.36H110.387L114.291 19.416C114.461 18.1787 114.291 17.2613 113.779 16.664C113.309 16.0667 112.776 15.768 112.179 15.768H111.923Z" fill="white"/>
+                    <path class="logo-e2" d="M118.806 45.272H119.638C120.235 45.272 120.854 44.9733 121.494 44.376C122.134 43.7787 122.56 42.8613 122.774 41.624L123.926 33.176H125.462L124.246 41.624C124.032 43.2453 123.456 44.4827 122.518 45.336C121.579 46.1467 120.598 46.552 119.574 46.552H118.55C117.696 46.552 116.907 46.1467 116.182 45.336C115.499 44.4827 115.286 43.2453 115.542 41.624L118.614 19.416C118.87 17.7947 119.467 16.5787 120.406 15.768C121.344 14.9147 122.326 14.488 123.35 14.488H124.118C125.142 14.488 125.995 14.9147 126.678 15.768C127.403 16.5787 127.638 17.7947 127.382 19.416L125.782 30.616H118.55L117.014 41.624C116.843 42.8613 116.971 43.7787 117.398 44.376C117.867 44.9733 118.336 45.272 118.806 45.272ZM124.438 29.528L125.91 19.416C126.08 18.1787 125.931 17.2613 125.462 16.664C125.035 16.0667 124.502 15.768 123.862 15.768H123.35C122.71 15.768 122.048 16.0667 121.366 16.664C120.726 17.2613 120.32 18.1787 120.15 19.416L118.742 29.528H124.438Z" fill="white"/>
+                </svg>
+            </a>
+            <h1 class="wetitle">Website Design &amp;<br><span class="italicTitle">Development Quotation.</span></h1>
+            <div class="qt-meta">
+                <span class="qt-meta-item"><strong>Prepared For:</strong> DM Digitals</span>
+                <span class="qt-meta-item"><strong>Service:</strong> Professional Photography Portfolio Website</span>
+                <span class="qt-meta-item"><strong>Date:</strong> 20 August 2026</span>
+            </div>
+        </div>
+    </section>
+
+    <?php if ($verified): ?>
+
+    <!-- ========================= Overview ========================= -->
+    <section class="qt-section-tight">
+        <div class="container">
+            <p class="qt-lead">
+                Thank you for considering our website design and development services. We propose to create a professional, responsive website for your<br>
+                photography business that showcases your portfolio, services, projects, and brand identity while providing a smooth experience across mobile, tablet, and desktop devices.<br>
+                We have prepared <strong style="color:#fff;">three packages</strong> based on different levels of design, customization, functionality, and technology.
+            </p>
+        </div>
+    </section>
+
+    <!-- ========================= Package Cards ========================= -->
+    <section class="qt-section">
+        <div class="container">
+            <h2 class="wetitle qt-cards-heading">Choose Your <span class="italicTitle">Package.</span></h2>
+            <p class="qt-section-sub">Three tiers built around different levels of customization, technology, and long-term scalability.</p>
+
+            <div class="qt-grid">
+
+                <!-- Starter -->
+                <div class="qt-card">
+                    <span class="qt-card-name">Starter</span>
+                    <div class="qt-card-price">₹8,000 - ₹12,000</div>
+                    <p class="qt-card-desc"><strong style="color:#fff;">Best for:</strong> Photographers looking for a simple, professional online presence at an affordable budget.</p>
+                    <a href="#" class="cta-btn js-open-popup qt-card-cta">
+                        Get A Call Back
+                        <span class="cta-icon"><svg width="20" height="20" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg"><g clip-path="url(#clip0_qc1)"><path d="M6.99999 13.4178C7.52032 13.4178 8.03482 13.4085 8.54232 13.391C11.172 13.2982 13.2977 11.1726 13.3904 8.54292C13.4085 8.03542 13.4172 7.52092 13.4172 7.00058C13.4172 6.48025 13.4079 5.96575 13.3904 5.45825C13.2977 2.82858 11.172 0.702914 8.54232 0.610165C8.03482 0.592081 7.52032 0.583331 6.99999 0.583331C6.47965 0.583331 5.96515 0.592665 5.45765 0.610165C2.8274 0.702914 0.701737 2.82858 0.608987 5.45883C0.590903 5.96633 0.582153 6.48083 0.582153 7.00116C0.582153 7.5215 0.591487 8.036 0.608987 8.5435C0.701737 11.1726 2.8274 13.2982 5.45765 13.3904C5.96515 13.4085 6.47965 13.4178 6.99999 13.4178ZM4.30499 9.49725C4.07515 9.24933 4.08974 8.86142 4.33824 8.63217L7.87557 5.35442L5.76099 5.138C5.60699 5.12225 5.47165 5.0505 5.37424 4.94491C5.25874 4.82067 5.19515 4.64858 5.2144 4.466C5.24882 4.13 5.54924 3.885 5.88582 3.92L9.15132 4.256C9.36015 4.26242 9.55324 4.34991 9.69499 4.50333C9.83615 4.65558 9.90907 4.8545 9.90032 5.02075L9.98607 8.34575C9.9954 8.68408 9.72765 8.96525 9.39049 8.974C9.20674 8.97866 9.04049 8.90225 8.92499 8.778C8.82757 8.673 8.76632 8.533 8.76224 8.37783L8.70857 6.25275L5.17065 9.5305C4.92274 9.76033 4.53482 9.74517 4.30499 9.49725Z" fill="#B2DF48"/></g><defs><clipPath id="clip0_qc1"><rect width="14" height="14" fill="white" transform="translate(0 14) rotate(-90)"/></clipPath></defs></svg></span>
+                        <span class="btn-glow-layer"></span>
+                        <div class="btn-inner-shadow mini"></div>
+                    </a>
+                    <ul class="qt-card-features">
+                        <li>Free domain &amp; hosting</li>
+                        <li>WordPress-based website</li>
+                        <li>Simple professional WordPress theme</li>
+                        <li>Theme-based design with no custom design customization</li>
+                        <li>Fully responsive for mobile, tablet &amp; desktop</li>
+                        <li>Basic photography portfolio/gallery</li>
+                        <li>Basic pages: Home, About, Services, Portfolio/Gallery, Contact</li>
+                        <li>Basic contact form</li>
+                        <li>Social media links</li>
+                        <li>Basic website setup and configuration</li>
+                        <li>Basic SEO-friendly structure</li>
+                        <li>SSL/security setup where supported by hosting</li>
+                    </ul>
+                    <p class="qt-card-suitable"><strong>Suitable for:</strong> A straightforward portfolio website where the primary goal is to display photography work and provide contact information without extensive customization.</p>
+                </div>
+
+                <!-- Professional -->
+                <div class="qt-card is-featured">
+                    <span class="qt-card-badge">Recommended</span>
+                    <span class="qt-card-name">Professional</span>
+                    <div class="qt-card-price">₹20,000 - ₹25,000</div>
+                    <p class="qt-card-desc"><strong style="color:#fff;">Best for:</strong> Professional photographers who want a more customized and premium website.</p>
+                    <a href="#" class="cta-btn js-open-popup qt-card-cta">
+                        Get A Call Back
+                        <span class="cta-icon"><svg width="20" height="20" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg"><g clip-path="url(#clip0_qc2)"><path d="M6.99999 13.4178C7.52032 13.4178 8.03482 13.4085 8.54232 13.391C11.172 13.2982 13.2977 11.1726 13.3904 8.54292C13.4085 8.03542 13.4172 7.52092 13.4172 7.00058C13.4172 6.48025 13.4079 5.96575 13.3904 5.45825C13.2977 2.82858 11.172 0.702914 8.54232 0.610165C8.03482 0.592081 7.52032 0.583331 6.99999 0.583331C6.47965 0.583331 5.96515 0.592665 5.45765 0.610165C2.8274 0.702914 0.701737 2.82858 0.608987 5.45883C0.590903 5.96633 0.582153 6.48083 0.582153 7.00116C0.582153 7.5215 0.591487 8.036 0.608987 8.5435C0.701737 11.1726 2.8274 13.2982 5.45765 13.3904C5.96515 13.4085 6.47965 13.4178 6.99999 13.4178ZM4.30499 9.49725C4.07515 9.24933 4.08974 8.86142 4.33824 8.63217L7.87557 5.35442L5.76099 5.138C5.60699 5.12225 5.47165 5.0505 5.37424 4.94491C5.25874 4.82067 5.19515 4.64858 5.2144 4.466C5.24882 4.13 5.54924 3.885 5.88582 3.92L9.15132 4.256C9.36015 4.26242 9.55324 4.34991 9.69499 4.50333C9.83615 4.65558 9.90907 4.8545 9.90032 5.02075L9.98607 8.34575C9.9954 8.68408 9.72765 8.96525 9.39049 8.974C9.20674 8.97866 9.04049 8.90225 8.92499 8.778C8.82757 8.673 8.76632 8.533 8.76224 8.37783L8.70857 6.25275L5.17065 9.5305C4.92274 9.76033 4.53482 9.74517 4.30499 9.49725Z" fill="#B2DF48"/></g><defs><clipPath id="clip0_qc2"><rect width="14" height="14" fill="white" transform="translate(0 14) rotate(-90)"/></clipPath></defs></svg></span>
+                        <span class="btn-glow-layer"></span>
+                        <div class="btn-inner-shadow mini"></div>
+                    </a>
+                    <ul class="qt-card-features">
+                        <li>Free domain &amp; hosting</li>
+                        <li>Premium WordPress theme OR custom HTML/CSS design</li>
+                        <li>Up to 3 design concepts/options</li>
+                        <li>Up to 5 rounds of revisions</li>
+                        <li>Fully responsive design</li>
+                        <li>Customized typography, layout and visual styling</li>
+                        <li>Professional photography portfolio/gallery</li>
+                        <li>Admin panel / CMS for managing website content</li>
+                        <li>Contact/enquiry form</li>
+                        <li>Social media integration</li>
+                        <li>Image optimization</li>
+                        <li>Basic SEO setup</li>
+                        <li>Gallery and portfolio sections</li>
+                        <li>Service/package presentation sections</li>
+                        <li>Mobile, tablet &amp; desktop optimization</li>
+                        <li>Basic performance optimization</li>
+                        <li>Additional mid-level website features as required and mutually agreed</li>
+                    </ul>
+                    <p class="qt-card-suitable"><strong>Suitable for:</strong> Photographers who want a distinctive and professionally customized website rather than a basic template-based portfolio.</p>
+                </div>
+
+                <!-- Premium -->
+                <div class="qt-card">
+                    <span class="qt-card-name">Premium / Future-Ready</span>
+                    <div class="qt-card-price">₹50,000+</div>
+                    <p class="qt-card-desc"><strong style="color:#fff;">Best for:</strong> Established studios and brands wanting a modern, high-end presence.</p>
+                    <a href="#" class="cta-btn js-open-popup qt-card-cta">
+                        Get A Call Back
+                        <span class="cta-icon"><svg width="20" height="20" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg"><g clip-path="url(#clip0_qc3)"><path d="M6.99999 13.4178C7.52032 13.4178 8.03482 13.4085 8.54232 13.391C11.172 13.2982 13.2977 11.1726 13.3904 8.54292C13.4085 8.03542 13.4172 7.52092 13.4172 7.00058C13.4172 6.48025 13.4079 5.96575 13.3904 5.45825C13.2977 2.82858 11.172 0.702914 8.54232 0.610165C8.03482 0.592081 7.52032 0.583331 6.99999 0.583331C6.47965 0.583331 5.96515 0.592665 5.45765 0.610165C2.8274 0.702914 0.701737 2.82858 0.608987 5.45883C0.590903 5.96633 0.582153 6.48083 0.582153 7.00116C0.582153 7.5215 0.591487 8.036 0.608987 8.5435C0.701737 11.1726 2.8274 13.2982 5.45765 13.3904C5.96515 13.4085 6.47965 13.4178 6.99999 13.4178ZM4.30499 9.49725C4.07515 9.24933 4.08974 8.86142 4.33824 8.63217L7.87557 5.35442L5.76099 5.138C5.60699 5.12225 5.47165 5.0505 5.37424 4.94491C5.25874 4.82067 5.19515 4.64858 5.2144 4.466C5.24882 4.13 5.54924 3.885 5.88582 3.92L9.15132 4.256C9.36015 4.26242 9.55324 4.34991 9.69499 4.50333C9.83615 4.65558 9.90907 4.8545 9.90032 5.02075L9.98607 8.34575C9.9954 8.68408 9.72765 8.96525 9.39049 8.974C9.20674 8.97866 9.04049 8.90225 8.92499 8.778C8.82757 8.673 8.76632 8.533 8.76224 8.37783L8.70857 6.25275L5.17065 9.5305C4.92274 9.76033 4.53482 9.74517 4.30499 9.49725Z" fill="#B2DF48"/></g><defs><clipPath id="clip0_qc3"><rect width="14" height="14" fill="white" transform="translate(0 14) rotate(-90)"/></clipPath></defs></svg></span>
+                        <span class="btn-glow-layer"></span>
+                        <div class="btn-inner-shadow mini"></div>
+                    </a>
+                    <ul class="qt-card-features">
+                        <li>Free domain &amp; hosting</li>
+                        <li>Premium, modern &amp; highly customized website design</li>
+                        <li>Up to 5 custom design concepts/options</li>
+                        <li>Up to 10 rounds of revisions</li>
+                        <li>Fully responsive across all devices</li>
+                        <li>Modern UI/UX-focused design</li>
+                        <li>Custom layouts and interactive sections</li>
+                        <li>Professional portfolio/gallery experience</li>
+                        <li>Admin panel / content management functionality</li>
+                        <li>Advanced website sections and features</li>
+                        <li>Advanced contact/enquiry functionality</li>
+                        <li>Social media integration</li>
+                        <li>Image optimization</li>
+                        <li>SEO-friendly architecture</li>
+                        <li>Performance optimization</li>
+                        <li>Modern animations/interactions where appropriate</li>
+                        <li>Next.js technology</li>
+                        <li>Future-ready architecture for scalability and additional functionality</li>
+                        <li>Additional advanced features based on project requirements</li>
+                    </ul>
+                    <p class="qt-card-suitable"><strong>Suitable for:</strong> Clients looking for a premium, modern and scalable photography website designed to create a strong brand impression and support future growth.</p>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- ========================= Comparison Table ========================= -->
+    <section class="qt-section qt-compare">
+        <div class="container">
+            <div class="qt-table-scroll">
+                <table class="qt-table">
+                    <thead>
+                        <tr>
+                            <th>Feature</th>
+                            <th>Starter</th>
+                            <th>Professional</th>
+                            <th>Premium</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="price-row">
+                            <td>Price</td>
+                            <td>₹8K-₹12K</td>
+                            <td>₹20K-₹25K</td>
+                            <td>₹50K+</td>
+                        </tr>
+                        <tr>
+                            <td>Domain &amp; Hosting</td>
+                            <td><span class="qt-check">✓ Free</span></td>
+                            <td><span class="qt-check">✓ Free</span></td>
+                            <td><span class="qt-check">✓ Free</span></td>
+                        </tr>
+                        <tr>
+                            <td>WordPress</td>
+                            <td><span class="qt-check">✓</span></td>
+                            <td><span class="qt-check">✓</span></td>
+                            <td><span class="qt-dash">-</span></td>
+                        </tr>
+                        <tr>
+                            <td>Simple Theme</td>
+                            <td><span class="qt-check">✓</span></td>
+                            <td><span class="qt-dash">-</span></td>
+                            <td><span class="qt-dash">-</span></td>
+                        </tr>
+                        <tr>
+                            <td>Premium Theme</td>
+                            <td><span class="qt-dash">-</span></td>
+                            <td><span class="qt-check">✓</span></td>
+                            <td><span class="qt-dash">-</span></td>
+                        </tr>
+                        <tr>
+                            <td>Custom HTML/CSS</td>
+                            <td><span class="qt-dash">-</span></td>
+                            <td><span class="qt-check">✓</span></td>
+                            <td><span class="qt-check">✓</span></td>
+                        </tr>
+                        <tr>
+                            <td>Design Options</td>
+                            <td>1</td>
+                            <td>Up to 3</td>
+                            <td>Up to 5</td>
+                        </tr>
+                        <tr>
+                            <td>Revision Rounds</td>
+                            <td>Basic</td>
+                            <td>Up to 5</td>
+                            <td>Up to 10</td>
+                        </tr>
+                        <tr>
+                            <td>Fully Responsive</td>
+                            <td><span class="qt-check">✓</span></td>
+                            <td><span class="qt-check">✓</span></td>
+                            <td><span class="qt-check">✓</span></td>
+                        </tr>
+                        <tr>
+                            <td>Admin Panel</td>
+                            <td>Basic</td>
+                            <td><span class="qt-check">✓</span></td>
+                            <td><span class="qt-check">✓</span></td>
+                        </tr>
+                        <tr>
+                            <td>Portfolio/Gallery</td>
+                            <td><span class="qt-check">✓</span></td>
+                            <td><span class="qt-check">✓</span></td>
+                            <td><span class="qt-check">✓</span></td>
+                        </tr>
+                        <tr>
+                            <td>Contact Form</td>
+                            <td><span class="qt-check">✓</span></td>
+                            <td><span class="qt-check">✓</span></td>
+                            <td><span class="qt-check">✓</span></td>
+                        </tr>
+                        <tr>
+                            <td>Basic SEO</td>
+                            <td><span class="qt-check">✓</span></td>
+                            <td><span class="qt-check">✓</span></td>
+                            <td><span class="qt-check">✓</span></td>
+                        </tr>
+                        <tr>
+                            <td>Performance Optimization</td>
+                            <td>Basic</td>
+                            <td><span class="qt-check">✓</span></td>
+                            <td>Advanced</td>
+                        </tr>
+                        <tr>
+                            <td>Modern UI/UX</td>
+                            <td><span class="qt-dash">-</span></td>
+                            <td><span class="qt-check">✓</span></td>
+                            <td><span class="qt-check">✓✓</span></td>
+                        </tr>
+                        <tr>
+                            <td>Advanced Features</td>
+                            <td><span class="qt-dash">-</span></td>
+                            <td>Mid-level</td>
+                            <td>Advanced</td>
+                        </tr>
+                        <tr>
+                            <td>Next.js</td>
+                            <td><span class="qt-dash">-</span></td>
+                            <td><span class="qt-dash">-</span></td>
+                            <td><span class="qt-check">✓</span></td>
+                        </tr>
+                        <tr>
+                            <td>Future Scalability</td>
+                            <td>Basic</td>
+                            <td>Good</td>
+                            <td>Excellent</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========================= Important Terms ========================= -->
+    <section class="qt-section">
+        <div class="container">
+            <h2 class="wetitle qt-terms-heading">Important <span class="italicTitle">Terms.</span></h2>
+            <p class="qt-section-sub">A few essentials worth reading before we get started.</p>
+
+            <div class="qt-terms-grid">
+                <div class="qt-term">
+                    <span class="qt-term-num">01</span><h4>Content</h4>
+                    <p>The client will provide the required photography images, logo, text/content, contact details, social media links and other brand assets.</p>
+                </div>
+                <div class="qt-term">
+                    <span class="qt-term-num">02</span><h4>Revisions</h4>
+                    <p>Revisions are limited to the number of rounds specified in the selected package. A revision round means a consolidated set of feedback provided by the client.</p>
+                </div>
+                <div class="qt-term">
+                    <span class="qt-term-num">03</span><h4>Additional Features</h4>
+                    <p>Features outside the selected package will be discussed separately and may involve additional development charges.</p>
+                </div>
+                <div class="qt-term">
+                    <span class="qt-term-num">04</span><h4>Domain &amp; Hosting</h4>
+                    <p>Free domain and hosting are included in all packages, set up and configured as part of the project.</p>
+                </div>
+                <div class="qt-term">
+                    <span class="qt-term-num">05</span><h4>Third-Party Services</h4>
+                    <p>Any paid third-party plugins, premium services, APIs, fonts, stock assets, email services or external subscriptions are not included unless specifically mentioned.</p>
+                </div>
+                <div class="qt-term">
+                    <span class="qt-term-num">06</span><h4>Timeline</h4>
+                    <p>The final timeline will depend on the selected package, content availability, design approval and client feedback.</p>
+                </div>
+                <div class="qt-term" style="grid-column: 1 / -1;">
+                    <span class="qt-term-num">07</span><h4>Final Delivery</h4>
+                    <p>The completed website will be delivered after approval and settlement of the agreed project payment.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========================= Thank You ========================= -->
+    <section class="qt-section">
+        <div class="container">
+            <div class="qt-thanks">
+                <p>We look forward to creating a professional digital presence that represents your photography brand and helps you showcase your work to potential clients.</p>
+                <div class="qt-prepared">
+                    <span class="qt-prepared-label">Prepared By</span>
+                    <div class="qt-prepared-logo">
+                        <svg class="wl-logo" viewBox="0 0 128 48" xmlns="http://www.w3.org/2000/svg" aria-label="WeOne Logo">
+                            <defs>
+                                <mask class="w-reveal-mask" maskUnits="userSpaceOnUse">
+                                    <rect class="w-reveal-rect" x="-6" y="-20" width="0" height="90" fill="white"/>
+                                </mask>
+                            </defs>
+                            <path class="logo-w" d="M14.208 47.36L0 0H10.816L17.024 20.544C17.856 23.36 18.624 26.176 19.392 30.848C20.16 26.176 20.928 23.488 21.76 20.544L27.584 0H39.168L44.736 20.544C45.504 23.424 46.272 26.304 47.104 30.848C48.064 26.048 48.768 23.424 49.6 20.672L55.936 0H66.496L52.032 47.36H41.92L33.28 16.256L24.384 47.36H14.208Z" fill="white"/>
+                            <g class="logo-eye">
+                                <circle class="logo-ball" cx="72.824" cy="38.43" r="8.7" fill="#B2DF48"/>
+                                <path class="logo-emark" d="M79.68 38.72C79.68 39.2 79.65 39.7 79.59 40.22H67.98C68.06 41.26 68.39 42.06 68.97 42.62C69.57 43.16 70.3 43.43 71.16 43.43C72.44 43.43 73.33 42.89 73.83 41.81H79.29C79.01 42.91 78.5 43.9 77.76 44.78C77.04 45.66 76.13 46.35 75.03 46.85C73.93 47.35 72.7 47.6 71.34 47.6C69.7 47.6 68.24 47.25 66.96 46.55C65.68 45.85 64.68 44.85 63.96 43.55C63.24 42.25 62.88 40.73 62.88 38.99C62.88 37.25 63.23 35.73 63.93 34.43C64.65 33.13 65.65 32.13 66.93 31.43C68.21 30.73 69.68 30.38 71.34 30.38C72.96 30.38 74.4 30.72 75.66 31.4C76.92 32.08 77.9 33.05 78.6 34.31C79.32 35.57 79.68 37.04 79.68 38.72ZM74.43 37.37C74.43 36.49 74.13 35.79 73.53 35.27C72.93 34.75 72.18 34.49 71.28 34.49C70.42 34.49 69.69 34.74 69.09 35.24C68.51 35.74 68.15 36.45 68.01 37.37H74.43Z" fill="black"/>
+                            </g>
+                            <path class="logo-o" d="M95.368 46.552C94.344 46.552 93.4694 46.1467 92.744 45.336C92.0614 44.4827 91.848 43.2453 92.104 41.624L95.176 19.416C95.4747 17.7947 96.072 16.5787 96.968 15.768C97.9067 14.9147 98.888 14.488 99.912 14.488H100.68C101.704 14.488 102.557 14.9147 103.24 15.768C103.965 16.5787 104.2 17.7947 103.944 19.416L100.808 41.624C100.595 43.2453 100.019 44.4827 99.08 45.336C98.1414 46.1467 97.16 46.552 96.136 46.552H95.368ZM99.912 15.768C99.272 15.768 98.6107 16.0667 97.928 16.664C97.288 17.2613 96.8827 18.1787 96.712 19.416L93.576 41.624C93.4054 42.8613 93.5547 43.7787 94.024 44.376C94.4934 44.9733 95.0267 45.272 95.624 45.272H96.2C96.7974 45.272 97.416 44.9733 98.056 44.376C98.696 43.7787 99.1227 42.8613 99.336 41.624L102.472 19.416C102.643 18.1787 102.493 17.2613 102.024 16.664C101.597 16.0667 101.064 15.768 100.424 15.768H99.912Z" fill="white"/>
+                            <path class="logo-n" d="M111.923 15.768C111.624 15.768 111.283 15.8747 110.899 16.088C110.515 16.3013 110.131 16.6 109.747 16.984C109.405 17.368 109.107 17.8373 108.851 18.392C108.595 18.904 108.424 19.48 108.339 20.12L108.275 20.184L104.627 46.36H103.091L107.571 14.68H109.043L108.659 17.176C109.256 16.3653 109.917 15.7253 110.643 15.256C111.368 14.744 112.051 14.488 112.691 14.488H112.883C113.907 14.488 114.696 14.9147 115.251 15.768C115.805 16.5787 115.976 17.7947 115.763 19.416L111.923 46.36H110.387L114.291 19.416C114.461 18.1787 114.291 17.2613 113.779 16.664C113.309 16.0667 112.776 15.768 112.179 15.768H111.923Z" fill="white"/>
+                            <path class="logo-e2" d="M118.806 45.272H119.638C120.235 45.272 120.854 44.9733 121.494 44.376C122.134 43.7787 122.56 42.8613 122.774 41.624L123.926 33.176H125.462L124.246 41.624C124.032 43.2453 123.456 44.4827 122.518 45.336C121.579 46.1467 120.598 46.552 119.574 46.552H118.55C117.696 46.552 116.907 46.1467 116.182 45.336C115.499 44.4827 115.286 43.2453 115.542 41.624L118.614 19.416C118.87 17.7947 119.467 16.5787 120.406 15.768C121.344 14.9147 122.326 14.488 123.35 14.488H124.118C125.142 14.488 125.995 14.9147 126.678 15.768C127.403 16.5787 127.638 17.7947 127.382 19.416L125.782 30.616H118.55L117.014 41.624C116.843 42.8613 116.971 43.7787 117.398 44.376C117.867 44.9733 118.336 45.272 118.806 45.272ZM124.438 29.528L125.91 19.416C126.08 18.1787 125.931 17.2613 125.462 16.664C125.035 16.0667 124.502 15.768 123.862 15.768H123.35C122.71 15.768 122.048 16.0667 121.366 16.664C120.726 17.2613 120.32 18.1787 120.15 19.416L118.742 29.528H124.438Z" fill="white"/>
+                        </svg>
+                    </div>
+                    <div class="qt-founders">
+                        <div class="qt-founder">
+                            <div class="qt-founder-name">Sarboruo Sarkar</div>
+                        </div>
+                        <div class="qt-founder">
+                            <div class="qt-founder-name">Sandip Sen</div>
+                        </div>
+                    </div>
+                    <div class="qt-prepared-lines">
+                        <div><a href="mailto:info@weone.tech">info@weone.tech</a></div>
+                        <div><a href="https://weone.tech" target="_blank" rel="noopener noreferrer">weone.tech</a></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <?php else: ?>
+
+    <!-- ========================= Access Gate ========================= -->
+    <section class="qt-section">
+        <div class="container">
+            <div class="qt-gate">
+                <div class="qt-gate-icon">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6 10V8a6 6 0 1112 0v2" stroke="#B2DF48" stroke-width="1.8" stroke-linecap="round"/><rect x="4" y="10" width="16" height="11" rx="2.5" stroke="#B2DF48" stroke-width="1.8"/></svg>
+                </div>
+                <h2>This quotation is private</h2>
+                <p class="qt-gate-sub">Enter your details below and we'll email you a one-time code to confirm it's you before showing the pricing.</p>
+
+                <form class="pp-form" id="quoteGateForm" novalidate>
+                    <input type="text" name="website" class="pp-honeypot" tabindex="-1" autocomplete="off" aria-hidden="true">
+                    <div class="pp-field">
+                        <label>Your Name <span>*</span></label>
+                        <input type="text" name="name" placeholder="John Doe" required>
+                        <span class="pp-error-msg"></span>
+                    </div>
+                    <div class="pp-field">
+                        <label>Phone Number <span>*</span></label>
+                        <input type="tel" name="phone" placeholder="+91 00000 00000" required>
+                        <span class="pp-error-msg"></span>
+                    </div>
+                    <div class="pp-field">
+                        <label>Email Address <span>*</span></label>
+                        <input type="email" name="email" placeholder="john@company.com" required>
+                        <span class="pp-error-msg"></span>
+                        <div class="pp-verify-code-row" style="display:none;">
+                            <input type="text" class="pp-verify-code-input" placeholder="6-digit code" maxlength="6" inputmode="numeric" autocomplete="one-time-code">
+                            <button type="button" class="pp-verify-code-btn">Confirm</button>
+                        </div>
+                        <span class="pp-verify-status"></span>
+                    </div>
+                    <span class="pp-submit-error" id="qgSubmitError"></span>
+                    <button type="submit" class="pp-submit" id="qgSubmitBtn">
+                        <span class="pp-submit-label">Send Me The Code</span>
+                        <span class="cta-icon"><svg width="18" height="18" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg"><g clip-path="url(#qgClip)"><path d="M6.99999 13.4178C7.52032 13.4178 8.03482 13.4085 8.54232 13.391C11.172 13.2982 13.2977 11.1726 13.3904 8.54292C13.4085 8.03542 13.4172 7.52092 13.4172 7.00058C13.4172 6.48025 13.4079 5.96575 13.3904 5.45825C13.2977 2.82858 11.172 0.702914 8.54232 0.610165C8.03482 0.592081 7.52032 0.583331 6.99999 0.583331C6.47965 0.583331 5.96515 0.592665 5.45765 0.610165C2.8274 0.702914 0.701737 2.82858 0.608987 5.45883C0.590903 5.96633 0.582153 6.48083 0.582153 7.00116C0.582153 7.5215 0.591487 8.036 0.608987 8.5435C0.701737 11.1726 2.8274 13.2982 5.45765 13.3904C5.96515 13.4085 6.47965 13.4178 6.99999 13.4178ZM4.30499 9.49725C4.07515 9.24933 4.08974 8.86142 4.33824 8.63217L7.87557 5.35442L5.76099 5.138C5.60699 5.12225 5.47165 5.0505 5.37424 4.94491C5.25874 4.82067 5.19515 4.64858 5.2144 4.466C5.24882 4.13 5.54924 3.885 5.88582 3.92L9.15132 4.256C9.36015 4.26242 9.55324 4.34991 9.69499 4.50333C9.83615 4.65558 9.90907 4.8545 9.90032 5.02075L9.98607 8.34575C9.9954 8.68408 9.72765 8.96525 9.39049 8.974C9.20674 8.97866 9.04049 8.90225 8.92499 8.778C8.82757 8.673 8.76632 8.533 8.76224 8.37783L8.70857 6.25275L5.17065 9.5305C4.92274 9.76033 4.53482 9.74517 4.30499 9.49725Z" fill="#B2DF48"/></g><defs><clipPath id="qgClip"><rect width="14" height="14" fill="white" transform="translate(0 14) rotate(-90)"/></clipPath></defs></svg></span>
+                        <span class="btn-glow-layer"></span>
+                        <div class="btn-inner-shadow mini"></div>
+                    </button>
+                </form>
+                <p class="qt-gate-note">Only visible to the intended recipient — this link isn't public or searchable.</p>
+            </div>
+        </div>
+    </section>
+
+    <?php endif; ?>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/js/logo-animation.js?v=2"></script>
+    <script src="assets/js/main.js?v=10"></script>
+    <script src="assets/js/popup.js?v=10"></script>
+    <?php if (!$verified): ?>
+    <script src="assets/js/quote-gate.js?v=1"></script>
+    <?php endif; ?>
+
+    <?php if ($verified): ?>
+    <script>
+        // Staggered scroll-reveal for the Important Terms cards.
+        (function () {
+            if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') return;
+            gsap.registerPlugin(ScrollTrigger);
+            gsap.from('.qt-term', {
+                scrollTrigger: { trigger: '.qt-terms-grid', start: 'top 82%' },
+                opacity: 0,
+                y: 42,
+                duration: 0.6,
+                ease: 'power2.out',
+                stagger: 0.1
+            });
+        })();
+    </script>
+    <?php endif; ?>
+
+</body>
+
+</html>
