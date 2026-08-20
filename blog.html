@@ -25,10 +25,15 @@
     {
         "@context": "https://schema.org",
         "@type": "Blog",
+        "@id": "https://weone.tech/blog#blog",
         "name": "WeOne Blog",
         "url": "https://weone.tech/blog",
+        "isPartOf": {
+            "@id": "https://weone.tech/#website"
+        },
         "publisher": {
             "@type": "Organization",
+            "@id": "https://weone.tech/#organization",
             "name": "WeOne",
             "logo": { "@type": "ImageObject", "url": "https://weone.tech/assets/images/logo/weone-logo.svg" }
         },

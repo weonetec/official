@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>WeOne — Web Design, Development &amp; UI/UX Agency</title>
     <meta name="description" content="WeOne is a web design & development agency building UI/UX, branding, and e-commerce sites (Shopify, WooCommerce, Wix) — plus business consultancy.">
+    <meta name="robots" content="index, follow, max-image-preview:large">
     <link rel="canonical" href="https://weone.tech/">
     <link rel="icon" type="image/svg+xml" href="assets/images/favicon.svg">
 
@@ -24,19 +25,44 @@
     {
         "@context": "https://schema.org",
         "@type": "ProfessionalService",
+        "@id": "https://weone.tech/#organization",
         "name": "WeOne",
         "url": "https://weone.tech/",
         "logo": "https://weone.tech/assets/images/logo/weone-logo.svg",
         "image": "https://weone.tech/assets/images/service-ui-ux.png",
         "description": "Web design, development, UI/UX, and branding agency, also specializing in Shopify, WooCommerce, and Wix e-commerce builds and business consultancy.",
         "email": "info@weone.tech",
-        "areaServed": "IN",
+        "areaServed": [
+            { "@type": "City", "name": "Kolkata" },
+            { "@type": "State", "name": "West Bengal" },
+            { "@type": "Country", "name": "India" }
+        ],
         "address": {
             "@type": "PostalAddress",
             "streetAddress": "Spcenex, 361, Purbachal, Kalitala Road",
             "addressLocality": "Kolkata",
+            "addressRegion": "West Bengal",
             "postalCode": "700078",
             "addressCountry": "IN"
+        },
+        "knowsAbout": [
+            "Website Design",
+            "UI/UX Design",
+            "Web Development",
+            "Shopify Development",
+            "WooCommerce Development",
+            "E-commerce Website Development",
+            "Brand Identity Design",
+            "Logo Design",
+            "Responsive Web Design",
+            "Digital Marketing"
+        ],
+        "contactPoint": {
+            "@type": "ContactPoint",
+            "contactType": "customer service",
+            "email": "info@weone.tech",
+            "areaServed": "IN",
+            "availableLanguage": "en"
         },
         "sameAs": [
             "https://www.facebook.com/people/Weonetech/61588410036775/",
@@ -98,6 +124,17 @@
                 "reviewRating": { "@type": "Rating", "ratingValue": "5" }
             }
         ]
+    }
+    </script>
+
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "@id": "https://weone.tech/#website",
+        "url": "https://weone.tech/",
+        "name": "WeOne",
+        "publisher": { "@id": "https://weone.tech/#organization" }
     }
     </script>
 
