@@ -3107,3 +3107,88 @@ li {
 a.footer-contact-value:hover {
     color: #B2DF48;
 }
+
+/* =========================================================
+   CONTENT PROTECTION — raises the effort bar for casual
+   copying. Note this cannot stop a determined visitor (view-
+   source, DevTools and screenshots all still work); it only
+   deters drag-and-save and drag-to-select.
+   ========================================================= */
+
+/* 1. Media — stop images, logos and video from being dragged
+      straight out of the page onto the desktop. */
+img,
+svg,
+picture,
+video {
+    -webkit-user-drag: none;
+    user-drag: none;
+    -webkit-touch-callout: none;
+}
+
+/* 2. Text — stop drag-to-select across the page body. */
+body {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+/* 3. CRITICAL CARVE-OUT — form fields must stay selectable.
+      WHY: `user-select: none` on the body also kills selection inside inputs on
+      several browsers. Without this rule a visitor cannot select what they have
+      typed, cannot paste a verification code into the quote-page form, and
+      cannot double-click or drag over a typo to correct it. That breaks the
+      contact form and the private quotation gate outright, so this rule must
+      never be removed or narrowed. */
+input,
+textarea,
+select,
+[contenteditable="true"],
+.allow-select,
+.allow-select * {
+    -webkit-user-select: text;
+    -moz-user-select: text;
+    -ms-user-select: text;
+    user-select: text;
+    -webkit-touch-callout: default;
+}
+
+/* 4. CRITICAL CARVE-OUT — contact details, via the .allow-select class.
+      WHY: a visitor who cannot copy the business email address, phone number or
+      office address cannot easily get in touch — blocking that costs real
+      leads, which is the opposite of what the site is for. Long-press to copy
+      on mobile is restored here too (-webkit-touch-callout: default).
+      Apply class="allow-select" to any contact detail in the HTML. */
+.allow-select,
+.allow-select * {
+    -webkit-user-select: text;
+    -moz-user-select: text;
+    -ms-user-select: text;
+    user-select: text;
+    -webkit-touch-callout: default;
+}
+
+
+/* =========================================================
+   IMAGE ASPECT RATIO — companion to the width/height
+   attributes now present on every <img> (added to fix
+   Cumulative Layout Shift).
+
+   new.css sets `img { max-width: 100% }` with no height rule.
+   width/height attributes apply as presentational hints to
+   BOTH dimensions, so as soon as max-width shrinks a wide
+   image, its height stays pinned at the attribute value and
+   the image visibly squashes. `height: auto` lets the height
+   follow the width, which is what makes the attributes a
+   pure aspect-ratio hint rather than a fixed size.
+
+   Specificity is deliberately (0,0,1) — the lowest possible —
+   so every rule that intentionally sets a height (e.g.
+   `.thumb-wrap img { height: 100% }`, `.gradient-box img`)
+   still wins. Loaded after new.css, so it beats that file's
+   equal-specificity img rules.
+   ========================================================= */
+img {
+    height: auto;
+}

@@ -3,6 +3,8 @@
 
 <head>
     <meta charset="UTF-8">
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+    <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pricing — Project-Based Design Packages | WeOne</title>
     <meta name="description" content="WeOne's project-based pricing — pick the package that fits your scope, or get a custom quote for something bigger.">
@@ -60,10 +62,12 @@
     <link rel="stylesheet" href="assets/morganite/stylesheet.css">
     <link rel="stylesheet" href="assets/css/bootstrap.min.css">
     <link rel="stylesheet" href="assets/css/new.css?v=10">
-    <link rel="stylesheet" href="assets/css/main.css?v=56">
+    <link rel="stylesheet" href="assets/css/main.css?v=57">
     <link rel="stylesheet" href="assets/css/responsive.css?v=60">
-    <link rel="stylesheet" href="assets/css/popup.css?v=10">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css">
+    <link rel="stylesheet" href="assets/css/popup.css?v=10" media="print" onload="this.media='all'">
+    <noscript><link rel="stylesheet" href="assets/css/popup.css?v=10"></noscript>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css" media="print" onload="this.media='all'">
+    <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css"></noscript>
 
     <style>
         /* ===== Pricing page — scoped styles =====
@@ -231,6 +235,17 @@
         @media (max-width: 575px) {
             .pricing-card { padding: 32px 24px; }
         }
+
+        /* Footer illustration — REQUIRED companion to the width/height
+           attributes on the <img>. The global rule in new.css sets
+           `img { max-width: 100% }` but never `height: auto`, and the only
+           other rule (main.css `.footer-illus svg`) targets an inline <svg>,
+           which this page does not use. Without `height: auto` the height
+           attribute (363px) stays fixed while max-width clamps the width on
+           any container narrower than 541px — .footer-left is 44% on desktop
+           and full-width on mobile — stretching the illustration vertically.
+           Keeps the aspect-ratio/CLS benefit of the attributes. */
+        .footer-illus img { height: auto; }
     </style>
 </head>
 
@@ -443,7 +458,7 @@
                         <span class="footer-address-label">Address</span>
                         <p>Spcenex, 361, Purbachal, Kalitala Road, Kolkata 700078</p>
                     </div>
-                    <div class="footer-illus"><img src="assets/images/footer-element.svg" alt=""></div>
+                    <div class="footer-illus"><img src="assets/images/footer-element.svg" alt="" width="541" height="363" draggable="false"></div>
                 </div>
                 <div class="footer-right">
                     <nav class="footer-nav">

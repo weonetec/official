@@ -3,6 +3,8 @@
 
 <head>
     <meta charset="UTF-8">
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+    <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ordinary Website vs Designed Website — What's the Real Difference?</title>
     <meta name="description" content="What actually separates an ordinary website from a properly designed one — structure, hierarchy, and intent, not just visuals. See the real difference.">
@@ -102,11 +104,14 @@
     <link rel="stylesheet" href="assets/morganite/stylesheet.css">
     <link rel="stylesheet" href="assets/css/bootstrap.min.css">
     <link rel="stylesheet" href="assets/css/new.css">
-    <link rel="stylesheet" href="assets/css/main.css?v=56">
+    <link rel="stylesheet" href="assets/css/main.css?v=57">
     <link rel="stylesheet" href="assets/css/responsive.css?v=60">
-    <link rel="stylesheet" href="assets/css/popup.css?v=10">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css">
+    <link rel="stylesheet" href="assets/css/popup.css?v=10" media="print" onload="this.media='all'">
+    <noscript><link rel="stylesheet" href="assets/css/popup.css?v=10"></noscript>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" media="print" onload="this.media='all'">
+    <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"></noscript>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css" media="print" onload="this.media='all'">
+    <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css"></noscript>
 
     <style>
         .detail-page { background:#000; }
@@ -121,7 +126,8 @@
         .detail-meta .author-avatar { width:40px; height:40px; border-radius:50%; background:#000; flex-shrink:0; }
         .detail-meta .meta-author { color:#fff; font-size:14px; }
         .detail-meta .meta-date, .detail-meta .meta-read { color:rgba(255,255,255,0.4); font-size:13px; }
-        .detail-featured-img { width:100%; max-height:500px; object-fit:cover; border-radius:20px; margin-bottom:40px; }
+        .detail-featured-img { width:100%; height:auto; max-height:500px; object-fit:cover; border-radius:20px; margin-bottom:40px; }
+        .footer-illus img { height:auto; }
 
         .article-share { display:flex; align-items:center; gap:12px; margin-bottom:40px; }
         .article-share span { color:rgba(255,255,255,0.4); font-size:13px; letter-spacing:1px; text-transform:uppercase; font-family:'Satoshi-Variable'; }
@@ -350,7 +356,7 @@
                 <a href="mailto:?subject=Worth a read&body=https://weone.tech/blog-detail-ordinary-vs-designed-website" aria-label="Share by email"><i class="ri-mail-line"></i></a>
             </div>
 
-            <picture><source srcset="assets/images/blog-ordinarydesigned-detail.webp" type="image/webp"><img src="assets/images/blog-ordinarydesigned-detail.png" alt="Ordinary website vs designed website comparison graphic" class="detail-featured-img" loading="lazy"></picture>
+            <picture><source srcset="assets/images/blog-ordinarydesigned-detail.webp" type="image/webp"><img src="assets/images/blog-ordinarydesigned-detail.png" alt="Ordinary website vs designed website comparison graphic" class="detail-featured-img" loading="lazy" width="1600" height="589" draggable="false"></picture>
 
             <div class="row g-5">
 
@@ -595,7 +601,7 @@
                         <span class="footer-address-label">Address</span>
                         <p>Spcenex, 361, Purbachal, Kalitala Road, Kolkata 700078</p>
                     </div>
-                    <div class="footer-illus"><img src="assets/images/footer-element.svg" alt=""></div>
+                    <div class="footer-illus"><img src="assets/images/footer-element.svg" alt="" width="541" height="363" draggable="false"></div>
                 </div>
                 <div class="footer-right">
                     <nav class="footer-nav">

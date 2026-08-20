@@ -24,6 +24,8 @@ $verified = isset($_SESSION['quote_access']['dmdigitals']) && $_SESSION['quote_a
 
 <head>
     <meta charset="UTF-8">
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+    <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Website Design &amp; Development Quotation - DM Digitals | WeOne</title>
     <meta name="robots" content="noindex, nofollow">
@@ -33,10 +35,12 @@ $verified = isset($_SESSION['quote_access']['dmdigitals']) && $_SESSION['quote_a
     <link rel="stylesheet" href="assets/morganite/stylesheet.css">
     <link rel="stylesheet" href="assets/css/bootstrap.min.css">
     <link rel="stylesheet" href="assets/css/new.css?v=10">
-    <link rel="stylesheet" href="assets/css/main.css?v=56">
+    <link rel="stylesheet" href="assets/css/main.css?v=57">
     <link rel="stylesheet" href="assets/css/responsive.css?v=60">
-    <link rel="stylesheet" href="assets/css/popup.css?v=10">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css">
+    <link rel="stylesheet" href="assets/css/popup.css?v=10" media="print" onload="this.media='all'">
+    <noscript><link rel="stylesheet" href="assets/css/popup.css?v=10"></noscript>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css" media="print" onload="this.media='all'">
+    <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css"></noscript>
 
     <style>
         /* ===== Quote document - scoped styles ===== */

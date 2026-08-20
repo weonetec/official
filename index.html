@@ -3,6 +3,8 @@
 
 <head>
     <meta charset="UTF-8">
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+    <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>WeOne — Web Design, Development &amp; UI/UX Agency</title>
     <meta name="description" content="WeOne is a web design & development agency building UI/UX, branding, and e-commerce sites (Shopify, WooCommerce, Wix) — plus business consultancy.">
@@ -201,15 +203,35 @@
     <link rel="stylesheet" href="assets/morganite/stylesheet.css">
     <link rel="stylesheet" href="assets/css/bootstrap.min.css">
     <link rel="stylesheet" href="assets/css/new.css?v=13">
-    <link rel="stylesheet" href="assets/css/main.css?v=56">
+    <link rel="stylesheet" href="assets/css/main.css?v=57">
     <link rel="stylesheet" href="assets/css/responsive.css?v=60">
-    <link rel="stylesheet" href="assets/css/popup.css?v=10">
+    <link rel="stylesheet" href="assets/css/popup.css?v=10" media="print" onload="this.media='all'">
+    <noscript><link rel="stylesheet" href="assets/css/popup.css?v=10"></noscript>
     <!-- Swiper -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" media="print" onload="this.media='all'">
+    <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"></noscript>
     <!-- RemixIcon -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css" media="print" onload="this.media='all'">
+    <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css"></noscript>
 
     <style>
+        /* Intrinsic-size guard. Every <img> now carries width/height
+           attributes (CLS prevention). Those attributes land as
+           presentational hints for the CSS width AND height, and the
+           global rule in new.css is `img { max-width: 100% }` with no
+           `height: auto`. So as soon as anything constrains the width —
+           max-width:100%, or an author rule like
+           `.service-btn .service-btn-icon img { width: 21px }` — the
+           height stays pinned at the attribute value and the image is
+           distorted. Restoring `height: auto` lets the aspect ratio
+           derived from the attributes drive the height again.
+           Deliberately low specificity (0,0,1): every author rule that
+           sets a real height (.bg-line img, .gradient-box img,
+           .blog-card .thumb-wrap img, .card-icon, .header-logo img)
+           still wins, so this only affects images that had no height
+           of their own. */
+        img { height: auto; }
+
         /* "Knowledge." accent in the section heading — black to match the
            section's black-on-white card treatment below. */
         .blog-section .blog-heading .italicTitle { color:#000; }
@@ -312,6 +334,32 @@
         @media (max-width: 767px) {
             .work-details .visit-site-btn { padding: 10px 22px; font-size: 13px; margin-top: 10px; }
             .work-details .visit-site-btn .cta-icon svg { width: 14px; height: 14px; }
+        }
+
+        /* Heading-level fix (accessibility tree): the first portfolio card's
+           overlay heading sat directly under the section's h2 as an h4,
+           skipping h3. It is now an h3. The portfolio heading styling is
+           bound to the h4 TAG NAME — .wone_portfolio h4 in main.css plus its
+           three responsive steps in responsive.css — so none of it would
+           follow the tag change, and .work-heading (new.css) would have
+           dropped it to font-size:2.2vw. These rules re-apply the exact same
+           declarations to that one h3 so it renders identically. */
+        .wone_portfolio h3.work-heading {
+            font-size: 30px;
+            font-family: 'Satoshi-Variable';
+            font-weight: 600;
+            margin-bottom: 14px;
+            color: #fff;
+            font-style: normal !important;
+        }
+        @media (max-width: 991px) {
+            .wone_portfolio h3.work-heading { font-size: 20px; line-height: 1.3; margin-bottom: 8px; }
+        }
+        @media (max-width: 767px) {
+            .wone_portfolio h3.work-heading { font-size: 15px; line-height: 1.3; margin-bottom: 6px; }
+        }
+        @media (max-width: 575px) {
+            .wone_portfolio h3.work-heading { font-size: 13px; line-height: 1.3; margin-bottom: 4px; }
         }
 
     </style>
@@ -480,7 +528,7 @@
         <div class="hero-content-wrapper">
             <div class="container">
                 <div class="bg-line">
-                    <img src="assets/images/banner-lines.svg?v=2" alt="">
+                    <img src="assets/images/banner-lines.svg?v=2" width="1851" height="1000" draggable="false" alt="">
                 </div>
                 <div class="row">
                     <div class="col-lg-12">
@@ -494,7 +542,7 @@
                                 <span class="text-white">DEVELOPING</span>
                                 <span class="text-green italic">IMPACT.</span>
                                 <!-- <div class="dart-icon">
-                                    <img src="assets/images/banner-dart.svg" alt="">
+                                    <img src="assets/images/banner-dart.svg" width="76" height="85" draggable="false" alt="">
                                 </div> -->
                             </div>
 
@@ -752,9 +800,9 @@
                                 target="_blank" class="work-1 w-inline-block">
                                 <video class="work-image" src="assets/images/portfolio-1.mp4" autoplay loop muted playsinline></video>
                                 <div class="work-details meebits">
-                                    <h4 class="work-heading"><strong>Turns modern pet nutrition into a playful,
+                                    <h3 class="work-heading"><strong>Turns modern pet nutrition into a playful,
                                             motion-driven e-commerce world, built with bold visuals, custom
-                                            interactions and a personality that feels alive.</strong></h4>
+                                            interactions and a personality that feels alive.</strong></h3>
                                     <p class="visit-site-btn">Visit the site<span class="cta-icon"><svg width="16" height="16" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg"><g clip-path="url(#clip0_work_meebits)"><path d="M6.99999 13.4178C7.52032 13.4178 8.03482 13.4085 8.54232 13.391C11.172 13.2982 13.2977 11.1726 13.3904 8.54292C13.4085 8.03542 13.4172 7.52092 13.4172 7.00058C13.4172 6.48025 13.4079 5.96575 13.3904 5.45825C13.2977 2.82858 11.172 0.702914 8.54232 0.610165C8.03482 0.592081 7.52032 0.583331 6.99999 0.583331C6.47965 0.583331 5.96515 0.592665 5.45765 0.610165C2.8274 0.702914 0.701737 2.82858 0.608987 5.45883C0.590903 5.96633 0.582153 6.48083 0.582153 7.00116C0.582153 7.5215 0.591487 8.036 0.608987 8.5435C0.701737 11.1726 2.8274 13.2982 5.45765 13.3904C5.96515 13.4085 6.47965 13.4178 6.99999 13.4178ZM4.30499 9.49725C4.07515 9.24933 4.08974 8.86142 4.33824 8.63217L7.87557 5.35442L5.76099 5.138C5.60699 5.12225 5.47165 5.0505 5.37424 4.94491C5.25874 4.82067 5.19515 4.64858 5.2144 4.466C5.24882 4.13 5.54924 3.885 5.88582 3.92L9.15132 4.256C9.36015 4.26242 9.55324 4.34991 9.69499 4.50333C9.83615 4.65558 9.90907 4.8545 9.90032 5.02075L9.98607 8.34575C9.9954 8.68408 9.72765 8.96525 9.39049 8.974C9.20674 8.97866 9.04049 8.90225 8.92499 8.778C8.82757 8.673 8.76632 8.533 8.76224 8.37783L8.70857 6.25275L5.17065 9.5305C4.92274 9.76033 4.53482 9.74517 4.30499 9.49725Z" fill="#000"/></g><defs><clipPath id="clip0_work_meebits"><rect width="14" height="14" fill="white" transform="translate(0 14) rotate(-90)"/></clipPath></defs></svg></span></p>
                                 </div>
                             </a>
@@ -768,7 +816,7 @@
                                 </div>
                             </a>
                         </div>
-                        <div id="how-it-works" class="work-grid animate work-grid--single">
+                        <div id="how-it-works-2" class="work-grid animate work-grid--single">
                             <a id="w-node-_73678685-5756-d6db-5ad1-25049ebcf25d-55ce6e60"
                                 data-w-id="73678685-5756-d6db-5ad1-25049ebcf25d" href="https://www.cravburgers.shop/"
                                 target="_blank" class="work-1 work-1--full w-inline-block">
@@ -779,8 +827,9 @@
                                 </div>
                             </a>
                         </div>
-                        <div id="how-it-works" class="work-grid animate">
-                            <a id="w-node-_7bb93aab-59f9-9496-b285-6c643c032916-55ce6e60"
+                        <div id="how-it-works-3" class="work-grid animate">
+                            <a id="w-node-_7bb93aab-59f9-9496-b285-6c643c032916-55ce6e60-2"
+                                style="grid-area: span 2 / span 2 / span 2 / span 2; align-self: stretch;"
                                 data-w-id="7bb93aab-59f9-9496-b285-6c643c032916" href="https://www.wembi.ai/"
                                 target="_blank" class="work-1 w-inline-block">
                                 <video class="work-image" src="assets/images/portfolio-5.mp4" autoplay loop muted playsinline></video>
@@ -789,7 +838,8 @@
                                     <p class="visit-site-btn">Visit the site<span class="cta-icon"><svg width="16" height="16" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg"><g clip-path="url(#clip0_work_gts)"><path d="M6.99999 13.4178C7.52032 13.4178 8.03482 13.4085 8.54232 13.391C11.172 13.2982 13.2977 11.1726 13.3904 8.54292C13.4085 8.03542 13.4172 7.52092 13.4172 7.00058C13.4172 6.48025 13.4079 5.96575 13.3904 5.45825C13.2977 2.82858 11.172 0.702914 8.54232 0.610165C8.03482 0.592081 7.52032 0.583331 6.99999 0.583331C6.47965 0.583331 5.96515 0.592665 5.45765 0.610165C2.8274 0.702914 0.701737 2.82858 0.608987 5.45883C0.590903 5.96633 0.582153 6.48083 0.582153 7.00116C0.582153 7.5215 0.591487 8.036 0.608987 8.5435C0.701737 11.1726 2.8274 13.2982 5.45765 13.3904C5.96515 13.4085 6.47965 13.4178 6.99999 13.4178ZM4.30499 9.49725C4.07515 9.24933 4.08974 8.86142 4.33824 8.63217L7.87557 5.35442L5.76099 5.138C5.60699 5.12225 5.47165 5.0505 5.37424 4.94491C5.25874 4.82067 5.19515 4.64858 5.2144 4.466C5.24882 4.13 5.54924 3.885 5.88582 3.92L9.15132 4.256C9.36015 4.26242 9.55324 4.34991 9.69499 4.50333C9.83615 4.65558 9.90907 4.8545 9.90032 5.02075L9.98607 8.34575C9.9954 8.68408 9.72765 8.96525 9.39049 8.974C9.20674 8.97866 9.04049 8.90225 8.92499 8.778C8.82757 8.673 8.76632 8.533 8.76224 8.37783L8.70857 6.25275L5.17065 9.5305C4.92274 9.76033 4.53482 9.74517 4.30499 9.49725Z" fill="#000"/></g><defs><clipPath id="clip0_work_gts"><rect width="14" height="14" fill="white" transform="translate(0 14) rotate(-90)"/></clipPath></defs></svg></span></p>
                                 </div>
                             </a>
-                            <a id="w-node-_2af0b399-23af-c964-e199-2fa307a58c07-55ce6e60"
+                            <a id="w-node-_2af0b399-23af-c964-e199-2fa307a58c07-55ce6e60-2"
+                                style="grid-area: span 2 / span 1 / span 2 / span 1; align-self: stretch;"
                                 data-w-id="2af0b399-23af-c964-e199-2fa307a58c07" href="https://larevoltosa.es/"
                                 target="_blank" class="work-1 w-inline-block">
                                 <video class="work-image zoom-crop" src="assets/images/portfolio-6.mp4" autoplay loop muted playsinline></video>
@@ -915,22 +965,22 @@
                                             <div class="row feature-row">
                                                 <div class="col-md-6 feature-item">
                                                     <span class="feature-icon"><img
-                                                            src="assets/images/purple-marker.svg" alt=""></span>
+                                                            src="assets/images/purple-marker.svg" width="18" height="18" draggable="false" alt=""></span>
                                                     User Research & Analysis
                                                 </div>
                                                 <div class="col-md-6 feature-item">
                                                     <span class="feature-icon"><img
-                                                            src="assets/images/purple-marker.svg" alt=""></span>
+                                                            src="assets/images/purple-marker.svg" width="18" height="18" draggable="false" alt=""></span>
                                                     Wireframing & Prototyping
                                                 </div>
                                                 <div class="col-md-6 feature-item">
                                                     <span class="feature-icon"><img
-                                                            src="assets/images/purple-marker.svg" alt=""></span>
+                                                            src="assets/images/purple-marker.svg" width="18" height="18" draggable="false" alt=""></span>
                                                     UI Design & Branding
                                                 </div>
                                                 <div class="col-md-6 feature-item">
                                                     <span class="feature-icon"><img
-                                                            src="assets/images/purple-marker.svg" alt=""></span>
+                                                            src="assets/images/purple-marker.svg" width="18" height="18" draggable="false" alt=""></span>
                                                     Testing & Optimization
                                                 </div>
                                             </div>
@@ -938,14 +988,14 @@
                                             <a href="#" class="service-btn js-open-popup">
                                                 Get A Call Back
                                                 <span class="service-btn-icon"><img
-                                                        src="assets/images/get-back-icon.svg" alt=""></span>
+                                                        src="assets/images/get-back-icon.svg" width="13" height="13" draggable="false" alt=""></span>
                                             </a>
 
                                         </div>
                                     </div>
 
                                     <div class="col-lg-5">
-                                        <div class="gradient-box"><picture><source srcset="assets/images/service-ui-ux.webp" type="image/webp"><img src="assets/images/service-ui-ux.png" alt="UI/UX Design" loading="lazy"></picture></div>
+                                        <div class="gradient-box"><picture><source srcset="assets/images/service-ui-ux.webp" type="image/webp"><img src="assets/images/service-ui-ux.png" width="900" height="688" draggable="false" alt="UI/UX Design" loading="lazy"></picture></div>
                                     </div>
 
                                 </div>
@@ -968,22 +1018,22 @@
                                             <div class="row feature-row">
                                                 <div class="col-md-6 feature-item">
                                                     <span class="feature-icon"><img
-                                                            src="assets/images/yellow-marker.svg" alt=""></span>
+                                                            src="assets/images/yellow-marker.svg" width="18" height="18" draggable="false" alt=""></span>
                                                     Responsive design
                                                 </div>
                                                 <div class="col-md-6 feature-item">
                                                     <span class="feature-icon"><img
-                                                            src="assets/images/yellow-marker.svg" alt=""></span>
+                                                            src="assets/images/yellow-marker.svg" width="18" height="18" draggable="false" alt=""></span>
                                                     SEO Optimization
                                                 </div>
                                                 <div class="col-md-6 feature-item">
                                                     <span class="feature-icon"><img
-                                                            src="assets/images/yellow-marker.svg" alt=""></span>
+                                                            src="assets/images/yellow-marker.svg" width="18" height="18" draggable="false" alt=""></span>
                                                     Custom development
                                                 </div>
                                                 <div class="col-md-6 feature-item">
                                                     <span class="feature-icon"><img
-                                                            src="assets/images/yellow-marker.svg" alt=""></span>
+                                                            src="assets/images/yellow-marker.svg" width="18" height="18" draggable="false" alt=""></span>
                                                     E-commerce solutions
                                                 </div>
                                             </div>
@@ -991,14 +1041,14 @@
                                             <a href="#" class="service-btn js-open-popup">
                                                 Get A Call Back
                                                 <span class="service-btn-icon"><img
-                                                        src="assets/images/get-back-icon.svg" alt=""></span>
+                                                        src="assets/images/get-back-icon.svg" width="13" height="13" draggable="false" alt=""></span>
                                             </a>
 
                                         </div>
                                     </div>
 
                                     <div class="col-lg-5">
-                                        <div class="gradient-box"><picture><source srcset="assets/images/service-web-dev.webp" type="image/webp"><img src="assets/images/service-web-dev.png" alt="Web Development" loading="lazy"></picture></div>
+                                        <div class="gradient-box"><picture><source srcset="assets/images/service-web-dev.webp" type="image/webp"><img src="assets/images/service-web-dev.png" width="900" height="688" draggable="false" alt="Web Development" loading="lazy"></picture></div>
                                     </div>
 
                                 </div>
@@ -1021,22 +1071,22 @@
 
                                             <div class="row feature-row">
                                                 <div class="col-md-6 feature-item">
-                                                    <span class="feature-icon"><img src="assets/images/blue-marker.svg"
+                                                    <span class="feature-icon"><img src="assets/images/blue-marker.svg" width="18" height="18" draggable="false"
                                                             alt=""></span>
                                                     Brand Strategy & Positioning
                                                 </div>
                                                 <div class="col-md-6 feature-item">
-                                                    <span class="feature-icon"><img src="assets/images/blue-marker.svg"
+                                                    <span class="feature-icon"><img src="assets/images/blue-marker.svg" width="18" height="18" draggable="false"
                                                             alt=""></span>
                                                     Visual Identity System
                                                 </div>
                                                 <div class="col-md-6 feature-item">
-                                                    <span class="feature-icon"><img src="assets/images/blue-marker.svg"
+                                                    <span class="feature-icon"><img src="assets/images/blue-marker.svg" width="18" height="18" draggable="false"
                                                             alt=""></span>
                                                     Brand Voice & Messaging
                                                 </div>
                                                 <div class="col-md-6 feature-item">
-                                                    <span class="feature-icon"><img src="assets/images/blue-marker.svg"
+                                                    <span class="feature-icon"><img src="assets/images/blue-marker.svg" width="18" height="18" draggable="false"
                                                             alt=""></span>
                                                     Guidelines & Implementation
                                                 </div>
@@ -1045,14 +1095,14 @@
                                             <a href="#" class="service-btn js-open-popup">
                                                 Get A Call Back
                                                 <span class="service-btn-icon"><img
-                                                        src="assets/images/get-back-icon.svg" alt=""></span>
+                                                        src="assets/images/get-back-icon.svg" width="13" height="13" draggable="false" alt=""></span>
                                             </a>
 
                                         </div>
                                     </div>
 
                                     <div class="col-lg-5">
-                                        <div class="gradient-box"><picture><source srcset="assets/images/service-branding.webp" type="image/webp"><img src="assets/images/service-branding.png" alt="Logo & Branding" loading="lazy"></picture></div>
+                                        <div class="gradient-box"><picture><source srcset="assets/images/service-branding.webp" type="image/webp"><img src="assets/images/service-branding.png" width="900" height="688" draggable="false" alt="Logo & Branding" loading="lazy"></picture></div>
                                     </div>
 
                                 </div>
@@ -1074,22 +1124,22 @@
 
                                             <div class="row feature-row">
                                                 <div class="col-md-6 feature-item">
-                                                    <span class="feature-icon"><img src="assets/images/new-yellow.svg"
+                                                    <span class="feature-icon"><img src="assets/images/new-yellow.svg" width="18" height="18" draggable="false"
                                                             alt=""></span>
                                                     Brand Strategy & Positioning
                                                 </div>
                                                 <div class="col-md-6 feature-item">
-                                                    <span class="feature-icon"><img src="assets/images/new-yellow.svg"
+                                                    <span class="feature-icon"><img src="assets/images/new-yellow.svg" width="18" height="18" draggable="false"
                                                             alt=""></span>
                                                     Visual Identity System
                                                 </div>
                                                 <div class="col-md-6 feature-item">
-                                                    <span class="feature-icon"><img src="assets/images/new-yellow.svg"
+                                                    <span class="feature-icon"><img src="assets/images/new-yellow.svg" width="18" height="18" draggable="false"
                                                             alt=""></span>
                                                     Brand Voice & Messaging
                                                 </div>
                                                 <div class="col-md-6 feature-item">
-                                                    <span class="feature-icon"><img src="assets/images/new-yellow.svg"
+                                                    <span class="feature-icon"><img src="assets/images/new-yellow.svg" width="18" height="18" draggable="false"
                                                             alt=""></span>
                                                     Guidelines & Implementation
                                                 </div>
@@ -1098,14 +1148,14 @@
                                             <a href="#" class="service-btn js-open-popup">
                                                 Get A Call Back
                                                 <span class="service-btn-icon"><img
-                                                        src="assets/images/get-back-icon.svg" alt=""></span>
+                                                        src="assets/images/get-back-icon.svg" width="13" height="13" draggable="false" alt=""></span>
                                             </a>
 
                                         </div>
                                     </div>
 
                                     <div class="col-lg-5">
-                                        <div class="gradient-box"><picture><source srcset="assets/images/service-digital-marketing.webp" type="image/webp"><img src="assets/images/service-digital-marketing.png" alt="Digital Marketing" loading="lazy"></picture></div>
+                                        <div class="gradient-box"><picture><source srcset="assets/images/service-digital-marketing.webp" type="image/webp"><img src="assets/images/service-digital-marketing.png" width="900" height="688" draggable="false" alt="Digital Marketing" loading="lazy"></picture></div>
                                     </div>
 
                                 </div>
@@ -1136,23 +1186,23 @@
                 <div class="col-lg-12">
                     <div class="cards-wrapper">
                         <div class="card">
-                            <img src="assets/images/icon-love.svg" class="card-icon card-icon--white" alt="">
+                            <img src="assets/images/icon-love.svg" width="512" height="512" draggable="false" class="card-icon card-icon--white" alt="">
                             Unlimited<br>Revisions
                         </div>
                         <div class="card">
-                            <img src="assets/images/icon-collaboration.svg" class="card-icon card-icon--white" alt="">
+                            <img src="assets/images/icon-collaboration.svg" width="511" height="511" draggable="false" class="card-icon card-icon--white" alt="">
                             Lifetime<br>Support
                         </div>
                         <div class="card">
-                            <img src="assets/images/icon-style.svg" class="card-icon card-icon--black" alt="">
+                            <img src="assets/images/icon-style.svg" width="32" height="32" draggable="false" class="card-icon card-icon--black" alt="">
                             Custom Design<br>Solutions
                         </div>
                         <div class="card">
-                            <img src="assets/images/icon-preference.svg" class="card-icon card-icon--white" alt="">
+                            <img src="assets/images/icon-preference.svg" width="24" height="24" draggable="false" class="card-icon card-icon--white" alt="">
                             Personalised<br>Plans
                         </div>
                         <div class="card">
-                            <img src="assets/images/icon-folder.svg" class="card-icon card-icon--white" alt="">
+                            <img src="assets/images/icon-folder.svg" width="512" height="512" draggable="false" class="card-icon card-icon--white" alt="">
                             Data-Driven<br>Strategy
                         </div>
                     </div>
@@ -1187,13 +1237,13 @@
 
                                     <svg width="20" height="20" viewBox="0 0 14 14" fill="none"
                                         xmlns="http://www.w3.org/2000/svg">
-                                        <g clip-path="url(#clip0_2_52)">
+                                        <g clip-path="url(#clip0_2_52_a)">
                                             <path
                                                 d="M6.99999 13.4178C7.52032 13.4178 8.03482 13.4085 8.54232 13.391C11.172 13.2982 13.2977 11.1726 13.3904 8.54292C13.4085 8.03542 13.4172 7.52092 13.4172 7.00058C13.4172 6.48025 13.4079 5.96575 13.3904 5.45825C13.2977 2.82858 11.172 0.702914 8.54232 0.610165C8.03482 0.592081 7.52032 0.583331 6.99999 0.583331C6.47965 0.583331 5.96515 0.592665 5.45765 0.610165C2.8274 0.702914 0.701737 2.82858 0.608987 5.45883C0.590903 5.96633 0.582153 6.48083 0.582153 7.00116C0.582153 7.5215 0.591487 8.036 0.608987 8.5435C0.701737 11.1726 2.8274 13.2982 5.45765 13.3904C5.96515 13.4085 6.47965 13.4178 6.99999 13.4178ZM4.30499 9.49725C4.07515 9.24933 4.08974 8.86142 4.33824 8.63217L7.87557 5.35442L5.76099 5.138C5.60699 5.12225 5.47165 5.0505 5.37424 4.94491C5.25874 4.82067 5.19515 4.64858 5.2144 4.466C5.24882 4.13 5.54924 3.885 5.88582 3.92L9.15132 4.256C9.36015 4.26242 9.55324 4.34991 9.69499 4.50333C9.83615 4.65558 9.90907 4.8545 9.90032 5.02075L9.98607 8.34575C9.9954 8.68408 9.72765 8.96525 9.39049 8.974C9.20674 8.97866 9.04049 8.90225 8.92499 8.778C8.82757 8.673 8.76632 8.533 8.76224 8.37783L8.70857 6.25275L5.17065 9.5305C4.92274 9.76033 4.53482 9.74517 4.30499 9.49725Z"
                                                 fill="#B2DF48"></path>
                                         </g>
                                         <defs>
-                                            <clipPath id="clip0_2_52">
+                                            <clipPath id="clip0_2_52_a">
                                                 <rect width="14" height="14" fill="white"
                                                     transform="translate(0 14) rotate(-90)"></rect>
                                             </clipPath>
@@ -1248,7 +1298,7 @@
                     <div class="testi-rating-card">
                         <div class="testi-rating-num" id="ratingCounter">0.0</div>
                         <div class="testi-stars">
-                            <img src="assets/images/rating-start.svg" alt="">
+                            <img src="assets/images/rating-start.svg" width="100" height="46" draggable="false" alt="">
                         </div>
                         <div class="google-review-badge">
                             <span>Reviews</span>
@@ -1376,7 +1426,7 @@
 
                         <!-- Thumbnail -->
                         <div class="thumb-wrap thumb-1">
-                            <img src="assets/images/blog-shopify-listing.jpg" alt="Shopify vs WooCommerce vs WordPress comparison graphic">
+                            <img src="assets/images/blog-shopify-listing.jpg" width="1536" height="1024" draggable="false" alt="Shopify vs WooCommerce vs WordPress comparison graphic">
                         </div>
 
                         <!-- Meta -->
@@ -1422,7 +1472,7 @@
 
                         <!-- Thumbnail -->
                         <div class="thumb-wrap thumb-2">
-                            <img src="assets/images/blog-uxmistakes-listing.jpg" alt="E-commerce UX mistakes graphic with phone app mockups">
+                            <img src="assets/images/blog-uxmistakes-listing.jpg" width="1492" height="1054" draggable="false" alt="E-commerce UX mistakes graphic with phone app mockups">
                         </div>
 
                         <!-- Meta -->
@@ -1468,7 +1518,7 @@
 
                         <!-- Thumbnail -->
                         <div class="thumb-wrap thumb-3">
-                            <img src="assets/images/blog-speed-listing.jpg" alt="The Real Cost of a Slow Website graphic">
+                            <img src="assets/images/blog-speed-listing.jpg" width="1491" height="1055" draggable="false" alt="The Real Cost of a Slow Website graphic">
                         </div>
 
                         <!-- Meta -->
@@ -1536,7 +1586,7 @@
 
     <section class="FaqWrapper position-relative">
         <div class="glow">
-            <img src="assets/images/faq-glow.svg" alt="">
+            <img src="assets/images/faq-glow.svg" width="1038" height="1038" draggable="false" alt="">
         </div>
 
         <div class="container z-2 position-relative">
@@ -1793,12 +1843,12 @@
             <div class="coming-wrapper d-flex align-items-center justify-content-center text-center">
                 <div class="coming-content">
 
-                    <h5 class="top-line">
+                    <h3 class="top-line">
                         WE’RE BUILDING OUR
                         <span class="highlight">BRAND.</span>
                         SHAPING OUR
                         <span class="highlight">STORY.</span>
-                    </h5>
+                    </h3>
 
                     <h2 class="main-title">
                         COMING FOR THE <span class="highlight-strong">LEGACY.</span>
@@ -1810,13 +1860,13 @@
 
                             <svg width="20" height="20" viewBox="0 0 14 14" fill="none"
                                 xmlns="http://www.w3.org/2000/svg">
-                                <g clip-path="url(#clip0_2_52)">
+                                <g clip-path="url(#clip0_2_52_b)">
                                     <path
                                         d="M6.99999 13.4178C7.52032 13.4178 8.03482 13.4085 8.54232 13.391C11.172 13.2982 13.2977 11.1726 13.3904 8.54292C13.4085 8.03542 13.4172 7.52092 13.4172 7.00058C13.4172 6.48025 13.4079 5.96575 13.3904 5.45825C13.2977 2.82858 11.172 0.702914 8.54232 0.610165C8.03482 0.592081 7.52032 0.583331 6.99999 0.583331C6.47965 0.583331 5.96515 0.592665 5.45765 0.610165C2.8274 0.702914 0.701737 2.82858 0.608987 5.45883C0.590903 5.96633 0.582153 6.48083 0.582153 7.00116C0.582153 7.5215 0.591487 8.036 0.608987 8.5435C0.701737 11.1726 2.8274 13.2982 5.45765 13.3904C5.96515 13.4085 6.47965 13.4178 6.99999 13.4178ZM4.30499 9.49725C4.07515 9.24933 4.08974 8.86142 4.33824 8.63217L7.87557 5.35442L5.76099 5.138C5.60699 5.12225 5.47165 5.0505 5.37424 4.94491C5.25874 4.82067 5.19515 4.64858 5.2144 4.466C5.24882 4.13 5.54924 3.885 5.88582 3.92L9.15132 4.256C9.36015 4.26242 9.55324 4.34991 9.69499 4.50333C9.83615 4.65558 9.90907 4.8545 9.90032 5.02075L9.98607 8.34575C9.9954 8.68408 9.72765 8.96525 9.39049 8.974C9.20674 8.97866 9.04049 8.90225 8.92499 8.778C8.82757 8.673 8.76632 8.533 8.76224 8.37783L8.70857 6.25275L5.17065 9.5305C4.92274 9.76033 4.53482 9.74517 4.30499 9.49725Z"
                                         fill="#B2DF48"></path>
                                 </g>
                                 <defs>
-                                    <clipPath id="clip0_2_52">
+                                    <clipPath id="clip0_2_52_b">
                                         <rect width="14" height="14" fill="white"
                                             transform="translate(0 14) rotate(-90)"></rect>
                                     </clipPath>
@@ -1853,7 +1903,7 @@
             </div><!-- /row -->
         </div>
         <!-- <div class="footer-line">
-            <img src="assets/images/footer-bg-line.png" alt="">
+            <img src="assets/images/footer-bg-line.png" width="1851" height="990" draggable="false" alt="">
         </div> -->
     </section>
 
@@ -1884,13 +1934,13 @@
 
                             <svg width="20" height="20" viewBox="0 0 14 14" fill="none"
                                 xmlns="http://www.w3.org/2000/svg">
-                                <g clip-path="url(#clip0_2_52)">
+                                <g clip-path="url(#clip0_2_52_c)">
                                     <path
                                         d="M6.99999 13.4178C7.52032 13.4178 8.03482 13.4085 8.54232 13.391C11.172 13.2982 13.2977 11.1726 13.3904 8.54292C13.4085 8.03542 13.4172 7.52092 13.4172 7.00058C13.4172 6.48025 13.4079 5.96575 13.3904 5.45825C13.2977 2.82858 11.172 0.702914 8.54232 0.610165C8.03482 0.592081 7.52032 0.583331 6.99999 0.583331C6.47965 0.583331 5.96515 0.592665 5.45765 0.610165C2.8274 0.702914 0.701737 2.82858 0.608987 5.45883C0.590903 5.96633 0.582153 6.48083 0.582153 7.00116C0.582153 7.5215 0.591487 8.036 0.608987 8.5435C0.701737 11.1726 2.8274 13.2982 5.45765 13.3904C5.96515 13.4085 6.47965 13.4178 6.99999 13.4178ZM4.30499 9.49725C4.07515 9.24933 4.08974 8.86142 4.33824 8.63217L7.87557 5.35442L5.76099 5.138C5.60699 5.12225 5.47165 5.0505 5.37424 4.94491C5.25874 4.82067 5.19515 4.64858 5.2144 4.466C5.24882 4.13 5.54924 3.885 5.88582 3.92L9.15132 4.256C9.36015 4.26242 9.55324 4.34991 9.69499 4.50333C9.83615 4.65558 9.90907 4.8545 9.90032 5.02075L9.98607 8.34575C9.9954 8.68408 9.72765 8.96525 9.39049 8.974C9.20674 8.97866 9.04049 8.90225 8.92499 8.778C8.82757 8.673 8.76632 8.533 8.76224 8.37783L8.70857 6.25275L5.17065 9.5305C4.92274 9.76033 4.53482 9.74517 4.30499 9.49725Z"
                                         fill="#B2DF48"></path>
                                 </g>
                                 <defs>
-                                    <clipPath id="clip0_2_52">
+                                    <clipPath id="clip0_2_52_c">
                                         <rect width="14" height="14" fill="white"
                                             transform="translate(0 14) rotate(-90)"></rect>
                                     </clipPath>
@@ -1903,14 +1953,14 @@
                     </a>
 
                     <!-- Address -->
-                    <div class="footer-address">
+                    <div class="footer-address allow-select">
                         <span class="footer-address-label">Address</span>
                         <p>Spcenex, 361, Purbachal, Kalitala Road, Kolkata 700078</p>
                     </div>
 
                     <!-- Illustration -->
                     <div class="footer-illus">
-                        <img src="assets/images/footer-element.svg" alt="">
+                        <img src="assets/images/footer-element.svg" width="541" height="363" draggable="false" alt="">
                     </div>
 
                 </div><!-- /footer-left -->
@@ -1940,7 +1990,7 @@
                     <div class="footer-bottom">
                         <div class="footer-contact-item">
                             <span class="footer-contact-label">Contact us</span>
-                            <a href="mailto:info@weone.tech" class="footer-contact-value">info@weone.tech</a>
+                            <a href="mailto:info@weone.tech" class="footer-contact-value allow-select">info@weone.tech</a>
                         </div>
                     </div>
 

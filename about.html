@@ -3,6 +3,8 @@
 
 <head>
     <meta charset="UTF-8">
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+    <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>About WeOne — Web Design &amp; Branding Agency</title>
     <meta name="description" content="Meet WeOne, a design & development studio specializing in UI/UX, branding, and e-commerce (Shopify, WooCommerce, Wix) — built to help brands stand out.">
@@ -51,10 +53,12 @@
     <link rel="stylesheet" href="assets/morganite/stylesheet.css">
     <link rel="stylesheet" href="assets/css/bootstrap.min.css">
     <link rel="stylesheet" href="assets/css/new.css?v=10">
-    <link rel="stylesheet" href="assets/css/main.css?v=56">
+    <link rel="stylesheet" href="assets/css/main.css?v=57">
     <link rel="stylesheet" href="assets/css/responsive.css?v=60">
-    <link rel="stylesheet" href="assets/css/popup.css?v=10">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css">
+    <link rel="stylesheet" href="assets/css/popup.css?v=10" media="print" onload="this.media='all'">
+    <noscript><link rel="stylesheet" href="assets/css/popup.css?v=10"></noscript>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css" media="print" onload="this.media='all'">
+    <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css"></noscript>
 
     <style>
         /* ===== About page — scoped styles ===== */
@@ -191,6 +195,13 @@
         @media (max-width: 575px) {
             .about-stats { grid-template-columns: 1fr; }
         }
+
+        /* The footer illustration carries width/height attrs for CLS reservation.
+           The global reset (new.css) sets img{max-width:100%} but no height:auto,
+           so the attr-derived height:363px would stay fixed while max-width shrank
+           the width, stretching the image. height:auto restores proportional
+           scaling and lets the browser use the attrs as an aspect-ratio hint. */
+        .footer-illus img { height: auto; }
     </style>
 </head>
 
@@ -382,17 +393,17 @@
                 <div class="col-lg-10">
                     <div class="about-values-grid">
                         <div class="about-value">
-                            <img src="assets/images/expert-level-design.svg" alt="">
+                            <img src="assets/images/expert-level-design.svg" alt="" width="56" height="56" draggable="false">
                             <h3>Expert-level design</h3>
                             <p>From brand systems to fully custom builds — one senior team, no juniors, no handoffs.</p>
                         </div>
                         <div class="about-value">
-                            <img src="assets/images/lightning-fast.svg" alt="">
+                            <img src="assets/images/lightning-fast.svg" alt="" width="60" height="60" draggable="false">
                             <h3>Lightning-fast delivery</h3>
                             <p>Deep experience means fewer meetings and quicker execution. Precision, delivered at speed.</p>
                         </div>
                         <div class="about-value">
-                            <img src="assets/images/creative-leadershio.svg" alt="">
+                            <img src="assets/images/creative-leadershio.svg" alt="" width="60" height="60" draggable="false">
                             <h3>Creative leadership</h3>
                             <p>We integrate quietly, operate independently and take full ownership — leading without supervision.</p>
                         </div>
@@ -443,7 +454,7 @@
                         <span class="footer-address-label">Address</span>
                         <p>Spcenex, 361, Purbachal, Kalitala Road, Kolkata 700078</p>
                     </div>
-                    <div class="footer-illus"><img src="assets/images/footer-element.svg" alt=""></div>
+                    <div class="footer-illus"><img src="assets/images/footer-element.svg" alt="" width="541" height="363" draggable="false"></div>
                 </div>
                 <div class="footer-right">
                     <nav class="footer-nav">
