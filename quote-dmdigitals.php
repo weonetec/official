@@ -202,7 +202,7 @@ $verified = isset($_SESSION['quote_access']['dmdigitals']) && $_SESSION['quote_a
         .qt-card-price {
             font-family: 'Satoshi-Variable';
             font-weight: 800;
-            font-size: 30px;
+            font-size: clamp(20px, 6.5vw, 30px);
             color: #fff;
             margin-top: 14px;
         }
@@ -436,6 +436,40 @@ $verified = isset($_SESSION['quote_access']['dmdigitals']) && $_SESSION['quote_a
             .qt-hero { padding: 108px 0 50px; }
             .qt-grid { grid-template-columns: 1fr; max-width: 480px; margin-left: auto; margin-right: auto; }
             .qt-terms-grid { grid-template-columns: 1fr; }
+
+            /* Comparison table: below tablet width the 4-column grid can't
+               fit without shrinking text past legibility, so it's restacked
+               into one block per feature instead of scrolled sideways —
+               each value cell grows a Starter/Professional/Premium label via
+               its data-label attribute (set in the markup) and the header
+               row is dropped since that label now says the same thing. */
+            .qt-table-scroll { overflow-x: visible; padding: 4px; }
+            .qt-table { min-width: 0; width: 100%; }
+            .qt-table thead { display: none; }
+            .qt-table tbody { display: block; }
+            .qt-table tr { display: block; padding: 14px 4px; border-bottom: 1px solid rgba(255, 255, 255, 0.08); }
+            .qt-table tr:last-child { border-bottom: none; }
+            .qt-table td { display: flex; align-items: center; justify-content: space-between; padding: 5px 0; border-bottom: none; text-align: right; }
+            .qt-table td:first-child {
+                display: block;
+                text-align: left;
+                color: #fff;
+                font-weight: 700;
+                font-size: 13px;
+                letter-spacing: 0.3px;
+                text-transform: uppercase;
+                padding-bottom: 8px;
+            }
+            .qt-table td:not(:first-child)::before {
+                content: attr(data-label);
+                text-align: left;
+                color: rgba(255, 255, 255, 0.45);
+                font-weight: 600;
+                font-size: 13px;
+            }
+            .qt-table .price-row { padding-top: 4px; }
+            .qt-table .price-row td:not(:first-child) { font-size: 16px; }
+            .qt-compare .qt-table td:not(:first-child)::before { color: rgba(17, 17, 17, 0.45); }
         }
         @media (max-width: 767px) {
             .qt-meta { flex-wrap: wrap; }
@@ -727,111 +761,111 @@ $verified = isset($_SESSION['quote_access']['dmdigitals']) && $_SESSION['quote_a
                     <tbody>
                         <tr class="price-row">
                             <td>Price</td>
-                            <td>₹8K-₹12K</td>
-                            <td>₹20K-₹25K</td>
-                            <td>₹50K+</td>
+                            <td data-label="Starter">₹8K-₹12K</td>
+                            <td data-label="Professional">₹20K-₹25K</td>
+                            <td data-label="Premium">₹50K+</td>
                         </tr>
                         <tr>
                             <td>Domain &amp; Hosting</td>
-                            <td><span class="qt-check">✓ Free</span></td>
-                            <td><span class="qt-check">✓ Free</span></td>
-                            <td><span class="qt-check">✓ Free</span></td>
+                            <td data-label="Starter"><span class="qt-check">✓ Free</span></td>
+                            <td data-label="Professional"><span class="qt-check">✓ Free</span></td>
+                            <td data-label="Premium"><span class="qt-check">✓ Free</span></td>
                         </tr>
                         <tr>
                             <td>WordPress</td>
-                            <td><span class="qt-check">✓</span></td>
-                            <td><span class="qt-check">✓</span></td>
-                            <td><span class="qt-dash">-</span></td>
+                            <td data-label="Starter"><span class="qt-check">✓</span></td>
+                            <td data-label="Professional"><span class="qt-check">✓</span></td>
+                            <td data-label="Premium"><span class="qt-dash">-</span></td>
                         </tr>
                         <tr>
                             <td>Simple Theme</td>
-                            <td><span class="qt-check">✓</span></td>
-                            <td><span class="qt-dash">-</span></td>
-                            <td><span class="qt-dash">-</span></td>
+                            <td data-label="Starter"><span class="qt-check">✓</span></td>
+                            <td data-label="Professional"><span class="qt-dash">-</span></td>
+                            <td data-label="Premium"><span class="qt-dash">-</span></td>
                         </tr>
                         <tr>
                             <td>Premium Theme</td>
-                            <td><span class="qt-dash">-</span></td>
-                            <td><span class="qt-check">✓</span></td>
-                            <td><span class="qt-dash">-</span></td>
+                            <td data-label="Starter"><span class="qt-dash">-</span></td>
+                            <td data-label="Professional"><span class="qt-check">✓</span></td>
+                            <td data-label="Premium"><span class="qt-dash">-</span></td>
                         </tr>
                         <tr>
                             <td>Custom HTML/CSS</td>
-                            <td><span class="qt-dash">-</span></td>
-                            <td><span class="qt-check">✓</span></td>
-                            <td><span class="qt-check">✓</span></td>
+                            <td data-label="Starter"><span class="qt-dash">-</span></td>
+                            <td data-label="Professional"><span class="qt-check">✓</span></td>
+                            <td data-label="Premium"><span class="qt-check">✓</span></td>
                         </tr>
                         <tr>
                             <td>Design Options</td>
-                            <td>1</td>
-                            <td>Up to 3</td>
-                            <td>Up to 5</td>
+                            <td data-label="Starter">1</td>
+                            <td data-label="Professional">Up to 3</td>
+                            <td data-label="Premium">Up to 5</td>
                         </tr>
                         <tr>
                             <td>Revision Rounds</td>
-                            <td>Basic</td>
-                            <td>Up to 5</td>
-                            <td>Up to 10</td>
+                            <td data-label="Starter">Basic</td>
+                            <td data-label="Professional">Up to 5</td>
+                            <td data-label="Premium">Up to 10</td>
                         </tr>
                         <tr>
                             <td>Fully Responsive</td>
-                            <td><span class="qt-check">✓</span></td>
-                            <td><span class="qt-check">✓</span></td>
-                            <td><span class="qt-check">✓</span></td>
+                            <td data-label="Starter"><span class="qt-check">✓</span></td>
+                            <td data-label="Professional"><span class="qt-check">✓</span></td>
+                            <td data-label="Premium"><span class="qt-check">✓</span></td>
                         </tr>
                         <tr>
                             <td>Admin Panel</td>
-                            <td>Basic</td>
-                            <td><span class="qt-check">✓</span></td>
-                            <td><span class="qt-check">✓</span></td>
+                            <td data-label="Starter">Basic</td>
+                            <td data-label="Professional"><span class="qt-check">✓</span></td>
+                            <td data-label="Premium"><span class="qt-check">✓</span></td>
                         </tr>
                         <tr>
                             <td>Portfolio/Gallery</td>
-                            <td><span class="qt-check">✓</span></td>
-                            <td><span class="qt-check">✓</span></td>
-                            <td><span class="qt-check">✓</span></td>
+                            <td data-label="Starter"><span class="qt-check">✓</span></td>
+                            <td data-label="Professional"><span class="qt-check">✓</span></td>
+                            <td data-label="Premium"><span class="qt-check">✓</span></td>
                         </tr>
                         <tr>
                             <td>Contact Form</td>
-                            <td><span class="qt-check">✓</span></td>
-                            <td><span class="qt-check">✓</span></td>
-                            <td><span class="qt-check">✓</span></td>
+                            <td data-label="Starter"><span class="qt-check">✓</span></td>
+                            <td data-label="Professional"><span class="qt-check">✓</span></td>
+                            <td data-label="Premium"><span class="qt-check">✓</span></td>
                         </tr>
                         <tr>
                             <td>Basic SEO</td>
-                            <td><span class="qt-check">✓</span></td>
-                            <td><span class="qt-check">✓</span></td>
-                            <td><span class="qt-check">✓</span></td>
+                            <td data-label="Starter"><span class="qt-check">✓</span></td>
+                            <td data-label="Professional"><span class="qt-check">✓</span></td>
+                            <td data-label="Premium"><span class="qt-check">✓</span></td>
                         </tr>
                         <tr>
                             <td>Performance Optimization</td>
-                            <td>Basic</td>
-                            <td><span class="qt-check">✓</span></td>
-                            <td>Advanced</td>
+                            <td data-label="Starter">Basic</td>
+                            <td data-label="Professional"><span class="qt-check">✓</span></td>
+                            <td data-label="Premium">Advanced</td>
                         </tr>
                         <tr>
                             <td>Modern UI/UX</td>
-                            <td><span class="qt-dash">-</span></td>
-                            <td><span class="qt-check">✓</span></td>
-                            <td><span class="qt-check">✓✓</span></td>
+                            <td data-label="Starter"><span class="qt-dash">-</span></td>
+                            <td data-label="Professional"><span class="qt-check">✓</span></td>
+                            <td data-label="Premium"><span class="qt-check">✓✓</span></td>
                         </tr>
                         <tr>
                             <td>Advanced Features</td>
-                            <td><span class="qt-dash">-</span></td>
-                            <td>Mid-level</td>
-                            <td>Advanced</td>
+                            <td data-label="Starter"><span class="qt-dash">-</span></td>
+                            <td data-label="Professional">Mid-level</td>
+                            <td data-label="Premium">Advanced</td>
                         </tr>
                         <tr>
                             <td>Next.js</td>
-                            <td><span class="qt-dash">-</span></td>
-                            <td><span class="qt-dash">-</span></td>
-                            <td><span class="qt-check">✓</span></td>
+                            <td data-label="Starter"><span class="qt-dash">-</span></td>
+                            <td data-label="Professional"><span class="qt-dash">-</span></td>
+                            <td data-label="Premium"><span class="qt-check">✓</span></td>
                         </tr>
                         <tr>
                             <td>Future Scalability</td>
-                            <td>Basic</td>
-                            <td>Good</td>
-                            <td>Excellent</td>
+                            <td data-label="Starter">Basic</td>
+                            <td data-label="Professional">Good</td>
+                            <td data-label="Premium">Excellent</td>
                         </tr>
                     </tbody>
                 </table>
