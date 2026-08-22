@@ -46,6 +46,12 @@ $budget  = field('budget');
 $timeline = field('timeline');
 $brief   = field('brief');
 $source  = field('source');
+// Sent only by the pricing-page plan popup (assets/js/popup.js). Empty for
+// the general enquiry form, and pp_email_row() drops empty rows, so those
+// emails keep exactly the shape they had before.
+$plan     = field('plan');
+$billing  = field('billing');
+$industry = field('industry');
 $services = isset($_POST['service']) && is_array($_POST['service']) ? $_POST['service'] : [];
 
 $errors = [];
@@ -103,13 +109,21 @@ try {
     $mail->setFrom($config['from_email'], $config['from_name']);
     $mail->addAddress($config['to_email'], $config['to_name']);
     $mail->addReplyTo($email, $name);
-    $mail->Subject = 'New project inquiry from ' . $name;
+    // Plan leads carry their tier in the subject so they are triageable
+    // straight from the inbox list without opening the mail.
+    $subject = $plan !== ''
+        ? 'New plan request (' . $plan . ($billing !== '' ? ' - ' . $billing : '') . ') from ' . $name
+        : 'New project inquiry from ' . $name;
+    $mail->Subject = $subject;
 
     $detailsRows = ''
         . pp_email_row('Name', $name)
         . pp_email_row('Email', $email)
         . pp_email_row('Phone', $phone)
         . pp_email_row('Company', $company)
+        . pp_email_row('Industry', $industry)
+        . pp_email_row('Plan', $plan)
+        . pp_email_row('Billing', $billing)
         . pp_email_row('Budget', $budget)
         . pp_email_row('Timeline', $timeline)
         . pp_email_row('Heard via', $source);
@@ -125,8 +139,11 @@ try {
         . '<p style="margin:0 0 8px; color:#6b7280; font-size:13px; text-transform:uppercase; letter-spacing:0.5px;">Project brief</p>'
         . '<p style="margin:0; white-space:pre-wrap;">' . nl2br(htmlspecialchars($brief)) . '</p>';
 
-    $mail->Body = pp_email_html('New project inquiry from ' . $name, 'New Project Inquiry', $notifyBody);
-    $mail->AltBody = "New project inquiry from $name\nEmail: $email\nPhone: $phone\nCompany: $company\nService(s): " . implode(', ', $serviceLabels) . "\nBudget: $budget\nTimeline: $timeline\nHeard via: $source\n\nBrief:\n$brief";
+    $mail->Body = pp_email_html($subject, $plan !== '' ? 'New Plan Request' : 'New Project Inquiry', $notifyBody);
+    $planAlt = $plan !== ''
+        ? "Industry: $industry\nPlan: $plan\nBilling: $billing\n"
+        : '';
+    $mail->AltBody = "$subject\nEmail: $email\nPhone: $phone\nCompany: $company\n" . $planAlt . "Service(s): " . implode(', ', $serviceLabels) . "\nBudget: $budget\nTimeline: $timeline\nHeard via: $source\n\nBrief:\n$brief";
 
     $mail->send();
 
