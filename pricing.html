@@ -195,6 +195,62 @@
             border-color: #B2DF48;
             background: linear-gradient(160deg, rgba(178,223,72,0.07) 0%, rgba(255,255,255,0.02) 60%);
         }
+
+        /* ── Rotating stroke glow (featured card only) ──
+           A bright comet travels around the card's 1px border. Two masked
+           pseudo-elements sit exactly over the border box: ::before is a
+           blurred halo, ::after the crisp head on top of it. The mask pair
+           (border-box minus content-box) is what reduces each to a 1px
+           ring that follows the 24px radius.
+
+           The angle is animated through a registered custom property —
+           plain custom properties can't be interpolated, so @property is
+           what makes it rotate rather than jump. Browsers without
+           @property fall back to the 0deg default in the var(), which
+           renders a static highlight at the top of the card instead of a
+           blank border. */
+        @property --pp-glow-angle {
+            syntax: '<angle>';
+            initial-value: 0deg;
+            inherits: false;
+        }
+        .pricing-card.is-featured::before,
+        .pricing-card.is-featured::after {
+            content: '';
+            position: absolute;
+            inset: -1px;
+            border-radius: 24px;
+            padding: 1px;
+            /* Tail fades to a transparent LIME, not `transparent` — the
+               latter interpolates through transparent black and leaves a
+               dirty grey fringe along the stroke. */
+            background: conic-gradient(from var(--pp-glow-angle, 0deg),
+                #ffffff 0deg,
+                #B2DF48 20deg,
+                rgba(178, 223, 72, 0.35) 62deg,
+                rgba(178, 223, 72, 0) 125deg,
+                rgba(178, 223, 72, 0) 360deg);
+            -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+                    mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+            -webkit-mask-composite: xor;
+                    mask-composite: exclude;
+            pointer-events: none;
+            animation: pp-glow-spin 4s linear infinite;
+        }
+        .pricing-card.is-featured::before {
+            filter: blur(5px);
+            opacity: 0.85;
+        }
+        @keyframes pp-glow-spin {
+            to { --pp-glow-angle: 360deg; }
+        }
+        /* The badge straddles the top border, so it has to outrank the ring. */
+        .pricing-card.is-featured .pricing-card-badge { z-index: 2; }
+
+        @media (prefers-reduced-motion: reduce) {
+            .pricing-card.is-featured::before,
+            .pricing-card.is-featured::after { animation: none; }
+        }
         .pricing-card-badge {
             position: absolute;
             top: -14px;
@@ -374,6 +430,11 @@
             .pricing-card { padding: 32px 24px; }
             .pricing-toggle { width: 100%; }
             .js .pricing-toggle { display: flex; }
+            /* Animating a conic-gradient repaints the whole ring every
+               frame and never reaches the compositor, so the blurred
+               second copy is dropped on phones. The crisp ring alone
+               keeps the effect at roughly half the paint cost. */
+            .pricing-card.is-featured::before { display: none; }
             .pricing-toggle-btn { flex: 1; padding: 11px 16px; }
         }
 
