@@ -152,7 +152,7 @@ window.addEventListener('scroll', function () {
     // spacer covers that page. Every other page has a plain, unpinned
     // hero section, so its own class is checked directly as a fallback.
     var heroEl = document.querySelector(
-        '.pin-spacer, .hero-banner, .about-hero, .work-hero, .blog-page-hero, .detail-hero, .hero-coming-soonn'
+        '.pin-spacer, .hero-banner, .about-hero, .work-hero, .blog-page-hero, .detail-hero, .hero-coming-soonn, .pricing-hero'
     );
     var footerEl = document.querySelector('.site-footer');
 
