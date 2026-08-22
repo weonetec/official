@@ -37,8 +37,8 @@ $verified = isset($_SESSION['quote_access']['dmdigitals']) && $_SESSION['quote_a
     <link rel="stylesheet" href="assets/css/new.css?v=10">
     <link rel="stylesheet" href="assets/css/main.css?v=57">
     <link rel="stylesheet" href="assets/css/responsive.css?v=60">
-    <link rel="stylesheet" href="assets/css/popup.css?v=11" media="print" onload="this.media='all'">
-    <noscript><link rel="stylesheet" href="assets/css/popup.css?v=11"></noscript>
+    <link rel="stylesheet" href="assets/css/popup.css?v=13" media="print" onload="this.media='all'">
+    <noscript><link rel="stylesheet" href="assets/css/popup.css?v=13"></noscript>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css">
 
 

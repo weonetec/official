@@ -8,6 +8,9 @@
 .pp-overlay {
     position: fixed;
     inset: 0;
+    /* Near-opaque fallback. Where backdrop-filter is supported the scrim
+       is lightened below, because at 0.82 the blurred page underneath is
+       almost entirely hidden and the effect is wasted. */
     background: rgba(0,0,0,0.82);
     z-index: 9999;
     display: flex;
@@ -20,6 +23,19 @@
 .pp-overlay.pp-open {
     opacity: 1;
     pointer-events: all;
+}
+
+/* Frosted page behind the popup. Kept on .pp-overlay rather than
+   .pp-open so the blur fades with the overlay's own opacity in BOTH
+   directions — applying it only on open would snap the blur off at the
+   start of the close transition. The overlay is a direct child of
+   <body>, so no transformed ancestor can steal its backdrop root. */
+@supports ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+    .pp-overlay {
+        background: rgba(0,0,0,0.62);
+        -webkit-backdrop-filter: blur(12px) saturate(70%);
+                backdrop-filter: blur(12px) saturate(70%);
+    }
 }
 .pp-modal {
     background: linear-gradient(160deg, #0d0d0d 0%, #111800 100%);
