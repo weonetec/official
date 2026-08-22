@@ -19,6 +19,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 }
 
 require __DIR__ . '/config-loader.php';
+require __DIR__ . '/phone-validation.php';
 $config = pp_load_mail_config();
 if (!$config) {
     http_response_code(500);
@@ -59,6 +60,7 @@ if ($name === '') $errors[] = 'Name is required.';
 if ($email === '' || !filter_var($email, FILTER_VALIDATE_EMAIL)) $errors[] = 'A valid email is required.';
 if (empty($services)) $errors[] = 'At least one service is required.';
 if ($brief === '') $errors[] = 'Project brief is required.';
+if ($phone !== '' && !pp_is_valid_phone($phone)) $errors[] = 'Enter a valid phone number.';
 
 $verified = isset($_SESSION['pp_verify'][$email]['verified']) && $_SESSION['pp_verify'][$email]['verified'] === true;
 if (!$verified) $errors[] = 'Please verify your email address first.';

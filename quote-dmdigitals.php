@@ -1009,9 +1009,9 @@ $verified = isset($_SESSION['quote_access']['dmdigitals']) && $_SESSION['quote_a
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="assets/js/logo-animation.js?v=2"></script>
     <script src="assets/js/main.js?v=10"></script>
-    <script src="assets/js/popup.js?v=11"></script>
+    <script src="assets/js/popup.js?v=12"></script>
     <?php if (!$verified): ?>
-    <script src="assets/js/quote-gate.js?v=1"></script>
+    <script src="assets/js/quote-gate.js?v=2"></script>
     <?php endif; ?>
 
     <?php if ($verified): ?>

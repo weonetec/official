@@ -27,6 +27,27 @@
 
         var EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         var codeSentFor = null; // the exact email the current code was sent to
+
+        // Real SMS/OTP phone verification is a paid service and deliberately
+        // not set up yet — this instead rejects the obviously-fake
+        // submissions (repeated digits, simple runs like "12345678901") by
+        // checking the number is shaped like a real Indian mobile number
+        // (10 digits, first digit 6-9), with or without a leading +91/91/0.
+        // Mirrors assets/php/phone-validation.php's pp_is_valid_phone() —
+        // keep both in sync if this rule ever changes.
+        function isValidPhone(raw) {
+            var digits = raw.replace(/\D/g, '');
+            var local = digits;
+            if (local.length === 12 && local.slice(0, 2) === '91') local = local.slice(2);
+            else if (local.length === 11 && local.charAt(0) === '0') local = local.slice(1);
+
+            if (local.length !== 10) return false;
+            if (!/^[6-9]\d{9}$/.test(local)) return false;
+            if (/^(\d)\1{9}$/.test(local)) return false;
+            if (local === '0123456789' || local === '1234567890' || local === '9876543210') return false;
+
+            return true;
+        }
         var resendCooldownTimer = null;
 
         function showError(el, message) {
@@ -89,7 +110,10 @@
             var ok = true;
 
             if (!nameInput.value.trim()) { showError(nameInput, 'Please enter your name.'); ok = false; }
-            if (!phoneInput.value.trim()) { showError(phoneInput, 'Please enter your phone number.'); ok = false; }
+
+            var phoneVal = phoneInput.value.trim();
+            if (!phoneVal) { showError(phoneInput, 'Please enter your phone number.'); ok = false; }
+            else if (!isValidPhone(phoneVal)) { showError(phoneInput, 'Enter a valid phone number.'); ok = false; }
 
             var emailVal = emailInput.value.trim();
             if (!emailVal) { showError(emailInput, 'Please enter your email.'); ok = false; }

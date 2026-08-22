@@ -76,6 +76,7 @@
             '        <div class="pp-field">' +
             '          <label>Phone Number</label>' +
             '          <input type="tel" name="phone" placeholder="+91 00000 00000">' +
+            '          <span class="pp-error-msg"></span>' +
             '        </div>' +
             '        <div class="pp-field">' +
             '          <label>Company / Brand Name</label>' +
@@ -148,6 +149,27 @@
 
     var EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     var BUDGET_LABELS = ['Under 7-12K', '15-20K', '30-50K', '70-1L', '1L+', '2L+', '3L+'];
+
+    // Real SMS/OTP phone verification is a paid service and deliberately not
+    // set up yet — this instead rejects the obviously-fake submissions
+    // (repeated digits, simple runs like "12345678901") by checking the
+    // number is shaped like a real Indian mobile number (10 digits, first
+    // digit 6-9), with or without a leading +91/91/0. Mirrors
+    // assets/php/phone-validation.php's pp_is_valid_phone() — keep both in
+    // sync if this rule ever changes.
+    function isValidPhone(raw) {
+        var digits = raw.replace(/\D/g, '');
+        var local = digits;
+        if (local.length === 12 && local.slice(0, 2) === '91') local = local.slice(2);
+        else if (local.length === 11 && local.charAt(0) === '0') local = local.slice(1);
+
+        if (local.length !== 10) return false;
+        if (!/^[6-9]\d{9}$/.test(local)) return false;
+        if (/^(\d)\1{9}$/.test(local)) return false;
+        if (local === '0123456789' || local === '1234567890' || local === '9876543210') return false;
+
+        return true;
+    }
 
     // On pages that run Lenis (index.html), it drives scrolling itself via
     // intercepted wheel/touch events, so body.style.overflow alone doesn't
@@ -409,6 +431,10 @@
             if (!emailVal) { showError(emailEl, 'Please enter your email.'); ok = false; }
             else if (!EMAIL_RE.test(emailVal)) { showError(emailEl, 'Enter a valid email address.'); ok = false; }
             else if (verifiedEmail !== emailVal) { showError(emailEl, 'Please verify your email address.'); ok = false; }
+
+            var phoneEl = form.querySelector('[name="phone"]');
+            var phoneVal = phoneEl.value.trim();
+            if (phoneVal && !isValidPhone(phoneVal)) { showError(phoneEl, 'Enter a valid phone number.'); ok = false; }
 
             if (form.querySelectorAll('[name="service[]"]:checked').length === 0) {
                 var svcWrap = serviceGrid.closest('.pp-field');

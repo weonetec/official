@@ -28,6 +28,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 }
 
 require __DIR__ . '/config-loader.php';
+require __DIR__ . '/phone-validation.php';
 $config = pp_load_mail_config();
 if (!$config) {
     http_response_code(500);
@@ -48,6 +49,7 @@ $email = isset($_POST['email']) ? trim((string) $_POST['email']) : '';
 $errors = [];
 if ($name === '') $errors[] = 'Name is required.';
 if ($phone === '') $errors[] = 'Phone number is required.';
+elseif (!pp_is_valid_phone($phone)) $errors[] = 'Enter a valid phone number.';
 if ($email === '' || !filter_var($email, FILTER_VALIDATE_EMAIL)) $errors[] = 'A valid email is required.';
 
 if (!empty($errors)) {
