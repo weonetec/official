@@ -226,6 +226,13 @@
             margin: 12px 0 24px;
             min-height: 48px;
         }
+        /* Monthly cards are wider (2-up), so their one-line descriptions
+           don't need the height-equalising min-height — drop it (and tighten
+           the margin) to reduce the gap above "Starting from" on this view. */
+        .js .pricing-grid[data-active="monthly"] .pricing-card-desc {
+            min-height: 0;
+            margin-bottom: 16px;
+        }
         /* Holds one billing view. flex:1 keeps the CTA pinned to the card
            foot no matter how many features the tier lists. */
         .plan-block {
