@@ -173,6 +173,12 @@
         /* Only one billing view at a time once JS is running. */
         .js .pricing-grid[data-active="onetime"] .plan-block[data-plan="monthly"],
         .js .pricing-grid[data-active="monthly"] .plan-block[data-plan="onetime"] { display: none; }
+        /* Custom has no monthly option, so it drops out of the Monthly
+           view entirely and the two remaining plans widen to fill the
+           row. Scoped to .js — without it every card and both price
+           blocks stay visible, which is the no-JS fallback. */
+        .js .pricing-grid[data-active="monthly"] { grid-template-columns: repeat(2, 1fr); }
+        .js .pricing-grid[data-active="monthly"] .pricing-card--custom { display: none; }
         .js .plan-block-label { display: none; }
         .pricing-card {
             display: flex;
@@ -352,6 +358,10 @@
         @media (max-width: 991px) {
             .pricing-hero { padding: 150px 0 70px; }
             .pricing-grid { grid-template-columns: 1fr; max-width: 480px; margin-left: auto; margin-right: auto; }
+            /* Matches the specificity of the 2-column monthly rule above,
+               which would otherwise win here and keep two cards side by
+               side on a phone. */
+            .js .pricing-grid[data-active="monthly"] { grid-template-columns: 1fr; }
         }
         @media (max-width: 575px) {
             .pricing-card { padding: 32px 24px; }
@@ -598,7 +608,7 @@
                 </div>
 
                 <!-- Tier 3 — Custom (no monthly option; project-based only) -->
-                <div class="pricing-card">
+                <div class="pricing-card pricing-card--custom">
                     <span class="pricing-card-name">Custom</span>
                     <p class="pricing-card-desc">For complex platforms, integrations, or ongoing product builds.</p>
 
