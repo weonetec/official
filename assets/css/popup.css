@@ -77,6 +77,39 @@
     text-transform: uppercase;
 }
 .pp-accent { color: #B2DF48; font-style: italic; }
+
+/* ── Selected-plan badge (plan popup only) ──
+   Echoes the card the visitor clicked back at them, so they can see they
+   are enquiring about the right tier before they fill anything in. The
+   [hidden] attribute is what hides it when a trigger carries no
+   data-plan; display:flex would otherwise override it. */
+.pp-plan-badge {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 14px 18px;
+    margin-bottom: 26px;
+    border: 1px solid rgba(178, 223, 72, 0.3);
+    border-radius: 14px;
+    background: rgba(178, 223, 72, 0.07);
+}
+.pp-plan-badge[hidden] { display: none; }
+.pp-plan-badge-label {
+    font-family: 'Satoshi-Variable', sans-serif;
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.6);
+}
+.pp-plan-badge-value {
+    font-family: 'Satoshi-Variable', sans-serif;
+    font-size: 17px;
+    font-weight: 700;
+    color: #B2DF48;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
 .pp-sub { color: rgba(255,255,255,0.45); font-size: 14px; font-family: 'Satoshi-Variable', sans-serif; }
 
 /* ── Form Layout ── */

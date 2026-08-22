@@ -37,8 +37,8 @@ $verified = isset($_SESSION['quote_access']['dmdigitals']) && $_SESSION['quote_a
     <link rel="stylesheet" href="assets/css/new.css?v=10">
     <link rel="stylesheet" href="assets/css/main.css?v=57">
     <link rel="stylesheet" href="assets/css/responsive.css?v=60">
-    <link rel="stylesheet" href="assets/css/popup.css?v=10" media="print" onload="this.media='all'">
-    <noscript><link rel="stylesheet" href="assets/css/popup.css?v=10"></noscript>
+    <link rel="stylesheet" href="assets/css/popup.css?v=11" media="print" onload="this.media='all'">
+    <noscript><link rel="stylesheet" href="assets/css/popup.css?v=11"></noscript>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css">
 
 
@@ -1009,7 +1009,7 @@ $verified = isset($_SESSION['quote_access']['dmdigitals']) && $_SESSION['quote_a
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="assets/js/logo-animation.js?v=2"></script>
     <script src="assets/js/main.js?v=10"></script>
-    <script src="assets/js/popup.js?v=10"></script>
+    <script src="assets/js/popup.js?v=11"></script>
     <?php if (!$verified): ?>
     <script src="assets/js/quote-gate.js?v=1"></script>
     <?php endif; ?>
