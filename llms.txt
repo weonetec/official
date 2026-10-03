@@ -2,7 +2,7 @@
 
 > WeOne is a web design, development and UI/UX agency based in Kolkata, India. We build websites, e-commerce stores (Shopify, WooCommerce, Wix), brand identities, and provide digital marketing and business consultancy for small and mid-sized businesses, primarily in India.
 
-WeOne is a small, senior team (co-founded by Sarboruo Sarkar and Sandip Sen) — no account managers, no junior handoffs. We work directly with clients from strategy through design, development and launch.
+WeOne is a small, senior team — no account managers, no junior handoffs. We work directly with clients from strategy through design, development and launch.
 
 ## Services
 
