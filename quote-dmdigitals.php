@@ -1010,6 +1010,7 @@ $verified = isset($_SESSION['quote_access']['dmdigitals']) && $_SESSION['quote_a
     <script src="assets/js/logo-animation.js?v=2"></script>
     <script src="assets/js/main.js?v=10"></script>
     <script src="assets/js/popup.js?v=12"></script>
+    <script src="assets/js/whatsapp-button.js?v=1"></script>
     <?php if (!$verified): ?>
     <script src="assets/js/quote-gate.js?v=2"></script>
     <?php endif; ?>
