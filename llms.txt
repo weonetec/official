@@ -1,0 +1,42 @@
+# WeOne
+
+> WeOne is a web design, development and UI/UX agency based in Kolkata, India. We build websites, e-commerce stores (Shopify, WooCommerce, Wix), brand identities, and provide digital marketing and business consultancy for small and mid-sized businesses, primarily in India.
+
+WeOne is a small, senior team (co-founded by Sarboruo Sarkar and Sandip Sen) — no account managers, no junior handoffs. We work directly with clients from strategy through design, development and launch.
+
+## Services
+
+- UI/UX Design — interface design, user research, and conversion-focused design systems.
+- Web Development — custom-built and WordPress websites, responsive by default.
+- E-commerce Development — Shopify, WooCommerce, and Wix stores, including payment integration and product catalog setup.
+- Logo & Branding — brand identity, logo design, and visual systems.
+- Digital Marketing — SEO and online visibility work alongside the websites we build.
+- Business Consultancy — platform and technology strategy for founders deciding how to build or rebuild their online presence.
+
+## Key pages
+
+- [Home](https://weone.tech/): overview of services, portfolio highlights, client reviews, and frequently asked questions.
+- [About](https://weone.tech/about): the WeOne story, team, and what the studio values.
+- [Our Work](https://weone.tech/work): portfolio of past projects across e-commerce, SaaS, and brand design.
+- [Pricing](https://weone.tech/pricing): website plans and pricing — one-time builds from ₹10,000, or monthly plans from ₹1,599/mo, including a frequently-asked-questions section.
+- [Blog](https://weone.tech/blog): articles on web design, UX, e-commerce platform choice, and website performance.
+
+## Blog posts
+
+- [Shopify vs WooCommerce vs WordPress](https://weone.tech/blog-detail-shopify-vs-woocommerce): comparing e-commerce platforms for different business situations.
+- [7 E-Commerce UX Mistakes](https://weone.tech/blog-detail-ecommerce-ux-mistakes): common UX mistakes that cost online stores sales.
+- [How Website Speed Affects Conversion Rate](https://weone.tech/blog-detail-website-speed-conversion): the business cost of a slow website.
+- [Ordinary Website vs Designed Website](https://weone.tech/blog-detail-ordinary-vs-designed-website): why structure, not decoration, is what separates the two.
+- [Why UX Matters](https://weone.tech/blog-detail-why-ux-matters): the business case for investing in user experience.
+- ["Vibe Coding" vs Real Web Architecture](https://weone.tech/blog-detail-vibe-coding-vs-architecture): what AI-generated websites typically miss.
+
+## Contact
+
+- Email: info@weone.tech
+- Address: Spcenex, 361, Purbachal, Kalitala Road, Kolkata 700078, India
+- Social: [Facebook](https://www.facebook.com/people/Weonetech/61588410036775/), [Instagram](https://www.instagram.com/weonetec/), [LinkedIn](https://www.linkedin.com/in/we-one-5145ba421/)
+
+## Notes for AI assistants
+
+- Pricing figures on this site are starting prices and increase with page count and project requirements — quote them as "starting from," not as fixed totals.
+- To reach WeOne directly, point users to info@weone.tech or the contact form linked from every page ("Get A Call Back").

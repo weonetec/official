@@ -24,7 +24,8 @@
         "name": "Pricing — Website Plans from ₹10,000 | WeOne",
         "description": "WeOne website plans — one-time builds starting from ₹10,000, or monthly plans from ₹1,599/mo. Domain free for the first year on every plan.",
         "isPartOf": { "@id": "https://weone.tech/#website" },
-        "about": { "@id": "https://weone.tech/#organization" }
+        "about": { "@id": "https://weone.tech/#organization" },
+        "dateModified": "2026-10-04"
     }
     </script>
 
@@ -45,6 +46,50 @@
                 "position": 2,
                 "name": "Pricing",
                 "item": "https://weone.tech/pricing"
+            }
+        ]
+    }
+    </script>
+
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+            {
+                "@type": "Question",
+                "name": "How much does a website cost with WeOne?",
+                "acceptedAnswer": { "@type": "Answer", "text": "One-time builds start from ₹10,000 for the Basic plan, ₹20,000 for Standard, and ₹50,000 for Custom. Monthly plans start from ₹1,599/mo for Basic and ₹2,599/mo for Standard. These are starting prices — final cost increases with page count and project requirements, and Custom projects are quoted individually." }
+            },
+            {
+                "@type": "Question",
+                "name": "What's the difference between a one-time build and a monthly plan?",
+                "acceptedAnswer": { "@type": "Answer", "text": "A one-time plan is a single payment to build the site, with hosting and maintenance handled separately after that. A monthly plan bundles the build with ongoing hosting, maintenance, daily backups, and content changes for as long as the plan is active — after month 12 it renews at just domain + hosting + a basic service charge, with no build cost repeated." }
+            },
+            {
+                "@type": "Question",
+                "name": "Is the domain really free?",
+                "acceptedAnswer": { "@type": "Answer", "text": "Yes — every plan (Basic, Standard, and Custom) includes the domain free for the first year." }
+            },
+            {
+                "@type": "Question",
+                "name": "Do I need to pay for hosting separately?",
+                "acceptedAnswer": { "@type": "Answer", "text": "On the Basic one-time plan, hosting is billed separately. Standard one-time includes 1 year of hosting (limited). All monthly plans include hosting while the plan is active — Standard monthly includes individual (not shared) hosting, and Custom includes dedicated hosting with larger storage." }
+            },
+            {
+                "@type": "Question",
+                "name": "Which plan is right for me — Basic, Standard, or Custom?",
+                "acceptedAnswer": { "@type": "Answer", "text": "Basic suits small businesses that just need a clean online presence (up to 5 pages, responsive design, a contact form). Standard fits businesses that need e-commerce (up to 50 products) or custom functionality, with advanced SEO and payment gateway integration. Custom is for complex platforms, large-scale integrations, or ongoing product builds that need dedicated infrastructure and a project manager." }
+            },
+            {
+                "@type": "Question",
+                "name": "Can I get a custom quote outside these plans?",
+                "acceptedAnswer": { "@type": "Answer", "text": "Yes. The Custom tier is project-based and quoted per requirement rather than a fixed monthly plan — tell us what you need via the contact form and we'll scope pricing around it." }
+            },
+            {
+                "@type": "Question",
+                "name": "What happens when a monthly plan's first year ends?",
+                "acceptedAnswer": { "@type": "Answer", "text": "After month 12, a monthly plan renews at just the domain renewal, hosting, and a basic service charge — the original build cost is not charged again." }
             }
         ]
     }
@@ -723,6 +768,151 @@
         </div>
     </section>
     <!-- ========================= Pricing Hero + Tiers End ========================= -->
+
+    <!-- ========================= Pricing FAQ (matches home page FaqWrapper) ========================= -->
+    <section class="FaqWrapper position-relative">
+        <div class="glow">
+            <img src="assets/images/faq-glow.svg" width="1038" height="1038" draggable="false" alt="">
+        </div>
+
+        <div class="container z-2 position-relative">
+            <div class="row text-center">
+                <div class="col-lg-12">
+                    <h2 class="wetitle text-white"><span class="italicTitle neon">pricing. </span> questions</h2>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row align-items-center justify-content-center">
+                <div class="col-xl-9 col-lg-9">
+                    <div class="accordion custom-accord z-2 position-relative" id="accordionPricing">
+
+                        <div class="accordion-item">
+                            <div class="accordian-wrapper">
+                                <h2 class="accordion-header" id="pricingHeadingOne">
+                                    <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                        data-bs-target="#pricingCollapseOne" aria-expanded="true" aria-controls="pricingCollapseOne">
+                                        How much does a website cost with WeOne?
+                                    </button>
+                                </h2>
+                                <div id="pricingCollapseOne" class="accordion-collapse collapse show"
+                                    aria-labelledby="pricingHeadingOne" data-bs-parent="#accordionPricing">
+                                    <div class="accordion-body">
+                                        <p>One-time builds start from ₹10,000 for the Basic plan, ₹20,000 for Standard, and ₹50,000 for Custom. Monthly plans start from ₹1,599/mo for Basic and ₹2,599/mo for Standard. These are starting prices — final cost increases with page count and project requirements, and Custom projects are quoted individually.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="accordion-item">
+                            <div class="accordian-wrapper">
+                                <h2 class="accordion-header" id="pricingHeadingTwo">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                        data-bs-target="#pricingCollapseTwo" aria-expanded="false" aria-controls="pricingCollapseTwo">
+                                        What's the difference between a one-time build and a monthly plan?
+                                    </button>
+                                </h2>
+                                <div id="pricingCollapseTwo" class="accordion-collapse collapse"
+                                    aria-labelledby="pricingHeadingTwo" data-bs-parent="#accordionPricing">
+                                    <div class="accordion-body">
+                                        <p>A one-time plan is a single payment to build the site, with hosting and maintenance handled separately after that. A monthly plan bundles the build with ongoing hosting, maintenance, daily backups, and content changes for as long as the plan is active — after month 12 it renews at just domain + hosting + a basic service charge, with no build cost repeated.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="accordion-item">
+                            <div class="accordian-wrapper">
+                                <h2 class="accordion-header" id="pricingHeadingThree">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                        data-bs-target="#pricingCollapseThree" aria-expanded="false" aria-controls="pricingCollapseThree">
+                                        Is the domain really free?
+                                    </button>
+                                </h2>
+                                <div id="pricingCollapseThree" class="accordion-collapse collapse"
+                                    aria-labelledby="pricingHeadingThree" data-bs-parent="#accordionPricing">
+                                    <div class="accordion-body">
+                                        <p>Yes — every plan (Basic, Standard, and Custom) includes the domain free for the first year.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="accordion-item">
+                            <div class="accordian-wrapper">
+                                <h2 class="accordion-header" id="pricingHeadingFour">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                        data-bs-target="#pricingCollapseFour" aria-expanded="false" aria-controls="pricingCollapseFour">
+                                        Do I need to pay for hosting separately?
+                                    </button>
+                                </h2>
+                                <div id="pricingCollapseFour" class="accordion-collapse collapse"
+                                    aria-labelledby="pricingHeadingFour" data-bs-parent="#accordionPricing">
+                                    <div class="accordion-body">
+                                        <p>On the Basic one-time plan, hosting is billed separately. Standard one-time includes 1 year of hosting (limited). All monthly plans include hosting while the plan is active — Standard monthly includes individual (not shared) hosting, and Custom includes dedicated hosting with larger storage.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="accordion-item">
+                            <div class="accordian-wrapper">
+                                <h2 class="accordion-header" id="pricingHeadingFive">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                        data-bs-target="#pricingCollapseFive" aria-expanded="false" aria-controls="pricingCollapseFive">
+                                        Which plan is right for me — Basic, Standard, or Custom?
+                                    </button>
+                                </h2>
+                                <div id="pricingCollapseFive" class="accordion-collapse collapse"
+                                    aria-labelledby="pricingHeadingFive" data-bs-parent="#accordionPricing">
+                                    <div class="accordion-body">
+                                        <p>Basic suits small businesses that just need a clean online presence (up to 5 pages, responsive design, a contact form). Standard fits businesses that need e-commerce (up to 50 products) or custom functionality, with advanced SEO and payment gateway integration. Custom is for complex platforms, large-scale integrations, or ongoing product builds that need dedicated infrastructure and a project manager.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="accordion-item">
+                            <div class="accordian-wrapper">
+                                <h2 class="accordion-header" id="pricingHeadingSix">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                        data-bs-target="#pricingCollapseSix" aria-expanded="false" aria-controls="pricingCollapseSix">
+                                        Can I get a custom quote outside these plans?
+                                    </button>
+                                </h2>
+                                <div id="pricingCollapseSix" class="accordion-collapse collapse"
+                                    aria-labelledby="pricingHeadingSix" data-bs-parent="#accordionPricing">
+                                    <div class="accordion-body">
+                                        <p>Yes. The Custom tier is project-based and quoted per requirement rather than a fixed monthly plan — tell us what you need via the contact form and we'll scope pricing around it.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="accordion-item">
+                            <div class="accordian-wrapper">
+                                <h2 class="accordion-header" id="pricingHeadingSeven">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                        data-bs-target="#pricingCollapseSeven" aria-expanded="false" aria-controls="pricingCollapseSeven">
+                                        What happens when a monthly plan's first year ends?
+                                    </button>
+                                </h2>
+                                <div id="pricingCollapseSeven" class="accordion-collapse collapse"
+                                    aria-labelledby="pricingHeadingSeven" data-bs-parent="#accordionPricing">
+                                    <div class="accordion-body">
+                                        <p>After month 12, a monthly plan renews at just the domain renewal, hosting, and a basic service charge — the original build cost is not charged again.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- ========================= Pricing FAQ End ========================= -->
 
     <!-- ========================= Closing CTA (matches home page) ========================= -->
     <section class="coming-section section">
