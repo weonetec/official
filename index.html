@@ -1846,22 +1846,57 @@
     </section>
 
     <script>
-    // FAQ: open on hover, close others
-    (function () {
-        var items = document.querySelectorAll('#accordionExample .accordian-wrapper');
-        items.forEach(function (wrapper) {
+    // FAQ: open on hover, close others.
+    // Bootstrap ignores show()/hide() while a panel is still animating, so
+    // firing them straight from mouseenter left several panels stuck open
+    // when the cursor moved quickly. Instead we remember which panel the
+    // visitor wants (`desired`) and reconcile only when nothing is
+    // animating, re-checking after every transition finishes.
+    // Runs on DOMContentLoaded because bootstrap.bundle loads further down.
+    document.addEventListener('DOMContentLoaded', function () {
+        var accordion = document.getElementById('accordionExample');
+        if (!accordion || typeof bootstrap === 'undefined') return;
+
+        var panels = accordion.querySelectorAll('.accordion-collapse');
+        var desired = accordion.querySelector('.accordion-collapse.show');
+
+        function instance(el) {
+            return bootstrap.Collapse.getOrCreateInstance(el, { toggle: false });
+        }
+
+        function sync() {
+            // Mid-animation: wait for shown/hidden to call us again.
+            if (accordion.querySelector('.accordion-collapse.collapsing')) return;
+            panels.forEach(function (panel) {
+                if (panel !== desired && panel.classList.contains('show')) instance(panel).hide();
+            });
+            if (desired && !desired.classList.contains('show')) instance(desired).show();
+        }
+
+        accordion.addEventListener('shown.bs.collapse', sync);
+        accordion.addEventListener('hidden.bs.collapse', sync);
+
+        accordion.querySelectorAll('.accordian-wrapper').forEach(function (wrapper) {
+            var btn = wrapper.querySelector('.accordion-button');
+            var target = document.querySelector(btn.getAttribute('data-bs-target'));
+            if (!target) return;
+
             wrapper.addEventListener('mouseenter', function () {
-                var btn = wrapper.querySelector('.accordion-button');
-                var targetId = btn.getAttribute('data-bs-target');
-                var target = document.querySelector(targetId);
-                if (!target) return;
-                document.querySelectorAll('#accordionExample .accordion-collapse.show').forEach(function (open) {
-                    if (open !== target) bootstrap.Collapse.getOrCreateInstance(open).hide();
-                });
-                bootstrap.Collapse.getOrCreateInstance(target).show();
+                desired = target;
+                sync();
+            });
+
+            // Keep clicks (and touch taps) working: after Bootstrap has
+            // handled the click (its listener runs first, in capture phase,
+            // hence the timeout), adopt whatever state the button now shows
+            // so sync() doesn't undo it.
+            btn.addEventListener('click', function () {
+                setTimeout(function () {
+                    desired = btn.getAttribute('aria-expanded') === 'true' ? target : null;
+                }, 0);
             });
         });
-    })();
+    });
     </script>
 
     <section class="coming-section section">
